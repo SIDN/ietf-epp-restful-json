@@ -1,4 +1,4 @@
-# EPP over RESTful Transport
+# XML to JSON mapping for RESTful EPP
 
 This repository contains the IETF draft for adding JSON support to RESTful EPP.  
 
