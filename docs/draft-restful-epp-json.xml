@@ -1,0 +1,973 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.miek.nl" -->
+<rfc version="3" ipr="trust200902" docName="draft-wullink-restful-epp-json-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" tocDepth="4">
+
+<front>
+<title abbrev="RESTful Transport for EPP">XML to JSON mapping for RESTful EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
+<author initials="M." surname="Wullink" fullname="Maarten Wullink"><organization>SIDN Labs</organization><address><postal><street></street>
+</postal><email>maarten.wullink@sidn.nl</email>
+<uri>https://sidn.nl/</uri>
+</address></author><author initials="M." surname="Davids" fullname="Marco Davids"><organization>SIDN Labs</organization><address><postal><street></street>
+</postal><email>marco.davids@sidn.nl</email>
+<uri>https://sidn.nl/</uri>
+</address></author><date/>
+<area>Internet</area>
+<workgroup>Network Working Group</workgroup>
+
+<abstract>
+<t>This document describes how the JSON <xref target="RFC8259"></xref> data format is to be used for RESTful EPP (REPP), an Application Programming Interface (API) for the Extensible Provisioning Protocol <xref target="RFC5730"></xref>.</t>
+</abstract>
+
+</front>
+
+<middle>
+
+<section anchor="introduction"><name>Introduction</name>
+<t>This document ... TODO</t>
+<t>A good understanding of the EPP base protocol specification <xref target="RFC5730"></xref>
+is advised, to grasp the command mapping described in this
+document.</t>
+<t>The key words &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;,
+&quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;MAY&quot;, and &quot;OPTIONAL&quot; in this
+document are to be interpreted as described in <xref target="RFC2119"></xref>.</t>
+</section>
+
+<section anchor="terminology"><name>Terminology</name>
+<t>In this document the following terminology is used.</t>
+<t>REST - Representational State Transfer (<xref target="REST"></xref>). An architectural
+style.</t>
+<t>RESTful - A RESTful web service is a web service or API implemented using
+HTTP and the principles of <xref target="REST"></xref>.</t>
+<t>EPP RFCs - This is a reference to the EPP version 1.0
+specifications <xref target="RFC5730"></xref>, <xref target="RFC5731"></xref>, <xref target="RFC5732"></xref> and <xref target="RFC5733"></xref>.</t>
+<t>Stateful EPP - The definition according to <xref target="RFC5730" sectionFormat="of" section="2"></xref>.</t>
+<t>RESTful EPP or REPP - The RESTful transport for EPP described in
+this document.</t>
+<t>URL - A Uniform Resource Locator as defined in <xref target="RFC3986"></xref>.</t>
+<t>Resource - A network data object or service that can be identified
+by a URL.</t>
+<t>Command Mapping - A mapping of <xref target="RFC5730"></xref> EPP commands to
+RESTful EPP URL resources.</t>
+<t>REPP client - An HTTP user agent performing an REPP request</t>
+<t>REPP server - An HTTP server resposible for processing requests and returning
+results in any supported media type.</t>
+</section>
+
+<section anchor="conventions-used-in-this-document"><name>Conventions Used in This Document</name>
+<t>JSON is case sensitive. Unless stated otherwise, JSON specifications
+and examples provided in this document MUST be interpreted in the
+character case presented to develop a conforming implementation.</t>
+<t>The examples in this document assume that request and response messages
+are properly formatted JSON documents.</t>
+<t>In examples, lines starting with &quot;C:&quot; represent data sent by a
+REPP client and lines starting with &quot;S:&quot; represent data returned
+by a REPP server. Indentation and white space in examples
+are provided only to illustrate element relationships and are not
+REQUIRED features of the protocol.</t>
+</section>
+
+<section anchor="design-considerations"><name>Design Considerations</name>
+<t>TODO</t>
+</section>
+
+<section anchor="epp-extension-framework"><name>EPP Extension Framework</name>
+<t>TODO</t>
+</section>
+
+<section anchor="examples"><name>Examples</name>
+<t>TODO: replace XML with JSON</t>
+
+<section anchor="hello"><name>Hello</name>
+
+<ul spacing="compact">
+<li>Request: OPTIONS /{context-root}/{version}</li>
+<li>Request payload: No</li>
+<li>Response payload: Greeting response</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+<t>The server MUST return a Greeting response, as defined in <xref target="RFC5730" sectionFormat="of" section="2.4"></xref> in response
+to request using the HTTP OPTIONS method on the root &quot;/&quot; resource.</t>
+<t>The EPP version used in the Hello response MUST match the version value used for the <tt>{version}</tt> path segment of the URL used for the Hello request.</t>
+<t>Example Hello request:</t>
+
+<artwork><![CDATA[C: OPTIONS /repp/v1/ HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+C: Connection: keep-alive
+
+]]>
+</artwork>
+<t>Example Hello response:</t>
+
+<artwork><![CDATA[S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Length: 799
+S: Content-Type: application/epp+xml
+S:
+S: <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S: <epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:   <greeting>
+S:      <svcMenu>
+S:         <version>1.0</version>
+S:         <!-- The rest of the response is omitted here -->
+S:      <svcMenu>
+S:   </greeting>
+S: </epp>
+]]>
+</artwork>
+</section>
+
+<section anchor="login"><name>Login</name>
+<t>The Login command defined in <xref target="RFC5730"></xref> is used to configure a session and is part of the stateful nature of the EPP protocol. The REPP server is stateless and MUST not maintain any client state and MUST NOT support the Login command. The client MUST include all the information in a REPP request that is required for the server to be able to properly process the request. This includes the request attributes that are part of the Login command defined in <xref target="RFC5730" sectionFormat="of" section="2.9.1.1"></xref>.</t>
+<t>
+The request attributes from the <xref target="RFC5730"></xref> Login command are are moved to the HTTP layer.</t>
+
+<ul spacing="compact">
+<li><tt>clID</tt>: Replaced by HTTP authentication</li>
+<li><tt>pw:</tt>: Replaced by HTTP authentication</li>
+<li><tt>newPW</tt>: Replaced by out of band process</li>
+<li><tt>version</tt>: Replaced by the <tt>{version}</tt> path segment in the request URL.</li>
+<li><tt>lang</tt>: Replaced by the <tt>Accept-Language</tt> HTTP header.</li>
+<li><tt>svcs</tt>: Replaced by the <tt>REPP-svcs</tt> HTTP header.</li>
+</ul>
+<t>The server MUST check the namespaces used in the REPP-svcs HTTP header. An unsupported namespace MUST result in the appropriate EPP result code.</t>
+</section>
+
+<section anchor="logout"><name>Logout</name>
+<t>Due to the stateless nature of REPP, the session concept no longer exists and therefore the Logout command MUST not be implemented by the server.</t>
+</section>
+
+<section anchor="query-resources"><name>Query Resources</name>
+<t>
+Sending content using an HTTP GET request is discouraged in <xref target="RFC9110"></xref>, there exists no generally defined semanticsfor content received in a GET request.</t>
+<t>A REPP client MAY use the HTTP GET method for executing a query command only when no request data has to be added to the HTTP message body. When an EPP object requires additional authInfo information, as described in <xref target="RFC5731"></xref> and <xref target="RFC5733"></xref>, the client MUST use the HTTP POST method and add the query command content to the HTTP message body.</t>
+
+<section anchor="check"><name>Check</name>
+
+<ul spacing="compact">
+<li>Request: HEAD /{collection}/{id}</li>
+<li>Request message: None</li>
+<li>Response message: None</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+<t>The server MUST support the HTTP HEAD method for the Check endoint, both client and server MUST not put any content to the HTTP message body. The response MUST contain the REPP-check-avail and MAY contain the REPP-check-reason header. The value of the REPP-check-avail header MUST be &quot;0&quot; or &quot;1&quot; as described in <xref target="RFC5730" sectionFormat="of" section="2.9.2.1"></xref>, depending on whether the object can be provisioned or not.</t>
+<t>The REPP Check endpoint is limited to checking only a single resource {id} per request. This may seem a step backwards compared to the Check command defined in the <xref target="RFC5730"></xref> where multiple object-ids are allowed inside a Check command. The RESTful Check request can be load balanced more efficiently when a single resource {id} needs to be checked.</t>
+<t>Example Check request for a domain name:</t>
+
+<artwork><![CDATA[C: HEAD /repp/v1/domains/example.nl HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+
+]]>
+</artwork>
+<t>Example Check response:</t>
+
+<artwork><![CDATA[S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Length: 0
+S: REPP-cltrid: ABC-12345
+S: REPP-svtrid: XYZ-12345
+S: REPP-check-avail: 0
+S: REPP-check-reason: In use
+S: REPP-result-code: 1000
+]]>
+</artwork>
+</section>
+
+<section anchor="info"><name>Info</name>
+<t>An Info request MUST be performed using the HTTP GET method on a resource identifying an object instance.
+An object MAY have authorization attachted to it, the client then MUST use the HTTP POST method and include the authorization information in the request.</t>
+<t>A request for an object not using authorization information.</t>
+
+<ul spacing="compact">
+<li>Request: GET /{collection}/{id}</li>
+<li>Request message: None</li>
+<li>Response message: Info response</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+<t>A request for an object that has authorization information attached.</t>
+
+<ul spacing="compact">
+<li>Request: POST /{collection}/{id}</li>
+<li>Request message: Info request</li>
+<li>Response message: Info response</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+
+<artwork><![CDATA[Example Info response:
+
+]]>
+</artwork>
+<t>S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Length: 424
+S: Content-Type: application/epp+xml</t>
+<t>S:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+S:&lt;epp xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+S:  &lt;response&gt;
+S:    &lt;result code=&quot;1000&quot;&gt;
+S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+S:    &lt;/result&gt;
+S:    &lt;resData&gt;
+S:      &lt;domain:infData xmlns:domain=&quot;urn:ietf:params:xml:ns:domain-1.0&quot;&gt;
+S:         
+S:      <eref target="/domain:infData">/domain:infData</eref>
+S:    &lt;/resData&gt;
+S:    &lt;trID&gt;
+S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+S:    &lt;/trID&gt;
+S:  &lt;/response&gt;
+S:&lt;/epp&gt;</t>
+
+<artwork><![CDATA[
+### Poll
+
+#### Poll Request
+
+- Request: GET /messages
+- Request message: None
+- Response message: Poll response
+- HTTP status code success: 200 (OK)
+
+The client MUST use the HTTP GET method on the messages resource collection to
+request the message at the head of the queue. The "op=req" semantics from [@!RFC5730, Section 2.9.2.3] are assigned to the HTTP GET method.
+
+Example Poll request:
+]]>
+</artwork>
+<t>C: GET /repp/v1/messages HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer &lt;token&gt;
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345</t>
+
+<artwork><![CDATA[Example Poll response:
+
+]]>
+</artwork>
+<t>S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Length: 312
+S: Content-Type: application/epp+xml</t>
+<t>S:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+S:&lt;epp xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+S:  &lt;response&gt;
+S:    &lt;result code=&quot;1301&quot;&gt;
+S:      &lt;msg&gt;Command completed successfully; ack to dequeue&lt;/msg&gt;
+S:    &lt;/result&gt;
+S:    &lt;msgQ count=&quot;5&quot; id=&quot;12345&quot;&gt;
+S:      &lt;qDate&gt;2000-06-08T22:00:00.0Z&lt;/qDate&gt;
+S:      &lt;msg&gt;Transfer requested.&lt;/msg&gt;
+S:    &lt;/msgQ&gt;
+S:    &lt;resData&gt;
+S:       
+S:    &lt;/resData&gt;
+S:    &lt;trID&gt;
+S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+S:    &lt;/trID&gt;
+S:  &lt;/response&gt;
+S:&lt;/epp&gt;</t>
+
+<artwork><![CDATA[
+#### Poll Ack
+
+- Request: DELETE /messages/{id}
+- Request message: None
+- Response message: Poll ack response
+- HTTP status code success: 200 (OK)
+
+The client MUST use the HTTP DELETE method on a message instance to to acknowledge receipt of a message of a message from the message queue. The "op=ack" semantics from [@!RFC5730, Section 2.9.2.3] are assigned to the HTTP DELETE method. The "msgID" from a received EPP message MUST be included in the message resource URL, using the {id} path element.
+
+Example Poll Ack request:
+]]>
+</artwork>
+<t>C: DELETE /repp/v1/messages/12345 HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer &lt;token&gt;
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345</t>
+
+<artwork><![CDATA[Example Poll Ack response:
+
+]]>
+</artwork>
+<t>S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Length: 312
+S: Content-Type: application/epp+xml</t>
+<t>S:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+S:&lt;epp xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+S:  &lt;response&gt;
+S:    &lt;result code=&quot;1000&quot;&gt;
+S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+S:    &lt;/result&gt;
+S:    &lt;msgQ count=&quot;4&quot; id=&quot;12345&quot;/&gt;
+S:    &lt;trID&gt;
+S:      &lt;clTRID&gt;ABC-12346&lt;/clTRID&gt;
+S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+S:    &lt;/trID&gt;
+S:  &lt;/response&gt;
+S:&lt;/epp&gt;</t>
+
+<artwork><![CDATA[
+### Transfer Query
+
+The Transfer Query request MUST use the special "latest" sub-resource to refer to the
+latest object transfer, a latest transfer object may not exist, when no transfer has been initiated for the specified object. The client MUST NOT add content to the HTTP message body when using the HTTP GET method.
+
+- Request: GET {collection}/{id}/transfers/latest
+- Request message: None
+- Response message: Transfer Query response
+- HTTP status code success: 200 (OK)
+
+If the requested object has associated authorization information linked to a contact object, then the HTTP GET method MUST NOT be used and the HTTP POST method MUST be used and the authorization information MUST be included in the EPP request message inside the HTTP message body. 
+
+- Request: POST {collection}/{id}/transfers/latest
+- Request message: Transfer Query request
+- Response message: Transfer Query response.
+- HTTP status code success: 200 (OK)
+
+Example domain name Transfer Query request:
+
+]]>
+</artwork>
+<t>C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer &lt;token&gt;
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0</t>
+
+<artwork><![CDATA[
+Example domain name Transfer Query request and authorization information in REPP-authInfo header:
+
+]]>
+</artwork>
+<t>C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer &lt;token&gt;
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: REPP-authInfo: secret</t>
+
+<artwork><![CDATA[
+Example domain name Transfer Query request and authorization information in request message:
+
+```xml
+C: POST /repp/v1/domains/example.nl/transfers/latest HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C:
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <transfer op="query">
+C:      <domain:transfer
+C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example.nl</domain:name>
+C:        <domain:authInfo>
+C:          <domain:pw roid="MW12345-REP">secret</domain:pw>
+C:        </domain:authInfo>
+C:      </domain:transfer>
+C:    </transfer>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>
+
+]]>
+</artwork>
+<t>Example Transfer Query response:</t>
+
+<sourcecode type="xml"><![CDATA[S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Length: 230
+S: Content-Type: application/epp+xml
+S:
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <!-- The rest of the response is omitted here -->
+S:    </resData>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>XYZ-12345</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>
+]]>
+</sourcecode>
+</section>
+</section>
+
+<section anchor="transform-resources"><name>Transform Resources</name>
+
+<section anchor="create"><name>Create</name>
+
+<ul spacing="compact">
+<li>Request: POST /{collection}</li>
+<li>Request message: Object Create request</li>
+<li>Response message: Object Create response</li>
+<li>HTTP status code success: 201 (CREATED)</li>
+</ul>
+<t>The client MUST use the HTTP POST method to create a new object resource. If the EPP request results in a newly created object, then the server MUST return HTTP status code 201 (Created).</t>
+<t>Example Domain Create request:</t>
+
+<sourcecode type="xml"><![CDATA[C: POST /repp/v1/domains HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Content-Type: application/epp+xml
+C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: Accept-Language: en
+C: Content-Length: 220
+C:
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <create>
+C:      <domain:create
+C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example.nl</domain:name>
+C:        <!-- The rest of the request is omitted here -->
+C:      </domain:create>
+C:    </create>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>
+]]>
+</sourcecode>
+<t>Example Domain Create response:</t>
+
+<sourcecode type="xml"><![CDATA[S: HTTP/2 201 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Language: en
+S: Content-Length: 642
+S: Content-Type: application/epp+xml
+S: Location: https://repp.example.nl/repp/v1/domains/example.nl
+S:
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
+S:     xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+S:   <response>
+S:      <result code="1000">
+S:         <msg>Command completed successfully</msg>
+S:      </result>
+S:      <resData>
+S:         <domain:creData
+S:            <!-- The rest of the response is omitted here -->
+S:         </domain:creData>
+S:      </resData>
+S:      <trID>
+S:         <clTRID>ABC-12345</clTRID>
+S:         <svTRID>54321-XYZ</svTRID>
+S:      </trID>
+S:   </response>
+S:</epp>
+]]>
+</sourcecode>
+</section>
+
+<section anchor="delete"><name>Delete</name>
+
+<ul spacing="compact">
+<li>Request: DELETE /{collection}/{id}</li>
+<li>Request message: None</li>
+<li>Response message: Optional Object Delete response</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+<t>The client MUST the HTTP DELETE method and a resource identifying a unique object instance.</t>
+<t>Example Domain Delete request:</t>
+
+<artwork><![CDATA[C: DELETE /repp/v1/domains/example.nl HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+
+]]>
+</artwork>
+<t>Example Domain Delete response:</t>
+
+<sourcecode type="xml"><![CDATA[S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Language: en
+S: Content-Length: 505
+S: Content-Type: application/epp+xml
+
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
+S:     xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+S:   <response>
+S:      <result code="1000">
+S:         <msg>Command completed successfully</msg>
+S:      </result>
+S:      <trID>
+S:         <clTRID>ABC-12345</clTRID>
+S:         <svTRID>XYZ-12345</svTRID>
+S:       </trID>
+S:   </response>
+S:</epp>
+]]>
+</sourcecode>
+</section>
+
+<section anchor="renew"><name>Renew</name>
+
+<ul spacing="compact">
+<li>Request: POST /{collection}/{id}/renewals</li>
+<li>Request message: object Renew request</li>
+<li>Response message: object Renew response</li>
+<li>HTTP status code success: 201 (CREATED)</li>
+</ul>
+<t>The EPP Renew command is mapped to a nested resource, named &quot;renewals&quot;.
+Not all EPP object types include support for the renew command. If the EPP request results in a renewal of the object, then the server MUST return HTTP status code 201 (Created).</t>
+<t>Example Domain Renew request:</t>
+
+<sourcecode type="xml"><![CDATA[C: POST /repp/v1/domains/example.nl/renewals HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Content-Type: application/epp+xml
+C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: Accept-Language: en
+C: Content-Length: 325
+C: 
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <renew>
+C:      <domain:renew
+C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example.nl</domain:name>
+C:        <domain:curExpDate>2023-11-17</domain:curExpDate>
+C:        <domain:period unit="y">1</domain:period>
+C:      </domain:renew>
+C:    </renew>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>
+]]>
+</sourcecode>
+<t>Example Renew response:</t>
+
+<sourcecode type="xml"><![CDATA[S: HTTP/2 201 CREATED
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Language: en
+S: Content-Length: 505
+S: Location: https://repp.example.nl/repp/v1/domains/example.nl
+S: Content-Type: application/epp+xml
+S:
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <resData>
+S:      <!-- The rest of the response is omitted here -->
+S:    </resData>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>XYZ-12345</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>
+]]>
+</sourcecode>
+</section>
+
+<section anchor="transfer"><name>Transfer</name>
+<t>Transferring an object from one sponsoring client to another is specified in <xref target="RFC5731"></xref> and <xref target="RFC5733"></xref>. The Transfer command is mapped to a nested resource, named &quot;transfers&quot;.</t>
+<t>The semantics of the HTTP DELETE method are determined by the role of the client executing the method. For the current sponsoring
+client of the object, the DELETE method is defined as &quot;reject transfer&quot;. For the new sponsoring client the DELETE method is defined as &quot;cancel transfer&quot;.</t>
+
+<section anchor="request"><name>Request</name>
+
+<ul spacing="compact">
+<li>Request: POST /{collection}/{id}/transfers</li>
+<li>Request payload: Optional Transfer request</li>
+<li>Response message: Transfer response.</li>
+<li>HTTP status code success: 201 (CREATED)</li>
+</ul>
+<t>To start a new object transfer process, the client MUST use the HTTP POST method for a unique resource, not all EPP objcts include support for the Transfer command as described in <xref target="RFC5730" sectionFormat="of" section="3.2.4"></xref>, <xref target="RFC5731" sectionFormat="of" section="3.2.4"></xref> and <xref target="RFC5733" sectionFormat="of" section="3.2.4"></xref>.</t>
+<t>If the EPP request is successful, then the server MUST return HTTP status code 201 (Created). The client MAY choose to send an empty HTTP message body when the object is not linked to authorization information associated with a contact object. The server MUST also include the Location header in the HTTP response.</t>
+<t>Example Create request not using using object authorization:</t>
+
+<artwork><![CDATA[C: POST /repp/v1/domains/example.nl/transfers HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+
+]]>
+</artwork>
+<t>Example Create request using object authorization not linked to a contact:</t>
+
+<sourcecode type="xml"><![CDATA[C: POST /repp/v1/domains/example.nl/transfers HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: REPP-cltrid: ABC-12345
+C: REPP-authInfo: secret
+C: Accept-Language: en
+
+]]>
+</sourcecode>
+<t>Example Create request using object authorization linked to a contact object:</t>
+
+<sourcecode type="xml"><![CDATA[C: POST /repp/v1/domains/example.nl/transfers HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: Accept-Language: en
+C: Content-Length: 252
+
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <transfer op="request">
+C:      <domain:transfer
+C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example.nl</domain:name>
+C:        <domain:authInfo>
+C:          <domain:pw roid="DOM-12345">secret</domain:pw>
+C:        </domain:authInfo>
+C:      </domain:transfer>
+C:    </transfer>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>
+]]>
+</sourcecode>
+<t>Example Transfer response:</t>
+
+<sourcecode type="xml"><![CDATA[S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Language: en
+S: Content-Length: 328
+S: Content-Type: application/epp+xml
+S: Location: https://repp.example.nl/repp/v1/domains/example.nl/transfers/latest
+S:
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1001">
+S:      <msg>Command completed successfully; action pending</msg>
+S:    </result>
+S:    <resData>
+S:      <!-- The rest of the response is omitted here -->
+S:    </resData>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>XYZ-12345</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>
+]]>
+</sourcecode>
+</section>
+
+<section anchor="cancel"><name>Cancel</name>
+
+<ul spacing="compact">
+<li>Request: DELETE /{collection}/{id}/transfers/latest</li>
+<li>Request message: Optional Transfer Reject request</li>
+<li>Response message: Transfer cancel response message.</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+<t>The semantics of the HTTP DELETE method are determined by the role of
+the client sending the request. For the new sponsoring client the DELETE method is defined as &quot;cancel transfer&quot;.</t>
+<t>The new sponsoring client MUST use the HTTP DELETE method to cancel a
+requested transfer.</t>
+<t>Example Cancel request:</t>
+
+<artwork><![CDATA[C: DELETE /repp/v1/domains/example.nl/transfers/latest HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+
+]]>
+</artwork>
+<t>Example Cancel response:</t>
+
+<sourcecode type="xml"><![CDATA[TODO
+]]>
+</sourcecode>
+</section>
+
+<section anchor="reject"><name>Reject</name>
+
+<ul spacing="compact">
+<li>Request: DELETE /{collection}/{id}/transfers/latest</li>
+<li>Request message:  Optional Transfer Reject request</li>
+<li>Response message: Transfer response</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+<t>The semantics of the HTTP DELETE method are determined by the role of
+the client sending the request. For the current sponsoring
+client of the object, the DELETE method is defined as &quot;reject transfer&quot;.</t>
+<t>The current sponsoring client MUST use the HTTP DELETE method to
+reject a transfer requested by the new sponsoring client.</t>
+<t>Example Reject request:</t>
+
+<artwork><![CDATA[C: DELETE /repp/v1/domains/example.nl/transfers/latest HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+
+]]>
+</artwork>
+<t>Example Reject response:</t>
+
+<sourcecode type="xml"><![CDATA[TODO
+]]>
+</sourcecode>
+</section>
+
+<section anchor="approve"><name>Approve</name>
+
+<ul spacing="compact">
+<li>Request: PUT /{collection}/{id}/transfers/latest</li>
+<li>Request message: Optional Transfer Approve request</li>
+<li>Response message: Transfer response.</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+<t>The current sponsoring client MUST use the HTTP PUT method to approve
+a transfer requested by the new sponsoring client.</t>
+<t>Example Approve request:</t>
+
+<artwork><![CDATA[C: PUT /repp/v1/domains/example.nl/transfers/latest HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-cltrid: ABC-12345
+
+]]>
+</artwork>
+<t>Example Approve response:</t>
+
+<sourcecode type="xml"><![CDATA[TODO
+]]>
+</sourcecode>
+</section>
+</section>
+
+<section anchor="update"><name>Update</name>
+
+<ul spacing="compact">
+<li>Request: PUT /{collection}/{id}</li>
+<li>Request message: Object Update message</li>
+<li>Response message: Optional Update response message</li>
+<li>HTTP status code success: 200 (OK)</li>
+</ul>
+<t>An object Update request MUST be performed with the HTTP PUT method on a unique object resource. The payload MUST contain an Update request as described in the EPP RFCs. The HTTP response MUST contain a Location header and an optional EPP response message in the message body.</t>
+<t>Example Update request:</t>
+
+<sourcecode type="xml"><![CDATA[C: POST /repp/v1/domains/example.nl HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Content-Type: application/epp+xml
+C: Accept-Language: en
+C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: Content-Length: 252
+
+C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+C:  <command>
+C:    <update>
+C:      <domain:update
+C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+C:        <domain:name>example.nl</domain:name>
+C:           <!-- The rest of the response is omitted here -->
+C:      </domain:update>
+C:    </update>
+C:    <clTRID>ABC-12345</clTRID>
+C:  </command>
+C:</epp>
+]]>
+</sourcecode>
+<t>Example Update response:</t>
+
+<sourcecode type="xml"><![CDATA[S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Language: en
+S: Content-Length: 328
+S: Content-Type: application/epp+xml
+
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>XYZ-12345</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>
+]]>
+</sourcecode>
+<t>Example Update response, without EPP response in message body:</t>
+
+<artwork><![CDATA[S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Language: en
+S: Content-Length: 0
+S: REPP-svtrid: XYZ-12345
+S: REPP-cltrid: ABC-12345
+S: REPP-eppcode: 1000
+
+]]>
+</artwork>
+</section>
+</section>
+
+<section anchor="extensions"><name>Extensions</name>
+
+<ul spacing="compact">
+<li>Request: * /extensions/*</li>
+<li>Request message: *</li>
+<li>Response message: *</li>
+<li>HTTP status code success: *</li>
+</ul>
+<t>EPP protocol extensions, as defined in <xref target="RFC5730" sectionFormat="bare" section="secion 2.7.3"></xref> are supported using the generic &quot;/extensions&quot; resource.
+The HTTP method used for a extension is not defined but must follow the RESTful principles.</t>
+<t>Example Extension request:
+The example below, shows the use of the &quot;Domain Cancel Delete&quot; command as defined as a custom command in <xref target="SIDN-EXT"></xref> by the .nl domain registry operator. Where the registrar can use the HTPP DELETE method on a domain name resource to cancel an active domain delete transaction and move the domain from the quarantine state back to the active state.</t>
+
+<sourcecode type="xml"><![CDATA[C: DELETE /repp/v1/extensions/domains/example.nl/quarantine HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer <token>
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: REPP-cltrid: ABC-12345
+
+]]>
+</sourcecode>
+<t>Example Extension response:</t>
+
+<sourcecode type="xml"><![CDATA[S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Acme REPP server v1.0
+S: Content-Language: en
+S: Content-Length: 328
+S: Content-Type: application/epp+xml
+
+S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+S:  <response>
+S:    <result code="1000">
+S:      <msg>Command completed successfully</msg>
+S:    </result>
+S:    <trID>
+S:      <clTRID>ABC-12345</clTRID>
+S:      <svTRID>XYZ-12345</svTRID>
+S:    </trID>
+S:  </response>
+S:</epp>
+]]>
+</sourcecode>
+</section>
+</section>
+
+<section anchor="iana-considerations"><name>IANA Considerations</name>
+<t>TODO</t>
+</section>
+
+<section anchor="internationalization-considerations"><name>Internationalization Considerations</name>
+<t>TODO</t>
+</section>
+
+<section anchor="security-considerations"><name>Security Considerations</name>
+<t>TODO</t>
+</section>
+
+<section anchor="obsolete-epp-result-codes"><name>Obsolete EPP Result Codes</name>
+<t>TODO</t>
+</section>
+
+<section anchor="acknowledgments"><name>Acknowledgments</name>
+<t>TODO</t>
+</section>
+
+</middle>
+
+<back>
+<references><name>References</name>
+<references><name>Normative References</name>
+<reference anchor="REST" target="http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">
+  <front>
+    <title>Architectural Styles and the Design of Network-based Software Architectures</title>
+    <author fullname="Roy Fielding" initials="R." surname="Fielding">
+      <organization></organization>
+    </author>
+    <date year="2000"></date>
+  </front>
+</reference>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5731.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5732.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5733.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8259.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9110.xml"/>
+</references>
+<references><name>Informative References</name>
+<reference anchor="SIDN-EXT" target="http://rxsd.domain-registry.nl/sidn-ext-epp-1.0.xsd">
+  <front>
+    <title>Extensible Provisioning Protocol v1.0 schema .NL extensions</title>
+    <author>
+      <organization>SIDN</organization>
+    </author>
+    <date year="2019"></date>
+  </front>
+</reference>
+</references>
+</references>
+
+</back>
+
+</rfc>
