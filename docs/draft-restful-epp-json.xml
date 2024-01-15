@@ -852,7 +852,7 @@ S:</epp>
 </section>
 
 <section anchor="iana-considerations"><name>IANA Considerations</name>
-<t>TODO: register new mimetype: application/epp+xml</t>
+<t>The new <tt>application/epp+json</tt> MIME media type is used in this document, the registration template is included in Appendix A.</t>
 </section>
 
 <section anchor="internationalization-considerations"><name>Internationalization Considerations</name>
@@ -891,6 +891,29 @@ S:</epp>
 </reference>
 </references>
 </references>
+
+<section anchor="appendix-a-media-type-registration-application-epp-json"><name>Appendix A.  Media Type Registration: application/epp+json</name>
+<t>MIME media type name: application</t>
+<t>MIME subtype name: epp+json</t>
+<t>Required parameters: none</t>
+<t>Optional parameters: Same as the charset parameter of application/json
+   as specified in <xref target="RFC8259"></xref>.</t>
+<t>Encoding considerations: Same as the encoding considerations of
+   application/xml as specified in <xref target="RFC8259"></xref>.</t>
+<t>Security considerations: This type has all of the security
+   considerations described in <xref target="RFC8259"></xref> plus the considerations
+   specified in the Security Considerations section of this document.</t>
+<t>Published specification: This document.</t>
+<t>Applications that use this media type: RESTful EPP client and server implementations.</t>
+<t>Additional information: None</t>
+<t>Magic number(s): None.</t>
+<t>File extension(s): .json</t>
+<t>Macintosh file type code(s): &quot;TEXT&quot;</t>
+<t>Person &amp; email address for further information: See the &quot;Author's
+   Address&quot; section of this document.</t>
+<t>Intended usage: COMMON</t>
+<t>Author/Change controller: IETF</t>
+</section>
 
 </back>
 

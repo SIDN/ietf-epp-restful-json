@@ -64,7 +64,7 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Conventions Used in This Document . . . . . . . . . . . . . .   3
    4.  Conversion Rules  . . . . . . . . . . . . . . . . . . . . . .   3
-     4.1.  Empty . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     4.1.  Empty . . . . . . . . . . . . . . . . . . . . . . . . . .   4
      4.2.  Pure text content . . . . . . . . . . . . . . . . . . . .   4
      4.3.  Attributes only . . . . . . . . . . . . . . . . . . . . .   4
      4.4.  Pure text content and attributes  . . . . . . . . . . . .   5
@@ -95,7 +95,9 @@ Table of Contents
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
      10.2.  Informative References . . . . . . . . . . . . . . . . .  24
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
+   Appendix A.  Appendix A.  Media Type Registration: application/
+           epp+json  . . . . . . . . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
 
 1.  Introduction
 
@@ -103,9 +105,7 @@ Table of Contents
    based protocol.  The schemas for validating EPP XML messages are
    published as part of the EPP RFCs.
 
-   RESTful EPP (REPP), however has suport for multiple data formats such
-   as the JavaScript Object Notation (JSON) Data Interchange Format
-   [RFC8259].
+
 
 
 
@@ -113,6 +113,10 @@ Wullink & Davids          Expires 18 July 2024                  [Page 2]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
+
+   RESTful EPP (REPP), however has suport for multiple data formats such
+   as the JavaScript Object Notation (JSON) Data Interchange Format
+   [RFC8259].
 
    This document describes the rules for converting a valid EPP XML
    message to JSON message, which can be used with REPP.
@@ -158,10 +162,6 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    6.  Child elements with identical names
    7.  Child element(s) and contiguous text
 
-4.1.  Empty
-
-   An empty XML element MUST be mapped to to a key matching the name of
-   the element and a null value.
 
 
 
@@ -169,6 +169,11 @@ Wullink & Davids          Expires 18 July 2024                  [Page 3]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
+
+4.1.  Empty
+
+   An empty XML element MUST be mapped to to a key matching the name of
+   the element and a null value.
 
    XML:
 
@@ -208,12 +213,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    JSON:
 
-   {
-       "msgQ": {
-           "@count": "5",
-           "@id": "12345"
-       }
-   }
+
 
 
 
@@ -225,6 +225,13 @@ Wullink & Davids          Expires 18 July 2024                  [Page 4]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
+
+   {
+       "msgQ": {
+           "@count": "5",
+           "@id": "12345"
+       }
+   }
 
 4.4.  Pure text content and attributes
 
@@ -262,13 +269,6 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    JSON:
 
-   {
-       "trID": {
-           "clTRID": "ABC-12345",
-           "svTRID": "54321-XYZ"
-       }
-   }
-
 
 
 
@@ -281,6 +281,13 @@ Wullink & Davids          Expires 18 July 2024                  [Page 5]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
+
+   {
+       "trID": {
+           "clTRID": "ABC-12345",
+           "svTRID": "54321-XYZ"
+       }
+   }
 
 4.6.  Child elements with identical names
 
@@ -323,13 +330,6 @@ Internet-Draft          RESTful Transport for EPP           January 2024
        <bal>5</bal>
    </msg>
 
-   JSON:
-
-
-
-
-
-
 
 
 
@@ -337,6 +337,8 @@ Wullink & Davids          Expires 18 July 2024                  [Page 6]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
+
+   JSON:
 
    {
        "msg": {
@@ -381,8 +383,6 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    The Hello request message does not exist in the context of REPP.
 
    Example XML response:
-
-
 
 
 
@@ -1257,7 +1257,8 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 6.  IANA Considerations
 
-   TODO: register new mimetype: application/epp+xml
+   The new application/epp+json MIME media type is used in this
+   document, the registration template is included in Appendix A.
 
 7.  Internationalization Considerations
 
@@ -1279,7 +1280,6 @@ Internet-Draft          RESTful Transport for EPP           January 2024
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
 
 
 
@@ -1319,6 +1319,51 @@ Internet-Draft          RESTful Transport for EPP           January 2024
               <https://www.xml.com/pub/a/2006/05/31/converting-between-
               xml-and-json.html>.
 
+Appendix A.  Appendix A.  Media Type Registration: application/epp+json
+
+   MIME media type name: application
+
+   MIME subtype name: epp+json
+
+   Required parameters: none
+
+   Optional parameters: Same as the charset parameter of application/
+   json as specified in [RFC8259].
+
+   Encoding considerations: Same as the encoding considerations of
+   application/xml as specified in [RFC8259].
+
+   Security considerations: This type has all of the security
+   considerations described in [RFC8259] plus the considerations
+   specified in the Security Considerations section of this document.
+
+   Published specification: This document.
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 24]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
+
+   Applications that use this media type: RESTful EPP client and server
+   implementations.
+
+   Additional information: None
+
+   Magic number(s): None.
+
+   File extension(s): .json
+
+   Macintosh file type code(s): "TEXT"
+
+   Person & email address for further information: See the "Author's
+   Address" section of this document.
+
+   Intended usage: COMMON
+
+   Author/Change controller: IETF
+
 Authors' Addresses
 
    Maarten Wullink
@@ -1341,4 +1386,15 @@ Authors' Addresses
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 25]

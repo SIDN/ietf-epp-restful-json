@@ -900,7 +900,7 @@ S:</epp>
 
 # IANA Considerations
 
-TODO: register new mimetype: application/epp+xml
+The new `application/epp+json` MIME media type is used in this document, the registration template is included in Appendix A.
 
 # Internationalization Considerations
 
@@ -915,6 +915,43 @@ TODO
 TODO
 
 {backmatter}
+
+# Appendix A.  Media Type Registration: application/epp+json
+
+   MIME media type name: application
+
+   MIME subtype name: epp+json
+
+   Required parameters: none
+
+   Optional parameters: Same as the charset parameter of application/json
+   as specified in [@!RFC8259].
+
+   Encoding considerations: Same as the encoding considerations of
+   application/xml as specified in [@!RFC8259].
+
+   Security considerations: This type has all of the security
+   considerations described in [@!RFC8259] plus the considerations
+   specified in the Security Considerations section of this document.
+
+   Published specification: This document.
+
+   Applications that use this media type: RESTful EPP client and server implementations.
+   
+   Additional information: None
+
+   Magic number(s): None.
+
+   File extension(s): .json
+
+   Macintosh file type code(s): "TEXT"
+
+   Person & email address for further information: See the "Author's
+   Address" section of this document.
+
+   Intended usage: COMMON
+
+   Author/Change controller: IETF
 
 <reference anchor="XMLCOM-WEB" target="https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html">
   <front>
