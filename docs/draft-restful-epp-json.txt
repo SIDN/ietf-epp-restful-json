@@ -8,7 +8,7 @@ Intended status: Standards Track                               SIDN Labs
 Expires: 18 July 2024                                    15 January 2024
 
 
-                  XML to JSON mapping for RESTful EPP
+              XML to JSON conversion rules for RESTful EPP
                    draft-wullink-restful-epp-json-00
 
 Abstract
@@ -64,7 +64,7 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Conventions Used in This Document . . . . . . . . . . . . . .   3
    4.  Conversion Rules  . . . . . . . . . . . . . . . . . . . . . .   3
-     4.1.  Empty . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     4.1.  Empty . . . . . . . . . . . . . . . . . . . . . . . . . .   3
      4.2.  Pure text content . . . . . . . . . . . . . . . . . . . .   4
      4.3.  Attributes only . . . . . . . . . . . . . . . . . . . . .   4
      4.4.  Pure text content and attributes  . . . . . . . . . . . .   5
@@ -76,29 +76,26 @@ Table of Contents
      5.2.  Login . . . . . . . . . . . . . . . . . . . . . . . . . .   9
      5.3.  Logout  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      5.4.  Check . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-       5.4.1.  Info  . . . . . . . . . . . . . . . . . . . . . . . .  10
-       5.4.2.  Poll  . . . . . . . . . . . . . . . . . . . . . . . .  12
-         5.4.2.1.  Poll Request  . . . . . . . . . . . . . . . . . .  12
-         5.4.2.2.  Poll Ack  . . . . . . . . . . . . . . . . . . . .  13
-       5.4.3.  Transfer Query  . . . . . . . . . . . . . . . . . . .  14
-     5.5.  Transform Resources . . . . . . . . . . . . . . . . . . .  16
-       5.5.1.  Create  . . . . . . . . . . . . . . . . . . . . . . .  16
-       5.5.2.  Delete  . . . . . . . . . . . . . . . . . . . . . . .  18
-       5.5.3.  Renew . . . . . . . . . . . . . . . . . . . . . . . .  19
-       5.5.4.  Transfer  . . . . . . . . . . . . . . . . . . . . . .  20
-         5.5.4.1.  Request . . . . . . . . . . . . . . . . . . . . .  21
-         5.5.4.2.  Cancel  . . . . . . . . . . . . . . . . . . . . .  22
-         5.5.4.3.  Reject  . . . . . . . . . . . . . . . . . . . . .  23
-         5.5.4.4.  Approve . . . . . . . . . . . . . . . . . . . . .  24
-       5.5.5.  Update  . . . . . . . . . . . . . . . . . . . . . . .  25
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
-   7.  Internationalization Considerations . . . . . . . . . . . . .  27
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  27
-   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  27
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  27
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  27
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  27
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
+     5.5.  Info  . . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     5.6.  Poll  . . . . . . . . . . . . . . . . . . . . . . . . . .  12
+     5.7.  Poll Ack  . . . . . . . . . . . . . . . . . . . . . . . .  13
+     5.8.  Transfer Query  . . . . . . . . . . . . . . . . . . . . .  14
+     5.9.  Create  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     5.10. Delete  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     5.11. Renew . . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     5.12. Transfer Request  . . . . . . . . . . . . . . . . . . . .  19
+     5.13. Transfer Cancel . . . . . . . . . . . . . . . . . . . . .  20
+     5.14. Transfer Reject . . . . . . . . . . . . . . . . . . . . .  21
+     5.15. Transfer Approve  . . . . . . . . . . . . . . . . . . . .  22
+     5.16. Update  . . . . . . . . . . . . . . . . . . . . . . . . .  22
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
+   7.  Internationalization Considerations . . . . . . . . . . . . .  23
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
+   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  23
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
 
 1.  Introduction
 
@@ -106,6 +103,9 @@ Table of Contents
    based protocol.  The schemas for validating EPP XML messages are
    published as part of the EPP RFCs.
 
+   RESTful EPP (REPP), however has suport for multiple data formats such
+   as the JavaScript Object Notation (JSON) Data Interchange Format
+   [RFC8259].
 
 
 
@@ -113,10 +113,6 @@ Wullink & Davids          Expires 18 July 2024                  [Page 2]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
-
-   RESTful EPP (REPP), however has suport for multiple data formats such
-   as the JavaScript Object Notation (JSON) Data Interchange Format
-   [RFC8259].
 
    This document describes the rules for converting a valid EPP XML
    message to JSON message, which can be used with REPP.
@@ -146,11 +142,9 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    The examples in this document assume that request and response
    messages are properly formatted JSON documents.
 
-   In examples, lines starting with "C:" represent data sent by a REPP
-   client and lines starting with "S:" represent data returned by a REPP
-   server.  Indentation and white space in examples are provided only to
-   illustrate element relationships and are not REQUIRED features of the
-   protocol.
+   Indentation and white space in examples are provided only to
+   illustrate element relationships and for improving readability, and
+   are not REQUIRED features of the protocol.
 
 4.  Conversion Rules
 
@@ -162,6 +156,12 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    4.  Pure text content and attributes
    5.  Child elements with different names
    6.  Child elements with identical names
+   7.  Child element(s) and contiguous text
+
+4.1.  Empty
+
+   An empty XML element MUST be mapped to to a key matching the name of
+   the element and a null value.
 
 
 
@@ -169,13 +169,6 @@ Wullink & Davids          Expires 18 July 2024                  [Page 3]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
-
-   7.  Child element(s) and contiguous text
-
-4.1.  Empty
-
-   An empty XML element MUST be mapped to to a key matching the name of
-   the element and a null value.
 
    XML:
 
@@ -215,6 +208,13 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    JSON:
 
+   {
+       "msgQ": {
+           "@count": "5",
+           "@id": "12345"
+       }
+   }
+
 
 
 
@@ -225,13 +225,6 @@ Wullink & Davids          Expires 18 July 2024                  [Page 4]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
-
-   {
-       "msgQ": {
-           "@count": "5",
-           "@id": "12345"
-       }
-   }
 
 4.4.  Pure text content and attributes
 
@@ -269,6 +262,13 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    JSON:
 
+   {
+       "trID": {
+           "clTRID": "ABC-12345",
+           "svTRID": "54321-XYZ"
+       }
+   }
+
 
 
 
@@ -281,13 +281,6 @@ Wullink & Davids          Expires 18 July 2024                  [Page 5]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
-
-   {
-       "trID": {
-           "clTRID": "ABC-12345",
-           "svTRID": "54321-XYZ"
-       }
-   }
 
 4.6.  Child elements with identical names
 
@@ -330,6 +323,13 @@ Internet-Draft          RESTful Transport for EPP           January 2024
        <bal>5</bal>
    </msg>
 
+   JSON:
+
+
+
+
+
+
 
 
 
@@ -337,8 +337,6 @@ Wullink & Davids          Expires 18 July 2024                  [Page 6]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
-
-   JSON:
 
    {
        "msg": {
@@ -383,6 +381,8 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    The Hello request message does not exist in the context of REPP.
 
    Example XML response:
+
+
 
 
 
@@ -487,16 +487,16 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 5.2.  Login
 
-   The Login command is not used anynmore for REPP.
+   The Login request and response message are not used for REPP.
 
 5.3.  Logout
 
-   The Logout command is not used anynmore for REPP.
+   The Logout request and response message are not used for REPP.
 
 5.4.  Check
 
-   The Check request and responses messages are not used anynmore for
-   REPP.
+   The Check request and responses messages are not used for REPP.
+
 
 
 
@@ -506,9 +506,9 @@ Wullink & Davids          Expires 18 July 2024                  [Page 9]
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-5.4.1.  Info
+5.5.  Info
 
-   The Info request message is not used anynmore for REPP.
+   The Info request message is not used for REPP.
 
    Example XML response:
 
@@ -627,34 +627,34 @@ Internet-Draft          RESTful Transport for EPP           January 2024
        }
    }
 
-5.4.2.  Poll
+5.6.  Poll
 
-5.4.2.1.  Poll Request
+   The Poll request message is not used for REPP.
 
-   -  Request: GET /messages
-   -  Request message: None
-   -  Response message: Poll response
+   Example XML response:
 
-   The client MUST use the HTTP GET method on the messages resource
-   collection to request the message at the head of the queue.  The
-   "op=req" semantics from Section 2.9.2.3 are assigned to the HTTP GET
-   method.
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1301">
+               <msg>Command completed successfully; ack to dequeue</msg>
+           </result>
+           <msgQ count="4" id="12346">
+               <qDate>2000-06-08T22:10:00.0Z</qDate>
+               <msg lang="en">Credit balance low.
+                   <limit>100</limit>
+                   <bal>5</bal>
+               </msg>
+           </msgQ>
+           <trID>
+               <clTRID>ABC-12346</clTRID>
+               <svTRID>54321-XYZ</svTRID>
+           </trID>
+       </response>
+   </epp>
 
-   Example request:
-
-   C: GET /repp/v1/messages HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
-
-   Example response:
-
-
-
-
-
+   Example JSON response:
 
 
 
@@ -674,53 +674,53 @@ Wullink & Davids          Expires 18 July 2024                 [Page 12]
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Length: 312
-   S: Content-Type: application/epp+xml
-   S: Content-Language: en
-   S: REPP-Eppcode: 1301
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1301">
-   S:      <msg>Command completed successfully; ack to dequeue</msg>
-   S:    </result>
-   S:    <msgQ count="5" id="12345">
-   S:      <qDate>2000-06-08T22:00:00.0Z</qDate>
-   S:      <msg>Transfer requested.</msg>
-   S:    </msgQ>
-   S:    <resData>
-   S:       <!-- The rest of the response is omitted here -->
-   S:    </resData>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1301",
+                   "msg": "Command completed successfully; ack to dequeue"
+               },
+               "msgQ": {
+                   "@count": "4",
+                   "@id": "12346",
+                   "qDate": "2024-01-15T22:10:00.0Z",
+                   "msg": {
+                       "@lang": "en",
+                       "limit": "100",
+                       "bal": "5",
+                       "#text": "Credit balance low."
+                   }
+               },
+               "trID": {
+                   "clTRID": "ABC-12346",
+                   "svTRID": "54321-XYZ"
+               }
+           }
+       }
+   }
 
-5.4.2.2.  Poll Ack
+5.7.  Poll Ack
 
-   -  Request: DELETE /messages/{id}
-   -  Request message: None
-   -  Response message: Poll Ack response
+   The Poll Ack request message is not used for REPP.
 
-   The client MUST use the HTTP DELETE method to acknowledge receipt of
-   a message from the queue.  The "op=ack" semantics from
-   Section 2.9.2.3 are assigned to the HTTP DELETE method.  The "msgID"
-   attribute of a received EPP Poll message MUST be included in the
-   message resource URL, using the {id} path element.  The server MUST
-   use REPP headers to return the EPP result code and the number of
-   messages left in the queue.  The server MUST NOT add content to the
-   HTTP message body of a successfull response, the server may add
-   content to the message body of an error response.
+   Example XML response:
 
-   Example request:
-
-
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1000">
+               <msg>Command completed successfully</msg>
+           </result>
+           <msgQ count="0" id="12345"/>
+           <trID>
+               <clTRID>ABC-12345</clTRID>
+               <svTRID>XYZ-12345</svTRID>
+           </trID>
+       </response>
+   </epp>
 
 
 
@@ -730,104 +730,31 @@ Wullink & Davids          Expires 18 July 2024                 [Page 13]
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   C: DELETE /repp/v1/messages/12345 HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
+   Example JSON response:
 
-   Example response:
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1000",
+                   "msg": "Command completed successfully"
+               },
+               "msgQ": {
+                   "@count": "0",
+                   "@id": "12345"
+               },
+               "trID": {
+                   "clTRID": "ABC-12345",
+                   "svTRID": "XYZ-12345"
+               }
+           }
+       }
+   }
 
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Language: en
-   S: REPP-Eppcode: 1000
-   S: REPP-Queue-Size: 0
-   S: REPP-Svtrid: XYZ-12345
-   S: REPP-Cltrid: ABC-12345
-   S: Content-Length: 145
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <msgQ count="0" id="12345"/>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+5.8.  Transfer Query
 
-5.4.3.  Transfer Query
-
-   The Transfer Query request MUST use the special "latest" sub-resource
-   to refer to the latest object transfer.  A latest transfer object may
-   not exist, when no transfer has been initiated for the specified
-   object.  The client MUST use the HTTP GET method and MUST NOT add
-   content to the HTTP message body.
-
-   -  Request: GET {collection}/{id}/transfers/latest
-   -  Request message: None
-   -  Response message: Transfer Query response
-
-   Example domain name Transfer Query request without authorization
-   information required:
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 14]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
-
-   C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
-   C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-
-   If the requested object has associated authorization information that
-   is not linked to another database object, then the HTTP GET method
-   MUST be used and the authorization information MUST be included using
-   the REPP-AuthInfo header.
-
-   Example domain name Transfer Query request using REPP-AuthInfo
-   header:
-
-   C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
-   C: REPP-AuthInfo: secret-token
-   C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-
-   If the requested object has associated authorization information
-   linked to another database object, then the HTTP GET method MUST be
-   used and both the REPP-AuthInfo and the REPP-Roid header MUST be
-   included.
-
-   Example domain name Transfer Query request and authorization using
-   REPP-AuthInfo and the REPP-Roid header:
-
-   C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-AuthInfo: secret-token
-   C: REPP-Roid: REG-XYZ-12345
-   C: Content-Length: 0
-   C:
+   The Transfer Query request message is not used for REPP.
 
    Example Transfer Query response:
 
@@ -837,7 +764,24 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 15]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 14]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -866,19 +810,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    S:  </response>
    S:</epp>
 
-5.5.  Transform Resources
-
-5.5.1.  Create
-
-   -  Request: POST /{collection}
-   -  Request message: Object Create request
-   -  Response message: Object Create response
-
-   The client MUST use the HTTP POST method to create a new object
-   resource.  If the EPP request results in a newly created object, then
-   the server MUST return HTTP status code 200 (OK).  The server MUST
-   add the "Location" header to the response, the value of this header
-   MUST be the URL for the newly created resource.
+5.9.  Create
 
    Example Domain Create request:
 
@@ -893,7 +825,19 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 16]
+
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 15]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -949,7 +893,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 17]
+Wullink & Davids          Expires 18 July 2024                 [Page 16]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -982,30 +926,30 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    S:   </response>
    S:</epp>
 
-5.5.2.  Delete
+5.10.  Delete
 
-   -  Request: DELETE /{collection}/{id}
-   -  Request message: None
-   -  Response message: Status
-
-   The client MUST the HTTP DELETE method and a resource identifying a
-   unique object instance.  The server MUST return HTTP status code 200
-   (OK) if the resource was deleted successfully.
-
-   Example Domain Delete request:
-
-   C: DELETE /repp/v1/domains/example.nl HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
+   The Delete request message is not used for REPP.
 
    Example Domain Delete response:
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 18]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 17]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -1031,52 +975,40 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    S:  </response>
    S:</epp>
 
-5.5.3.  Renew
+5.11.  Renew
 
-   -  Request: POST /{collection}/{id}/renewals
-   -  Request message: object Renew request
-   -  Response message: object Renew response
+   The Renew request message is not used for REPP.
 
-   The Renew command is mapped to a nested collection, named "renewals".
-   Not all EPP object types include support for the renew command.  The
-   current-date query parameter MAY be used for date on which the
-   current validity period ends, as described in Section 3.2.3 of
-   [RFC5731].  The new period MAY be added to the request using the unit
-   and value request parameters.  The reponse MUST include the Location
-   header for the renewed object.
-
-   Example Domain Renew request:
-
-C: POST /repp/v1/domains/example.nl/renewals?current-date=2024-01-01 HTTP/2
-C: Host: repp.example.nl
-C: Authorization: Bearer <token>
-C: Accept: application/epp+xml
-C: Content-Type: application/epp+xml
-C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-C: Accept-Language: en
-C: Content-Length: 0
-C:
-
-   Example Domain Renew request, using 1 year period:
+   Example Renew response:
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 19]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 18]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
-
-C: POST /repp/v1/domains/example.nl/renewals?current-date=2024-01-01?unit=y&value=1 HTTP/2
-C: Host: repp.example.nl
-C: Authorization: Bearer <token>
-C: Accept: application/epp+xml
-C: Content-Type: application/epp+xml
-C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-C: Accept-Language: en
-C: Content-Length: 0
-C:
-
-   Example Renew response:
 
    S: HTTP/2 200 OK
    S: Date: Fri, 17 Nov 2023 12:00:00 UTC
@@ -1103,91 +1035,36 @@ C:
    S:  </response>
    S:</epp>
 
-5.5.4.  Transfer
+5.12.  Transfer Request
 
-   Transferring an object from one sponsoring client to another client
-   is specified in [RFC5731] and [RFC5733].  The Transfer command is
-   mapped to a nested resource, named "transfers".  The semantics of the
-   HTTP DELETE method are determined by the role of the client executing
-   the DELETE method.  For the current sponsoring client of the object,
-   the DELETE method is defined as "reject transfer".  For the new
-   sponsoring client the DELETE method is defined as "cancel transfer".
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 20]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
-
-5.5.4.1.  Request
-
-   -  Request: POST /{collection}/{id}/transfers
-   -  Request message: None
-   -  Response message: Status
-
-   To start a new object transfer process, the client MUST use the HTTP
-   POST method for a unique resource to create a new transfer resource
-   object, not all EPP objects support the Transfer command as described
-   in Section 3.2.4 of [RFC5730], Section 3.2.4 of [RFC5731] and
-   Section 3.2.4 of [RFC5733].
-
-   If the transfer request is successful, then the reponse MUST include
-   the Location header for the object being transferred.
-
-   Example request not using object authorization:
-
-   C: POST /repp/v1/domains/example.nl/transfers HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
-   C: Content-Length: 0
-
-   Example request using object authorization:
-
-   C: POST /repp/v1/domains/example.nl/transfers HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-   C: REPP-Cltrid: ABC-12345
-   C: REPP-AuthInfo: secret-token
-   C: Accept-Language: en
-   C: Content-Length: 0
-
-   Example request using 1 year renewal period, using the unit and value
-   query parameters:
-
-
-
-
-
-
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 21]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
-
-   C: POST /repp/v1/domains/example.nl/transfers?unit=y&value=1 HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
-   C: Content-Length: 0
+   The Transfer request message is not used for REPP.
 
    Example Transfer response:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 19]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
 
    S: HTTP/2 200 OK
    S: Date: Fri, 17 Nov 2023 12:00:00 UTC
@@ -1214,34 +1091,36 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    S:  </response>
    S:</epp>
 
-5.5.4.2.  Cancel
+5.13.  Transfer Cancel
 
-   -  Request: DELETE /{collection}/{id}/transfers/latest
-   -  Request message: None
-   -  Response message: Status
+   The Transfer Cancel request message is not used for REPP.
 
-   The new sponsoring client MUST use the HTTP DELETE method to cancel a
-   requested transfer.  The semantics of the HTTP DELETE method are
-   determined by the role of the client sending the request.
-
-   Example request:
+   Example response:
 
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 22]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 20]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
-
-   C: DELETE /repp/v1/domains/example.nl/transfers/latest HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
-
-   Example response:
 
    S: HTTP/2 200 OK
    S: Date: Fri, 17 Nov 2023 12:00:00 UTC
@@ -1264,31 +1143,9 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    S:  </response>
    S:</epp>
 
-5.5.4.3.  Reject
+5.14.  Transfer Reject
 
-   -  Request: DELETE /{collection}/{id}/transfers/latest
-   -  Request message: None
-   -  Response message: Status
-
-   The semantics of the HTTP DELETE method are determined by the role of
-   the client sending the request.  For the current sponsoring client of
-   the object, the DELETE method is defined as "reject transfer".
-
-   Example request:
-
-   C: DELETE /repp/v1/domains/example.nl/transfers/latest HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 23]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
+   The Transfer Reject request message is not used for REPP.
 
    Example Reject response:
 
@@ -1313,38 +1170,19 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    S:  </response>
    S:</epp>
 
-5.5.4.4.  Approve
-
-   -  Request: PUT /{collection}/{id}/transfers/latest
-   -  Request message: None
-   -  Response message: Status
-
-   The current sponsoring client MUST use the HTTP PUT method to approve
-   a transfer requested by the new sponsoring client.
-
-   Example Approve request:
-
-   C: PUT /repp/v1/domains/example.nl/transfers/latest HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Cltrid: ABC-12345
-   C: Content-Length: 0
-
-   Example Approve response:
 
 
 
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 24]
+Wullink & Davids          Expires 18 July 2024                 [Page 21]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
+
+5.15.  Transfer Approve
+
+   The Transfer Approve request message is not used for REPP.
+
+   Example Approve response:
 
    S: HTTP/2 200 OK
    S: Date: Fri, 17 Nov 2023 12:00:00 UTC
@@ -1367,50 +1205,10 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    S:  </response>
    S:</epp>
 
-5.5.5.  Update
-
-   -  Request: PATCH /{collection}/{id}
-   -  Request message: Object Update message
-   -  Response message: Status
-
-   An object Update request MUST be performed using the HTTP PATCH
-   method.  The request message body MUST contain an EPP Update request,
-   and the object-id value in the request MUST match the value of the
-   object-id path parameter in the URL.
+5.16.  Update
 
    Example request:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 25]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
-
-   C: PATCH /repp/v1/domains/example.nl HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Content-Type: application/epp+xml
-   C: Accept-Language: en
-   C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-   C: Content-Length: 252
-   C:
    C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
    C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
    C:  <command>
@@ -1427,6 +1225,15 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    Example response:
 
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 22]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
+
    S: HTTP/2 200 OK
    S: Date: Fri, 17 Nov 2023 12:00:00 UTC
    S: Server: Example REPP server v1.0
@@ -1448,19 +1255,9 @@ Internet-Draft          RESTful Transport for EPP           January 2024
    S:  </response>
    S:</epp>
 
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 26]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
-
 6.  IANA Considerations
 
-   TODO
+   TODO: register new mimetype: application/epp+xml
 
 7.  Internationalization Considerations
 
@@ -1482,6 +1279,16 @@ Internet-Draft          RESTful Transport for EPP           January 2024
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
+
+
+
+
+
+
+Wullink & Davids          Expires 18 July 2024                 [Page 23]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
 
    [RFC5730]  Hollenbeck, S., "Extensible Provisioning Protocol (EPP)",
               STD 69, RFC 5730, DOI 10.17487/RFC5730, August 2009,
@@ -1506,13 +1313,6 @@ Internet-Draft          RESTful Transport for EPP           January 2024
               <https://www.rfc-editor.org/info/rfc8259>.
 
 10.2.  Informative References
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 27]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
 
    [XMLCOM-WEB]
               XML.com, "Converting Between XML and JSON", 2006,
@@ -1541,28 +1341,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 28]
+Wullink & Davids          Expires 18 July 2024                 [Page 24]
