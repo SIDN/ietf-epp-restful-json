@@ -37,31 +37,22 @@ organization = "SIDN Labs"
 
 .# Abstract
 
-This document describes how the JSON [@!RFC8259] data format is to be used for RESTful EPP (REPP), an Application Programming Interface (API) for the Extensible Provisioning Protocol [@!RFC5730].
+This document describes how an EPP [@!RFC5730] XML message can be translated to a JSON [@!RFC8259]   messages for use with RESTful EPP.
 
 {mainmatter}
 
 # Introduction
 
-This document ... TODO
+The Extensible Provisioning Protocol (EPP) [@!RFC5730] uses an XML based protocol.
+The schemas for validating EPP XML messages are published as part of the EPP RFCs.
 
-A good understanding of the EPP base protocol specification [@!RFC5730]
-is advised, to grasp the command mapping described in this
-document.
+RESTful EPP (REPP), however has suport for multiple data formats such as the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259].  
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in [@!RFC2119].
+This document describes the rules for converting a valid EPP XML message to JSON message, which can be used with REPP. 
 
 # Terminology
 
 In this document the following terminology is used.
-
-REST - Representational State Transfer ([@!REST]). An architectural
-style.
-
-RESTful - A RESTful web service is a web service or API implemented using
-HTTP and the principles of [@!REST].
 
 EPP RFCs - This is a reference to the EPP version 1.0
 specifications [@!RFC5730], [@!RFC5731], [@!RFC5732] and [@!RFC5733].
@@ -71,25 +62,16 @@ Stateful EPP - The definition according to [@!RFC5730, section 2].
 RESTful EPP or REPP - The RESTful transport for EPP described in
 this document.
 
-URL - A Uniform Resource Locator as defined in [@!RFC3986].
-
-Resource - A network data object or service that can be identified
-by a URL.
-
-Command Mapping - A mapping of [@!RFC5730] EPP commands to
-RESTful EPP URL resources.
-
-REPP client - An HTTP user agent performing an REPP request 
-
-REPP server - An HTTP server resposible for processing requests and returning
-results in any supported media type.
-
 
 # Conventions Used in This Document
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in [@!RFC2119].
+
 JSON is case sensitive. Unless stated otherwise, JSON specifications
 and examples provided in this document MUST be interpreted in the
-character case presented to develop a conforming implementation.
+character case presented.
 
 The examples in this document assume that request and response messages
 are properly formatted JSON documents.  
@@ -101,13 +83,186 @@ are provided only to illustrate element relationships and are not
 REQUIRED features of the protocol.
 
 
-# Design Considerations
+# Conversion Rules
 
-TODO
+In general a single XML element allows for the following forms
 
-# EPP Extension Framework
+1. Empty
+2. Pure text content
+3. Attributes only
+4. Pure text content and attributes
+5. Child elements with different names
+6. Child elements with identical names
+7. Child elements and contiguous text
 
-TODO
+## Empty
+
+An empty XML element MUST be mapped to to a key matching the name of the element and a null value.
+
+XML:
+```xml
+<hello/>
+```
+
+JSON:
+```json
+{
+    "hello": null
+}
+```
+
+##  Pure text content
+ 
+An XML element containing text only MUST be mapped to a key matching the name of the element and the text MUST be used for the value
+
+XML:
+```xml
+<lang>en</lang>
+```
+
+JSON:
+```json
+{
+    "lang": "en"
+}
+```
+
+## Attributes only
+ 
+An XML element containing one or more atributes only, MUST be mapped to a JSON object matching the name of the element. Each XML attribute, prefixed using the `@` character, MUST be added as a key-value pair to the object.
+
+XML:
+```xml
+<msgQ count="5" id="12345"/>
+```
+
+JSON:
+```json
+{
+    "msgQ": {
+        "@count": "5",
+        "@id": "12345"
+    }
+}
+```
+
+## Pure text content and attributes
+ 
+An XML element containing one or more atributes and text content only, MUST be mapped to a JSON object matching the name of the element. The text content MUST, prefixed using the string `#text`, MUST be added as a key-value pair to the object.
+
+XML:
+```xml
+<msg lang="en">Command completed successfully</msg>
+```
+
+JSON:
+```json
+{
+    "msg": {
+        "@lang": "en",
+        "#text": "Command completed successfully"
+    }
+}
+```
+
+## Child elements with different names
+ 
+An XML element containing one or more child elements, where each child uses an unique name, MUST be mapped to a JSON object matching the name of the element. Each child element MUST be added as a key-value pair to the parent object.
+
+XML:
+```xml
+<trID>
+    <clTRID>ABC-12345</clTRID>
+    <svTRID>54321-XYZ</svTRID>
+</trID>
+```
+
+JSON:
+```json
+{
+    "trID": {
+        "clTRID": "ABC-12345",
+        "svTRID": "54321-XYZ"
+    }
+}
+```
+
+## Child elements with identical names
+ 
+An XML element containing multiple child elements, where multiple child elements use the same name, MUST be mapped to a JSON object containing an array. The name of the array MUST match the name of the non-unique children, each child element MUST be converted to JSON and added to the array.
+
+XML:
+```xml
+<host>
+    <addr>192.0.2.1</addr>
+    <addr>192.0.2.2</addr>
+</host>
+```
+
+JSON:
+```json
+{
+    "host": {
+        "addr": [
+            "192.0.2.1",
+            "192.0.2.2"
+        ]
+    }
+}
+```
+
+## Child elements and contiguous text
+ 
+An XML element containing one or more child elements and contiguous text, MUST be mapped to a JSON object containing a key-value entry for each child element, the text value MUST result in a key named `#text`. 
+
+XML:
+```xml
+<msg lang="en">
+    Credit balance low.
+    <limit>100</limit>
+    <bal>5</bal>
+</msg>
+```
+
+JSON:
+```json
+{
+    "msg": {
+        "@lang": "en",
+        "limit": 100,
+        "bal": 5,
+        "#text": "Credit balance low."
+    }
+}
+```
+
+When child elements are mixed with multiple text segments, the resulting `#text` key-value entry MUST be an array, containing all text segments.
+
+XML:
+```xml
+<msg lang="en">
+    Credit balance low.
+    <limit>100</limit>
+    <bal>5</bal>
+    Please increase balance.
+</msg>
+```
+
+JSON:
+```json
+{
+    "msg": {
+        "@lang": "en",
+        "limit": 100,
+        "bal": 5,
+        "#text": ["Credit balance low.", "Please increase balance asap."]
+    }
+}
+```
+
+The rules above are based on the conversion approach found on [@?XMLCOM-WEB]
+
+
 
 # Examples
 
@@ -991,5 +1146,15 @@ TODO
       <organization>SIDN</organization>
     </author>
     <date year="2019"/>
+  </front>
+</reference>
+
+<reference anchor="XMLCOM-WEB" target="https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html">
+  <front>
+    <title>Converting Between XML and JSON</title>
+    <author>
+      <organization>XML.com</organization>
+    </author>
+    <date year="2006"/>
   </front>
 </reference>
