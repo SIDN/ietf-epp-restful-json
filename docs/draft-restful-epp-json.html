@@ -8,7 +8,7 @@
 <meta content="Maarten Wullink" name="author">
 <meta content="Marco Davids" name="author">
 <meta content="
-       This document describes how an EPP   XML message can be translated to a JSON     messages for use with RESTful EPP. 
+       This document describes the rules for converting an EPP   XML message to a JSON   message for use with RESTful EPP [REF-TO-REPP-HERE]. 
     " name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
 <meta content="draft-wullink-restful-epp-json-00" name="ietf.draft">
@@ -1244,7 +1244,7 @@ li > p:last-of-type:only-child {
 <h1 id="title">XML to JSON mapping for RESTful EPP</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes how an EPP <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> XML message can be translated to a JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>   messages for use with RESTful EPP.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document describes the rules for converting an EPP <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> XML message to a JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> message for use with RESTful EPP [REF-TO-REPP-HERE].<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1342,13 +1342,24 @@ li > p:last-of-type:only-child {
                 <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-logout" class="internal xref">Logout</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-query-resources" class="internal xref">Query Resources</a></p>
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-check" class="internal xref">Check</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.1">
-                    <p id="section-toc.1-1.5.2.4.2.1.1"><a href="#section-5.4.1" class="auto internal xref">5.4.1</a>.  <a href="#name-check" class="internal xref">Check</a></p>
+                    <p id="section-toc.1-1.5.2.4.2.1.1"><a href="#section-5.4.1" class="auto internal xref">5.4.1</a>.  <a href="#name-info" class="internal xref">Info</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.2">
-                    <p id="section-toc.1-1.5.2.4.2.2.1"><a href="#section-5.4.2" class="auto internal xref">5.4.2</a>.  <a href="#name-info" class="internal xref">Info</a></p>
+                    <p id="section-toc.1-1.5.2.4.2.2.1"><a href="#section-5.4.2" class="auto internal xref">5.4.2</a>.  <a href="#name-poll" class="internal xref">Poll</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.2.2.1">
+                        <p id="section-toc.1-1.5.2.4.2.2.2.1.1"><a href="#section-5.4.2.1" class="auto internal xref">5.4.2.1</a>.  <a href="#name-poll-request" class="internal xref">Poll Request</a></p>
+</li>
+                      <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.2.2.2">
+                        <p id="section-toc.1-1.5.2.4.2.2.2.2.1"><a href="#section-5.4.2.2" class="auto internal xref">5.4.2.2</a>.  <a href="#name-poll-ack" class="internal xref">Poll Ack</a></p>
+</li>
+                    </ul>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.3">
+                    <p id="section-toc.1-1.5.2.4.2.3.1"><a href="#section-5.4.3" class="auto internal xref">5.4.3</a>.  <a href="#name-transfer-query" class="internal xref">Transfer Query</a></p>
 </li>
                 </ul>
 </li>
@@ -1385,9 +1396,6 @@ li > p:last-of-type:only-child {
                     <p id="section-toc.1-1.5.2.5.2.5.1"><a href="#section-5.5.5" class="auto internal xref">5.5.5</a>.  <a href="#name-update" class="internal xref">Update</a></p>
 </li>
                 </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
-                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-extensions" class="internal xref">Extensions</a></p>
 </li>
             </ul>
 </li>
@@ -1484,7 +1492,7 @@ REQUIRED features of the protocol.<a href="#section-3-4" class="pilcrow">¶</a><
 </li>
         <li id="section-4-2.6">Child elements with identical names<a href="#section-4-2.6" class="pilcrow">¶</a>
 </li>
-        <li id="section-4-2.7">Child elements and contiguous text<a href="#section-4-2.7" class="pilcrow">¶</a>
+        <li id="section-4-2.7">Child element(s) and contiguous text<a href="#section-4-2.7" class="pilcrow">¶</a>
 </li>
       </ol>
 <div id="empty">
@@ -1703,57 +1711,93 @@ REQUIRED features of the protocol.<a href="#section-3-4" class="pilcrow">¶</a><
       <h2 id="name-examples">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
       </h2>
-<p id="section-5-1">TODO: replace XML with JSON<a href="#section-5-1" class="pilcrow">¶</a></p>
 <div id="hello">
 <section id="section-5.1">
         <h3 id="name-hello">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-hello" class="section-name selfRef">Hello</a>
         </h3>
-<ul class="compact">
-<li class="compact" id="section-5.1-1.1">Request: OPTIONS /{context-root}/{version}<a href="#section-5.1-1.1" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.1-1.2">Request payload: No<a href="#section-5.1-1.2" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.1-1.3">Response payload: Greeting response<a href="#section-5.1-1.3" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.1-1.4">HTTP status code success: 200 (OK)<a href="#section-5.1-1.4" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-5.1-2">The server MUST return a Greeting response, as defined in <span><a href="https://rfc-editor.org/rfc/rfc5730#section-2.4" class="relref">Section 2.4</a> of [<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> in response
-to request using the HTTP OPTIONS method on the root "/" resource.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">The EPP version used in the Hello response MUST match the version value used for the <code>{version}</code> path segment of the URL used for the Hello request.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">Example Hello request:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.1-5">
-<pre>C: OPTIONS /repp/v1/ HTTP/2
-C: Host: repp.example.nl
-C: Authorization: Bearer &lt;token&gt;
-C: Accept: application/epp+xml
-C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
-C: Connection: keep-alive
+<p id="section-5.1-1">The Hello request message does not exist in the context of REPP.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">Example XML response:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.1-3">
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;greeting&gt;
+        &lt;svID&gt;Example EPP server epp.example.com&lt;/svID&gt;
+        &lt;svDate&gt;2000-06-08T22:00:00.0Z&lt;/svDate&gt;
+        &lt;svcMenu&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;lang&gt;en&lt;/lang&gt;
+            &lt;lang&gt;fr&lt;/lang&gt;
+            &lt;objURI&gt;urn:ietf:params:xml:ns:obj1&lt;/objURI&gt;
+            &lt;objURI&gt;urn:ietf:params:xml:ns:obj2&lt;/objURI&gt;
+            &lt;objURI&gt;urn:ietf:params:xml:ns:obj3&lt;/objURI&gt;
+            &lt;svcExtension&gt;
+                &lt;extURI&gt;http://custom/obj1ext-1.0&lt;/extURI&gt;
+            &lt;/svcExtension&gt;
+        &lt;/svcMenu&gt;
+        &lt;dcp&gt;
+            &lt;access&gt;
+                &lt;all/&gt;
+            &lt;/access&gt;
+            &lt;statement&gt;
+                &lt;purpose&gt;
+                    &lt;admin/&gt;
+                    &lt;prov/&gt;
+                &lt;/purpose&gt;
+                &lt;recipient&gt;
+                    &lt;ours/&gt;
+                    &lt;public/&gt;
+                &lt;/recipient&gt;
+                &lt;retention&gt;
+                    &lt;stated/&gt;
+                &lt;/retention&gt;
+            &lt;/statement&gt;
+        &lt;/dcp&gt;
+    &lt;/greeting&gt;
+&lt;/epp&gt;
 
-
-</pre><a href="#section-5.1-5" class="pilcrow">¶</a>
+</pre><a href="#section-5.1-3" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-6">Example Hello response:<a href="#section-5.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.1-7">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
-S: Content-Length: 799
-S: Content-Type: application/epp+xml
-S:
-S: &lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S: &lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:   &lt;greeting&gt;
-S:      &lt;svcMenu&gt;
-S:         &lt;version&gt;1.0&lt;/version&gt;
-S:         &lt;!-- The rest of the response is omitted here --&gt;
-S:      &lt;svcMenu&gt;
-S:   &lt;/greeting&gt;
-S: &lt;/epp&gt;
+<p id="section-5.1-4">Example JSON response:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1-5">XML namespaces are not converted to JSON and are ignored.<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.1-6">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "greeting": {
+            "svID": "Example REPP server v1.0",
+            "svDate": "2000-06-08T22:00:00.0Z",
+            "svcMenu": {
+                "version": "1.0",
+                "lang": [
+                    "en",
+                    "fr"
+                ]
+            },
+            "dcp": {
+                "access": {
+                    "all": null
+                },
+                "statement": {
+                    "purpose": {
+                        "admin": null,
+                        "prov": null
+                    },
+                    "recipient": {
+                        "ours": null,
+                        "public": null
+                    },
+                    "retention": {
+                        "stated": null
+                    }
+                }
+            }
+        }
+    }
+}
 
-</pre><a href="#section-5.1-7" class="pilcrow">¶</a>
+</pre><a href="#section-5.1-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1762,30 +1806,7 @@ S: &lt;/epp&gt;
         <h3 id="name-login">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-login" class="section-name selfRef">Login</a>
         </h3>
-<p id="section-5.2-1">The Login command defined in <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> is used to configure a session and is part of the stateful nature of the EPP protocol. The REPP server is stateless and MUST not maintain any client state and MUST NOT support the Login command. The client MUST include all the information in a REPP request that is required for the server to be able to properly process the request. This includes the request attributes that are part of the Login command defined in <span><a href="https://rfc-editor.org/rfc/rfc5730#section-2.9.1.1" class="relref">Section 2.9.1.1</a> of [<a href="#RFC5730" class="cite xref">RFC5730</a>]</span>.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">
-The request attributes from the <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> Login command are are moved to the HTTP layer.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<ul class="compact">
-<li class="compact" id="section-5.2-3.1">
-            <code>clID</code>: Replaced by HTTP authentication<a href="#section-5.2-3.1" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.2-3.2">
-            <code>pw:</code>: Replaced by HTTP authentication<a href="#section-5.2-3.2" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.2-3.3">
-            <code>newPW</code>: Replaced by out of band process<a href="#section-5.2-3.3" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.2-3.4">
-            <code>version</code>: Replaced by the <code>{version}</code> path segment in the request URL.<a href="#section-5.2-3.4" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.2-3.5">
-            <code>lang</code>: Replaced by the <code>Accept-Language</code> HTTP header.<a href="#section-5.2-3.5" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.2-3.6">
-            <code>svcs</code>: Replaced by the <code>REPP-svcs</code> HTTP header.<a href="#section-5.2-3.6" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-5.2-4">The server MUST check the namespaces used in the REPP-svcs HTTP header. An unsupported namespace MUST result in the appropriate EPP result code.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">The Login command is not used anynmore for REPP.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="logout">
@@ -1793,155 +1814,171 @@ The request attributes from the <span>[<a href="#RFC5730" class="cite xref">RFC5
         <h3 id="name-logout">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-logout" class="section-name selfRef">Logout</a>
         </h3>
-<p id="section-5.3-1">Due to the stateless nature of REPP, the session concept no longer exists and therefore the Logout command MUST not be implemented by the server.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-1">The Logout command is not used anynmore for REPP.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="query-resources">
-<section id="section-5.4">
-        <h3 id="name-query-resources">
-<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-query-resources" class="section-name selfRef">Query Resources</a>
-        </h3>
-<p id="section-5.4-1">
-Sending content using an HTTP GET request is discouraged in <span>[<a href="#RFC9110" class="cite xref">RFC9110</a>]</span>, there exists no generally defined semanticsfor content received in a GET request.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.4-2">A REPP client MAY use the HTTP GET method for executing a query command only when no request data has to be added to the HTTP message body. When an EPP object requires additional authInfo information, as described in <span>[<a href="#RFC5731" class="cite xref">RFC5731</a>]</span> and <span>[<a href="#RFC5733" class="cite xref">RFC5733</a>]</span>, the client MUST use the HTTP POST method and add the query command content to the HTTP message body.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
 <div id="check">
+<section id="section-5.4">
+        <h3 id="name-check">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-check" class="section-name selfRef">Check</a>
+        </h3>
+<p id="section-5.4-1">The Check request and responses messages are not used anynmore for REPP.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<div id="info">
 <section id="section-5.4.1">
-          <h4 id="name-check">
-<a href="#section-5.4.1" class="section-number selfRef">5.4.1. </a><a href="#name-check" class="section-name selfRef">Check</a>
+          <h4 id="name-info">
+<a href="#section-5.4.1" class="section-number selfRef">5.4.1. </a><a href="#name-info" class="section-name selfRef">Info</a>
           </h4>
-<ul class="compact">
-<li class="compact" id="section-5.4.1-1.1">Request: HEAD /{collection}/{id}<a href="#section-5.4.1-1.1" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-5.4.1-1.2">Request message: None<a href="#section-5.4.1-1.2" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-5.4.1-1.3">Response message: None<a href="#section-5.4.1-1.3" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-5.4.1-1.4">HTTP status code success: 200 (OK)<a href="#section-5.4.1-1.4" class="pilcrow">¶</a>
-</li>
-          </ul>
-<p id="section-5.4.1-2">The server MUST support the HTTP HEAD method for the Check endoint, both client and server MUST not put any content to the HTTP message body. The response MUST contain the REPP-check-avail and MAY contain the REPP-check-reason header. The value of the REPP-check-avail header MUST be "0" or "1" as described in <span><a href="https://rfc-editor.org/rfc/rfc5730#section-2.9.2.1" class="relref">Section 2.9.2.1</a> of [<a href="#RFC5730" class="cite xref">RFC5730</a>]</span>, depending on whether the object can be provisioned or not.<a href="#section-5.4.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.4.1-3">The REPP Check endpoint is limited to checking only a single resource {id} per request. This may seem a step backwards compared to the Check command defined in the <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> where multiple object-ids are allowed inside a Check command. The RESTful Check request can be load balanced more efficiently when a single resource {id} needs to be checked.<a href="#section-5.4.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.4.1-4">Example Check request for a domain name:<a href="#section-5.4.1-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.1-5">
-<pre>C: HEAD /repp/v1/domains/example.nl HTTP/2
-C: Host: repp.example.nl
-C: Authorization: Bearer &lt;token&gt;
-C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
-C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+<p id="section-5.4.1-1">The Info request message is not used anynmore for REPP.<a href="#section-5.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.4.1-2">Example XML response:<a href="#section-5.4.1-2" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.4.1-3">
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;response&gt;
+        &lt;result code="1000"&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:infData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:roid&gt;EXAMPLE1-REP&lt;/domain:roid&gt;
+                &lt;domain:status s="ok"/&gt;
+                &lt;domain:registrant&gt;jd1234&lt;/domain:registrant&gt;
+                &lt;domain:contact type="admin"&gt;sh8013&lt;/domain:contact&gt;
+                &lt;domain:contact type="tech"&gt;sh8013&lt;/domain:contact&gt;
+                &lt;domain:ns&gt;
+                    &lt;domain:hostObj&gt;ns1.example.com&lt;/domain:hostObj&gt;
+                    &lt;domain:hostObj&gt;ns1.example.net&lt;/domain:hostObj&gt;
+                &lt;/domain:ns&gt;
+                &lt;domain:host&gt;ns1.example.com&lt;/domain:host&gt;
+                &lt;domain:host&gt;ns2.example.com&lt;/domain:host&gt;
+                &lt;domain:clID&gt;ClientX&lt;/domain:clID&gt;
+                &lt;domain:crID&gt;ClientY&lt;/domain:crID&gt;
+                &lt;domain:crDate&gt;1999-04-03T22:00:00.0Z&lt;/domain:crDate&gt;
+                &lt;domain:upID&gt;ClientX&lt;/domain:upID&gt;
+                &lt;domain:upDate&gt;1999-12-03T09:00:00.0Z&lt;/domain:upDate&gt;
+                &lt;domain:exDate&gt;2005-04-03T22:00:00.0Z&lt;/domain:exDate&gt;
+                &lt;domain:trDate&gt;2000-04-08T09:00:00.0Z&lt;/domain:trDate&gt;
+                &lt;domain:authInfo&gt;
+                    &lt;domain:pw&gt;2fooBAR&lt;/domain:pw&gt;
+                &lt;/domain:authInfo&gt;
+            &lt;/domain:infData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54322-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 
+</pre><a href="#section-5.4.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.4.1-4">Example JSON response:<a href="#section-5.4.1-4" class="pilcrow">¶</a></p>
+<div class="breakable lang-json sourcecode" id="section-5.4.1-5">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "resData": {
+                "domain:infData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:roid": "EXAMPLE1-REP",
+                    "domain:status": {
+                        "@s": "ok"
+                    },
+                    "domain:registrant": "jd1234",
+                    "domain:contact": [
+                        {
+                            "@type": "admin",
+                            "#text": "sh8013"
+                        },
+                        {
+                            "@type": "tech",
+                            "#text": "sh8013"
+                        }
+                    ],
+                    "domain:ns": {
+                        "domain:hostObj": [
+                            "ns1.example.com",
+                            "ns1.example.net"
+                        ]
+                    },
+                    "domain:host": [
+                        "ns1.example.com",
+                        "ns2.example.com"
+                    ],
+                    "domain:clID": "ClientX",
+                    "domain:crID": "ClientY",
+                    "domain:crDate": "1999-04-03T22:00:00.0Z",
+                    "domain:upID": "ClientX",
+                    "domain:upDate": "1999-12-03T09:00:00.0Z",
+                    "domain:exDate": "2005-04-03T22:00:00.0Z",
+                    "domain:trDate": "2000-04-08T09:00:00.0Z",
+                    "domain:authInfo": {
+                        "domain:pw": "2fooBAR"
+                    }
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54322-XYZ"
+            }
+        }
+    }
+}
 
 </pre><a href="#section-5.4.1-5" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.1-6">Example Check response:<a href="#section-5.4.1-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.1-7">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
-S: Content-Length: 0
-S: REPP-cltrid: ABC-12345
-S: REPP-svtrid: XYZ-12345
-S: REPP-check-avail: 0
-S: REPP-check-reason: In use
-S: REPP-result-code: 1000
-
-</pre><a href="#section-5.4.1-7" class="pilcrow">¶</a>
-</div>
 </section>
 </div>
-<div id="info">
+<div id="poll">
 <section id="section-5.4.2">
-          <h4 id="name-info">
-<a href="#section-5.4.2" class="section-number selfRef">5.4.2. </a><a href="#name-info" class="section-name selfRef">Info</a>
+          <h4 id="name-poll">
+<a href="#section-5.4.2" class="section-number selfRef">5.4.2. </a><a href="#name-poll" class="section-name selfRef">Poll</a>
           </h4>
-<p id="section-5.4.2-1">An Info request MUST be performed using the HTTP GET method on a resource identifying an object instance.
-An object MAY have authorization attachted to it, the client then MUST use the HTTP POST method and include the authorization information in the request.<a href="#section-5.4.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.4.2-2">A request for an object not using authorization information.<a href="#section-5.4.2-2" class="pilcrow">¶</a></p>
+<div id="poll-request">
+<section id="section-5.4.2.1">
+            <h5 id="name-poll-request">
+<a href="#section-5.4.2.1" class="section-number selfRef">5.4.2.1. </a><a href="#name-poll-request" class="section-name selfRef">Poll Request</a>
+            </h5>
 <ul class="compact">
-<li class="compact" id="section-5.4.2-3.1">Request: GET /{collection}/{id}<a href="#section-5.4.2-3.1" class="pilcrow">¶</a>
+<li class="compact" id="section-5.4.2.1-1.1">Request: GET /messages<a href="#section-5.4.2.1-1.1" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-5.4.2-3.2">Request message: None<a href="#section-5.4.2-3.2" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.4.2.1-1.2">Request message: None<a href="#section-5.4.2.1-1.2" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-5.4.2-3.3">Response message: Info response<a href="#section-5.4.2-3.3" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.4.2.1-1.3">Response message: Poll response<a href="#section-5.4.2.1-1.3" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-5.4.2-3.4">HTTP status code success: 200 (OK)<a href="#section-5.4.2-3.4" class="pilcrow">¶</a>
-</li>
-          </ul>
-<p id="section-5.4.2-4">A request for an object that has authorization information attached.<a href="#section-5.4.2-4" class="pilcrow">¶</a></p>
-<ul class="compact">
-<li class="compact" id="section-5.4.2-5.1">Request: POST /{collection}/{id}<a href="#section-5.4.2-5.1" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-5.4.2-5.2">Request message: Info request<a href="#section-5.4.2-5.2" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-5.4.2-5.3">Response message: Info response<a href="#section-5.4.2-5.3" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-5.4.2-5.4">HTTP status code success: 200 (OK)<a href="#section-5.4.2-5.4" class="pilcrow">¶</a>
-</li>
-          </ul>
-<div class="alignLeft art-text artwork" id="section-5.4.2-6">
-<pre>Example Info response:
-
-
-</pre><a href="#section-5.4.2-6" class="pilcrow">¶</a>
-</div>
-<p id="section-5.4.2-7">S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
-S: Content-Length: 424
-S: Content-Type: application/epp+xml<a href="#section-5.4.2-7" class="pilcrow">¶</a></p>
-<p id="section-5.4.2-8">S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;resData&gt;
-S:      &lt;domain:infData xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
-S:         
-S:      <a href="/domain:infData">/domain:infData</a>
-S:    &lt;/resData&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;<a href="#section-5.4.2-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.2-9">
-<pre>
-### Poll
-
-#### Poll Request
-
-- Request: GET /messages
-- Request message: None
-- Response message: Poll response
-- HTTP status code success: 200 (OK)
-
-The client MUST use the HTTP GET method on the messages resource collection to
-request the message at the head of the queue. The "op=req" semantics from [@!RFC5730, Section 2.9.2.3] are assigned to the HTTP GET method.
-
-Example Poll request:
-
-</pre><a href="#section-5.4.2-9" class="pilcrow">¶</a>
-</div>
-<p id="section-5.4.2-10">C: GET /repp/v1/messages HTTP/2
+            </ul>
+<p id="section-5.4.2.1-2">The client MUST use the HTTP GET method on the messages resource collection to request the message at the head of the queue. The "op=req" semantics from <a href="https://rfc-editor.org/rfc/rfc5730#appendix-Section%202.9.2.3" class="relref">Section 2.9.2.3</a> are assigned to the HTTP GET method.<a href="#section-5.4.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.2.1-3">Example request:<a href="#section-5.4.2.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4.2.1-4">
+<pre>C: GET /repp/v1/messages HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Accept-Language: en
-C: REPP-cltrid: ABC-12345<a href="#section-5.4.2-10" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.2-11">
-<pre>Example Poll response:
+C: REPP-Cltrid: ABC-12345
 
 
-</pre><a href="#section-5.4.2-11" class="pilcrow">¶</a>
+</pre><a href="#section-5.4.2.1-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.2-12">S: HTTP/2 200 OK
+<p id="section-5.4.2.1-5">Example response:<a href="#section-5.4.2.1-5" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.4.2.1-6">
+<pre>S: HTTP/2 200 OK
 S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
+S: Server: Example REPP server v1.0
 S: Content-Length: 312
-S: Content-Type: application/epp+xml<a href="#section-5.4.2-12" class="pilcrow">¶</a></p>
-<p id="section-5.4.2-13">S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+S: Content-Type: application/epp+xml
+S: Content-Language: en
+S: REPP-Eppcode: 1301
+S:
+S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
 S:  &lt;response&gt;
 S:    &lt;result code="1301"&gt;
@@ -1952,142 +1989,144 @@ S:      &lt;qDate&gt;2000-06-08T22:00:00.0Z&lt;/qDate&gt;
 S:      &lt;msg&gt;Transfer requested.&lt;/msg&gt;
 S:    &lt;/msgQ&gt;
 S:    &lt;resData&gt;
-S:       
+S:       &lt;!-- The rest of the response is omitted here --&gt;
 S:    &lt;/resData&gt;
 S:    &lt;trID&gt;
 S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
 S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
 S:    &lt;/trID&gt;
 S:  &lt;/response&gt;
-S:&lt;/epp&gt;<a href="#section-5.4.2-13" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.2-14">
-<pre>
-#### Poll Ack
+S:&lt;/epp&gt;
 
-- Request: DELETE /messages/{id}
-- Request message: None
-- Response message: Poll ack response
-- HTTP status code success: 200 (OK)
-
-The client MUST use the HTTP DELETE method on a message instance to to acknowledge receipt of a message of a message from the message queue. The "op=ack" semantics from [@!RFC5730, Section 2.9.2.3] are assigned to the HTTP DELETE method. The "msgID" from a received EPP message MUST be included in the message resource URL, using the {id} path element.
-
-Example Poll Ack request:
-
-</pre><a href="#section-5.4.2-14" class="pilcrow">¶</a>
+</pre><a href="#section-5.4.2.1-6" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.2-15">C: DELETE /repp/v1/messages/12345 HTTP/2
+</section>
+</div>
+<div id="poll-ack">
+<section id="section-5.4.2.2">
+            <h5 id="name-poll-ack">
+<a href="#section-5.4.2.2" class="section-number selfRef">5.4.2.2. </a><a href="#name-poll-ack" class="section-name selfRef">Poll Ack</a>
+            </h5>
+<ul class="compact">
+<li class="compact" id="section-5.4.2.2-1.1">Request: DELETE /messages/{id}<a href="#section-5.4.2.2-1.1" class="pilcrow">¶</a>
+</li>
+              <li class="compact" id="section-5.4.2.2-1.2">Request message: None<a href="#section-5.4.2.2-1.2" class="pilcrow">¶</a>
+</li>
+              <li class="compact" id="section-5.4.2.2-1.3">Response message: Poll Ack response<a href="#section-5.4.2.2-1.3" class="pilcrow">¶</a>
+</li>
+            </ul>
+<p id="section-5.4.2.2-2">The client MUST use the HTTP DELETE method to acknowledge receipt of a message from the queue. The "op=ack" semantics from <a href="https://rfc-editor.org/rfc/rfc5730#appendix-Section%202.9.2.3" class="relref">Section 2.9.2.3</a> are assigned to the HTTP DELETE method. The "msgID" attribute of a received EPP Poll message MUST be included in the message resource URL, using the {id} path element. The server MUST use REPP headers to return the EPP result code and the number of messages left in the queue. The server MUST NOT add content to the HTTP message body of a successfull response, the server may add content to the message body of an error response.<a href="#section-5.4.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.4.2.2-3">Example request:<a href="#section-5.4.2.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4.2.2-4">
+<pre>C: DELETE /repp/v1/messages/12345 HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Accept-Language: en
-C: REPP-cltrid: ABC-12345<a href="#section-5.4.2-15" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.2-16">
-<pre>Example Poll Ack response:
+C: REPP-Cltrid: ABC-12345
 
 
-</pre><a href="#section-5.4.2-16" class="pilcrow">¶</a>
+</pre><a href="#section-5.4.2.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.2-17">S: HTTP/2 200 OK
+<p id="section-5.4.2.2-5">Example response:<a href="#section-5.4.2.2-5" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.4.2.2-6">
+<pre>S: HTTP/2 200 OK
 S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
-S: Content-Length: 312
-S: Content-Type: application/epp+xml<a href="#section-5.4.2-17" class="pilcrow">¶</a></p>
-<p id="section-5.4.2-18">S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+S: Server: Example REPP server v1.0
+S: Content-Language: en
+S: REPP-Eppcode: 1000
+S: REPP-Queue-Size: 0
+S: REPP-Svtrid: XYZ-12345
+S: REPP-Cltrid: ABC-12345
+S: Content-Length: 145
+S:
+S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
 S:  &lt;response&gt;
 S:    &lt;result code="1000"&gt;
 S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
 S:    &lt;/result&gt;
-S:    &lt;msgQ count="4" id="12345"/&gt;
+S:    &lt;msgQ count="0" id="12345"/&gt;
 S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12346&lt;/clTRID&gt;
+S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
 S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
 S:    &lt;/trID&gt;
 S:  &lt;/response&gt;
-S:&lt;/epp&gt;<a href="#section-5.4.2-18" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.2-19">
-<pre>
-### Transfer Query
+S:&lt;/epp&gt;
 
-The Transfer Query request MUST use the special "latest" sub-resource to refer to the
-latest object transfer, a latest transfer object may not exist, when no transfer has been initiated for the specified object. The client MUST NOT add content to the HTTP message body when using the HTTP GET method.
-
-- Request: GET {collection}/{id}/transfers/latest
-- Request message: None
-- Response message: Transfer Query response
-- HTTP status code success: 200 (OK)
-
-If the requested object has associated authorization information linked to a contact object, then the HTTP GET method MUST NOT be used and the HTTP POST method MUST be used and the authorization information MUST be included in the EPP request message inside the HTTP message body.
-
-- Request: POST {collection}/{id}/transfers/latest
-- Request message: Transfer Query request
-- Response message: Transfer Query response.
-- HTTP status code success: 200 (OK)
-
-Example domain name Transfer Query request:
-
-
-</pre><a href="#section-5.4.2-19" class="pilcrow">¶</a>
+</pre><a href="#section-5.4.2.2-6" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.2-20">C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
-C: Host: repp.example.nl
-C: Authorization: Bearer &lt;token&gt;
-C: Accept: application/epp+xml
-C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
-C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0<a href="#section-5.4.2-20" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.2-21">
-<pre>
-Example domain name Transfer Query request and authorization information in REPP-authInfo header:
-
-
-</pre><a href="#section-5.4.2-21" class="pilcrow">¶</a>
+</section>
 </div>
-<p id="section-5.4.2-22">C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
+</section>
+</div>
+<div id="transfer-query">
+<section id="section-5.4.3">
+          <h4 id="name-transfer-query">
+<a href="#section-5.4.3" class="section-number selfRef">5.4.3. </a><a href="#name-transfer-query" class="section-name selfRef">Transfer Query</a>
+          </h4>
+<p id="section-5.4.3-1">The Transfer Query request MUST use the special "latest" sub-resource to refer to the
+latest object transfer. A latest transfer object may not exist, when no transfer has been initiated for the specified object. The client MUST use the HTTP GET method and MUST NOT add content to the HTTP message body.<a href="#section-5.4.3-1" class="pilcrow">¶</a></p>
+<ul class="compact">
+<li class="compact" id="section-5.4.3-2.1">Request: GET {collection}/{id}/transfers/latest<a href="#section-5.4.3-2.1" class="pilcrow">¶</a>
+</li>
+            <li class="compact" id="section-5.4.3-2.2">Request message: None<a href="#section-5.4.3-2.2" class="pilcrow">¶</a>
+</li>
+            <li class="compact" id="section-5.4.3-2.3">Response message: Transfer Query response<a href="#section-5.4.3-2.3" class="pilcrow">¶</a>
+</li>
+          </ul>
+<p id="section-5.4.3-3">Example domain name Transfer Query request without authorization information required:<a href="#section-5.4.3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4.3-4">
+<pre>C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
-C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
-C: REPP-authInfo: secret<a href="#section-5.4.2-22" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.4.2-23">
-<pre>
-Example domain name Transfer Query request and authorization information in request message:
+C: REPP-Cltrid: ABC-12345
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
 
-```xml
-C: POST /repp/v1/domains/example.nl/transfers/latest HTTP/2
+
+</pre><a href="#section-5.4.3-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.4.3-5">If the requested object has associated authorization information that is not linked to another database object, then the HTTP GET method MUST be used and the authorization information MUST be included using the REPP-AuthInfo header.<a href="#section-5.4.3-5" class="pilcrow">¶</a></p>
+<p id="section-5.4.3-6">Example domain name Transfer Query request using REPP-AuthInfo header:<a href="#section-5.4.3-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4.3-7">
+<pre>C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Accept-Language: en
+C: REPP-Cltrid: ABC-12345
+C: REPP-AuthInfo: secret-token
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
+
+
+</pre><a href="#section-5.4.3-7" class="pilcrow">¶</a>
+</div>
+<p id="section-5.4.3-8">If the requested object has associated authorization information linked to another database object, then the HTTP GET method MUST be used and both the REPP-AuthInfo and the REPP-Roid header MUST be included.<a href="#section-5.4.3-8" class="pilcrow">¶</a></p>
+<p id="section-5.4.3-9">Example domain name Transfer Query request and authorization using REPP-AuthInfo and the REPP-Roid header:<a href="#section-5.4.3-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4.3-10">
+<pre>C: GET /repp/v1/domains/example.nl/transfers/latest HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer &lt;token&gt;
+C: Accept: application/epp+xml
+C: Accept-Language: en
+C: REPP-AuthInfo: secret-token
+C: REPP-Roid: REG-XYZ-12345
+C: Content-Length: 0
 C:
-C:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-C:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-C:  &lt;command&gt;
-C:    &lt;transfer op="query"&gt;
-C:      &lt;domain:transfer
-C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
-C:        &lt;domain:name&gt;example.nl&lt;/domain:name&gt;
-C:        &lt;domain:authInfo&gt;
-C:          &lt;domain:pw roid="MW12345-REP"&gt;secret&lt;/domain:pw&gt;
-C:        &lt;/domain:authInfo&gt;
-C:      &lt;/domain:transfer&gt;
-C:    &lt;/transfer&gt;
-C:    &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-C:  &lt;/command&gt;
-C:&lt;/epp&gt;
 
-
-</pre><a href="#section-5.4.2-23" class="pilcrow">¶</a>
+</pre><a href="#section-5.4.3-10" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4.2-24">Example Transfer Query response:<a href="#section-5.4.2-24" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.4.2-25">
+<p id="section-5.4.3-11">Example Transfer Query response:<a href="#section-5.4.3-11" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.4.3-12">
 <pre>S: HTTP/2 200 OK
 S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
+S: Server: Example REPP server v1.0
 S: Content-Length: 230
 S: Content-Type: application/epp+xml
+S: Content-Language: en
+S: REPP-Eppcode: 1000
 S:
 S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
@@ -2105,7 +2144,7 @@ S:    &lt;/trID&gt;
 S:  &lt;/response&gt;
 S:&lt;/epp&gt;
 
-</pre><a href="#section-5.4.2-25" class="pilcrow">¶</a>
+</pre><a href="#section-5.4.3-12" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2128,10 +2167,8 @@ S:&lt;/epp&gt;
 </li>
             <li class="compact" id="section-5.5.1-1.3">Response message: Object Create response<a href="#section-5.5.1-1.3" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-5.5.1-1.4">HTTP status code success: 201 (CREATED)<a href="#section-5.5.1-1.4" class="pilcrow">¶</a>
-</li>
           </ul>
-<p id="section-5.5.1-2">The client MUST use the HTTP POST method to create a new object resource. If the EPP request results in a newly created object, then the server MUST return HTTP status code 201 (Created).<a href="#section-5.5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.1-2">The client MUST use the HTTP POST method to create a new object resource. If the EPP request results in a newly created object, then the server MUST return HTTP status code 200 (OK). The server MUST add the "Location" header to the response, the value of this header MUST be the URL for the newly created resource.<a href="#section-5.5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.1-3">Example Domain Create request:<a href="#section-5.5.1-3" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.5.1-4">
 <pre>C: POST /repp/v1/domains HTTP/2
@@ -2139,7 +2176,7 @@ C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Content-Type: application/epp+xml
-C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
 C: Accept-Language: en
 C: Content-Length: 220
 C:
@@ -2161,13 +2198,14 @@ C:&lt;/epp&gt;
 </div>
 <p id="section-5.5.1-5">Example Domain Create response:<a href="#section-5.5.1-5" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.5.1-6">
-<pre>S: HTTP/2 201 OK
+<pre>S: HTTP/2 200
 S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
+S: Server: Example REPP server v1.0
 S: Content-Language: en
 S: Content-Length: 642
 S: Content-Type: application/epp+xml
 S: Location: https://repp.example.nl/repp/v1/domains/example.nl
+S: REPP-Eppcode: 1000
 S:
 S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
@@ -2177,7 +2215,7 @@ S:      &lt;result code="1000"&gt;
 S:         &lt;msg&gt;Command completed successfully&lt;/msg&gt;
 S:      &lt;/result&gt;
 S:      &lt;resData&gt;
-S:         &lt;domain:creData
+S:         &lt;domain:creData&gt;
 S:            &lt;!-- The rest of the response is omitted here --&gt;
 S:         &lt;/domain:creData&gt;
 S:      &lt;/resData&gt;
@@ -2202,12 +2240,10 @@ S:&lt;/epp&gt;
 </li>
             <li class="compact" id="section-5.5.2-1.2">Request message: None<a href="#section-5.5.2-1.2" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-5.5.2-1.3">Response message: Optional Object Delete response<a href="#section-5.5.2-1.3" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-5.5.2-1.4">HTTP status code success: 200 (OK)<a href="#section-5.5.2-1.4" class="pilcrow">¶</a>
+            <li class="compact" id="section-5.5.2-1.3">Response message: Status<a href="#section-5.5.2-1.3" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-5.5.2-2">The client MUST the HTTP DELETE method and a resource identifying a unique object instance.<a href="#section-5.5.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.2-2">The client MUST the HTTP DELETE method and a resource identifying a unique object instance. The server MUST return HTTP status code 200 (OK) if the resource was deleted successfully.<a href="#section-5.5.2-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.2-3">Example Domain Delete request:<a href="#section-5.5.2-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.2-4">
 <pre>C: DELETE /repp/v1/domains/example.nl HTTP/2
@@ -2215,7 +2251,7 @@ C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
+C: REPP-Cltrid: ABC-12345
 
 
 </pre><a href="#section-5.5.2-4" class="pilcrow">¶</a>
@@ -2224,23 +2260,23 @@ C: REPP-cltrid: ABC-12345
 <div class="lang-xml sourcecode" id="section-5.5.2-6">
 <pre>S: HTTP/2 200 OK
 S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 505
-S: Content-Type: application/epp+xml
-
+S: Server: Example REPP server v1.0
+S: Content-Length: 80
+S: REPP-Svtrid: XYZ-12345
+S: REPP-Cltrid: ABC-12345
+S: REPP-Eppcode: 1000
+S:
 S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
-S:     xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
-S:   &lt;response&gt;
-S:      &lt;result code="1000"&gt;
-S:         &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:      &lt;/result&gt;
-S:      &lt;trID&gt;
-S:         &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:         &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:       &lt;/trID&gt;
-S:   &lt;/response&gt;
+S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+S:  &lt;response&gt;
+S:    &lt;result code="1000"&gt;
+S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+S:    &lt;/result&gt;
+S:    &lt;trID&gt;
+S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+S:    &lt;/trID&gt;
+S:  &lt;/response&gt;
 S:&lt;/epp&gt;
 
 </pre><a href="#section-5.5.2-6" class="pilcrow">¶</a>
@@ -2259,48 +2295,46 @@ S:&lt;/epp&gt;
 </li>
             <li class="compact" id="section-5.5.3-1.3">Response message: object Renew response<a href="#section-5.5.3-1.3" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-5.5.3-1.4">HTTP status code success: 201 (CREATED)<a href="#section-5.5.3-1.4" class="pilcrow">¶</a>
-</li>
           </ul>
-<p id="section-5.5.3-2">The EPP Renew command is mapped to a nested resource, named "renewals".
-Not all EPP object types include support for the renew command. If the EPP request results in a renewal of the object, then the server MUST return HTTP status code 201 (Created).<a href="#section-5.5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.3-2">The Renew command is mapped to a nested collection, named "renewals". Not all EPP object types include support for the renew command. The current-date query parameter MAY be used for date on which the current validity period ends, as described in <span><a href="https://rfc-editor.org/rfc/rfc5731#section-3.2.3" class="relref">Section 3.2.3</a> of [<a href="#RFC5731" class="cite xref">RFC5731</a>]</span>. The new period MAY be added to the request using the unit and value request parameters. The reponse MUST include the Location header for the renewed object.<a href="#section-5.5.3-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.3-3">Example Domain Renew request:<a href="#section-5.5.3-3" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.5.3-4">
-<pre>C: POST /repp/v1/domains/example.nl/renewals HTTP/2
+<div class="alignLeft art-text artwork" id="section-5.5.3-4">
+<pre>C: POST /repp/v1/domains/example.nl/renewals?current-date=2024-01-01 HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Content-Type: application/epp+xml
-C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
 C: Accept-Language: en
-C: Content-Length: 325
+C: Content-Length: 0
 C:
-C:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-C:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-C:  &lt;command&gt;
-C:    &lt;renew&gt;
-C:      &lt;domain:renew
-C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
-C:        &lt;domain:name&gt;example.nl&lt;/domain:name&gt;
-C:        &lt;domain:curExpDate&gt;2023-11-17&lt;/domain:curExpDate&gt;
-C:        &lt;domain:period unit="y"&gt;1&lt;/domain:period&gt;
-C:      &lt;/domain:renew&gt;
-C:    &lt;/renew&gt;
-C:    &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-C:  &lt;/command&gt;
-C:&lt;/epp&gt;
 
 </pre><a href="#section-5.5.3-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.3-5">Example Renew response:<a href="#section-5.5.3-5" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.5.3-6">
-<pre>S: HTTP/2 201 CREATED
+<p id="section-5.5.3-5">Example Domain Renew request, using 1 year period:<a href="#section-5.5.3-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5.3-6">
+<pre>C: POST /repp/v1/domains/example.nl/renewals?current-date=2024-01-01?unit=y&amp;value=1 HTTP/2
+C: Host: repp.example.nl
+C: Authorization: Bearer &lt;token&gt;
+C: Accept: application/epp+xml
+C: Content-Type: application/epp+xml
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
+C: Accept-Language: en
+C: Content-Length: 0
+C:
+
+</pre><a href="#section-5.5.3-6" class="pilcrow">¶</a>
+</div>
+<p id="section-5.5.3-7">Example Renew response:<a href="#section-5.5.3-7" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.5.3-8">
+<pre>S: HTTP/2 200 OK
 S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
+S: Server: Example REPP server v1.0
 S: Content-Language: en
-S: Content-Length: 505
+S: Content-Length: 205
 S: Location: https://repp.example.nl/repp/v1/domains/example.nl
 S: Content-Type: application/epp+xml
+S: REPP-Eppcode: 1000
 S:
 S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
@@ -2318,7 +2352,7 @@ S:    &lt;/trID&gt;
 S:  &lt;/response&gt;
 S:&lt;/epp&gt;
 
-</pre><a href="#section-5.5.3-6" class="pilcrow">¶</a>
+</pre><a href="#section-5.5.3-8" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2327,9 +2361,7 @@ S:&lt;/epp&gt;
           <h4 id="name-transfer">
 <a href="#section-5.5.4" class="section-number selfRef">5.5.4. </a><a href="#name-transfer" class="section-name selfRef">Transfer</a>
           </h4>
-<p id="section-5.5.4-1">Transferring an object from one sponsoring client to another is specified in <span>[<a href="#RFC5731" class="cite xref">RFC5731</a>]</span> and <span>[<a href="#RFC5733" class="cite xref">RFC5733</a>]</span>. The Transfer command is mapped to a nested resource, named "transfers".<a href="#section-5.5.4-1" class="pilcrow">¶</a></p>
-<p id="section-5.5.4-2">The semantics of the HTTP DELETE method are determined by the role of the client executing the method. For the current sponsoring
-client of the object, the DELETE method is defined as "reject transfer". For the new sponsoring client the DELETE method is defined as "cancel transfer".<a href="#section-5.5.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.4-1">Transferring an object from one sponsoring client to another client is specified in <span>[<a href="#RFC5731" class="cite xref">RFC5731</a>]</span> and <span>[<a href="#RFC5733" class="cite xref">RFC5733</a>]</span>. The Transfer command is mapped to a nested resource, named "transfers". The semantics of the HTTP DELETE method are determined by the role of the client executing the DELETE method. For the current sponsoring client of the object, the DELETE method is defined as "reject transfer". For the new sponsoring client the DELETE method is defined as "cancel transfer".<a href="#section-5.5.4-1" class="pilcrow">¶</a></p>
 <div id="request">
 <section id="section-5.5.4.1">
             <h5 id="name-request">
@@ -2338,65 +2370,53 @@ client of the object, the DELETE method is defined as "reject transfer". For the
 <ul class="compact">
 <li class="compact" id="section-5.5.4.1-1.1">Request: POST /{collection}/{id}/transfers<a href="#section-5.5.4.1-1.1" class="pilcrow">¶</a>
 </li>
-              <li class="compact" id="section-5.5.4.1-1.2">Request payload: Optional Transfer request<a href="#section-5.5.4.1-1.2" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.5.4.1-1.2">Request message: None<a href="#section-5.5.4.1-1.2" class="pilcrow">¶</a>
 </li>
-              <li class="compact" id="section-5.5.4.1-1.3">Response message: Transfer response.<a href="#section-5.5.4.1-1.3" class="pilcrow">¶</a>
-</li>
-              <li class="compact" id="section-5.5.4.1-1.4">HTTP status code success: 201 (CREATED)<a href="#section-5.5.4.1-1.4" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.5.4.1-1.3">Response message: Status<a href="#section-5.5.4.1-1.3" class="pilcrow">¶</a>
 </li>
             </ul>
-<p id="section-5.5.4.1-2">To start a new object transfer process, the client MUST use the HTTP POST method for a unique resource, not all EPP objcts include support for the Transfer command as described in <span><a href="https://rfc-editor.org/rfc/rfc5730#section-3.2.4" class="relref">Section 3.2.4</a> of [<a href="#RFC5730" class="cite xref">RFC5730</a>]</span>, <span><a href="https://rfc-editor.org/rfc/rfc5731#section-3.2.4" class="relref">Section 3.2.4</a> of [<a href="#RFC5731" class="cite xref">RFC5731</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc5733#section-3.2.4" class="relref">Section 3.2.4</a> of [<a href="#RFC5733" class="cite xref">RFC5733</a>]</span>.<a href="#section-5.5.4.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.5.4.1-3">If the EPP request is successful, then the server MUST return HTTP status code 201 (Created). The client MAY choose to send an empty HTTP message body when the object is not linked to authorization information associated with a contact object. The server MUST also include the Location header in the HTTP response.<a href="#section-5.5.4.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.5.4.1-4">Example Create request not using using object authorization:<a href="#section-5.5.4.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.5.4.1-2">To start a new object transfer process, the client MUST use the HTTP POST method for a unique resource to create a new transfer resource object, not all EPP objects support the Transfer command as described in <span><a href="https://rfc-editor.org/rfc/rfc5730#section-3.2.4" class="relref">Section 3.2.4</a> of [<a href="#RFC5730" class="cite xref">RFC5730</a>]</span>, <span><a href="https://rfc-editor.org/rfc/rfc5731#section-3.2.4" class="relref">Section 3.2.4</a> of [<a href="#RFC5731" class="cite xref">RFC5731</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc5733#section-3.2.4" class="relref">Section 3.2.4</a> of [<a href="#RFC5733" class="cite xref">RFC5733</a>]</span>.<a href="#section-5.5.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.4.1-3">If the transfer request is successful, then the reponse MUST include the Location header for the object being transferred.<a href="#section-5.5.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.5.4.1-4">Example request not using object authorization:<a href="#section-5.5.4.1-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.4.1-5">
 <pre>C: POST /repp/v1/domains/example.nl/transfers HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
 C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
+C: REPP-Cltrid: ABC-12345
+C: Content-Length: 0
 
 
 </pre><a href="#section-5.5.4.1-5" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.4.1-6">Example Create request using object authorization not linked to a contact:<a href="#section-5.5.4.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.5.4.1-6">Example request using object authorization:<a href="#section-5.5.4.1-6" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.5.4.1-7">
 <pre>C: POST /repp/v1/domains/example.nl/transfers HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
-C: REPP-cltrid: ABC-12345
-C: REPP-authInfo: secret
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
+C: REPP-Cltrid: ABC-12345
+C: REPP-AuthInfo: secret-token
 C: Accept-Language: en
+C: Content-Length: 0
 
 
 </pre><a href="#section-5.5.4.1-7" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.4.1-8">Example Create request using object authorization linked to a contact object:<a href="#section-5.5.4.1-8" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.5.4.1-9">
-<pre>C: POST /repp/v1/domains/example.nl/transfers HTTP/2
+<p id="section-5.5.4.1-8">Example request using 1 year renewal period, using the <code>unit</code> and <code>value</code> query parameters:<a href="#section-5.5.4.1-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5.4.1-9">
+<pre>C: POST /repp/v1/domains/example.nl/transfers?unit=y&amp;value=1 HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
-C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
 C: Accept-Language: en
-C: Content-Length: 252
+C: REPP-Cltrid: ABC-12345
+C: Content-Length: 0
 
-C:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-C:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-C:  &lt;command&gt;
-C:    &lt;transfer op="request"&gt;
-C:      &lt;domain:transfer
-C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
-C:        &lt;domain:name&gt;example.nl&lt;/domain:name&gt;
-C:        &lt;domain:authInfo&gt;
-C:          &lt;domain:pw roid="DOM-12345"&gt;secret&lt;/domain:pw&gt;
-C:        &lt;/domain:authInfo&gt;
-C:      &lt;/domain:transfer&gt;
-C:    &lt;/transfer&gt;
-C:    &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-C:  &lt;/command&gt;
-C:&lt;/epp&gt;
 
 </pre><a href="#section-5.5.4.1-9" class="pilcrow">¶</a>
 </div>
@@ -2404,11 +2424,12 @@ C:&lt;/epp&gt;
 <div class="lang-xml sourcecode" id="section-5.5.4.1-11">
 <pre>S: HTTP/2 200 OK
 S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
+S: Server: Example REPP server v1.0
 S: Content-Language: en
 S: Content-Length: 328
 S: Content-Type: application/epp+xml
 S: Location: https://repp.example.nl/repp/v1/domains/example.nl/transfers/latest
+S: REPP-Eppcode: 1001
 S:
 S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
@@ -2438,34 +2459,48 @@ S:&lt;/epp&gt;
 <ul class="compact">
 <li class="compact" id="section-5.5.4.2-1.1">Request: DELETE /{collection}/{id}/transfers/latest<a href="#section-5.5.4.2-1.1" class="pilcrow">¶</a>
 </li>
-              <li class="compact" id="section-5.5.4.2-1.2">Request message: Optional Transfer Reject request<a href="#section-5.5.4.2-1.2" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.5.4.2-1.2">Request message: None<a href="#section-5.5.4.2-1.2" class="pilcrow">¶</a>
 </li>
-              <li class="compact" id="section-5.5.4.2-1.3">Response message: Transfer cancel response message.<a href="#section-5.5.4.2-1.3" class="pilcrow">¶</a>
-</li>
-              <li class="compact" id="section-5.5.4.2-1.4">HTTP status code success: 200 (OK)<a href="#section-5.5.4.2-1.4" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.5.4.2-1.3">Response message: Status<a href="#section-5.5.4.2-1.3" class="pilcrow">¶</a>
 </li>
             </ul>
-<p id="section-5.5.4.2-2">The semantics of the HTTP DELETE method are determined by the role of
-the client sending the request. For the new sponsoring client the DELETE method is defined as "cancel transfer".<a href="#section-5.5.4.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.5.4.2-3">The new sponsoring client MUST use the HTTP DELETE method to cancel a
-requested transfer.<a href="#section-5.5.4.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.5.4.2-4">Example Cancel request:<a href="#section-5.5.4.2-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5.4.2-5">
+<p id="section-5.5.4.2-2">The new sponsoring client MUST use the HTTP DELETE method to cancel a requested transfer. The semantics of the HTTP DELETE method are determined by the role of the client sending the request.<a href="#section-5.5.4.2-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.4.2-3">Example request:<a href="#section-5.5.4.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5.4.2-4">
 <pre>C: DELETE /repp/v1/domains/example.nl/transfers/latest HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
+C: REPP-Cltrid: ABC-12345
 
 
-</pre><a href="#section-5.5.4.2-5" class="pilcrow">¶</a>
+</pre><a href="#section-5.5.4.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.4.2-6">Example Cancel response:<a href="#section-5.5.4.2-6" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.5.4.2-7">
-<pre>TODO
+<p id="section-5.5.4.2-5">Example response:<a href="#section-5.5.4.2-5" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.5.4.2-6">
+<pre>S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Example REPP server v1.0
+S: Content-Length: 80
+S: REPP-Svtrid: XYZ-12345
+S: REPP-Cltrid: ABC-12345
+S: REPP-Eppcode: 1000
+S:
+S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+S:  &lt;response&gt;
+S:    &lt;result code="1000"&gt;
+S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+S:    &lt;/result&gt;
+S:    &lt;trID&gt;
+S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+S:    &lt;/trID&gt;
+S:  &lt;/response&gt;
+S:&lt;/epp&gt;
 
-</pre><a href="#section-5.5.4.2-7" class="pilcrow">¶</a>
+</pre><a href="#section-5.5.4.2-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2477,35 +2512,49 @@ C: REPP-cltrid: ABC-12345
 <ul class="compact">
 <li class="compact" id="section-5.5.4.3-1.1">Request: DELETE /{collection}/{id}/transfers/latest<a href="#section-5.5.4.3-1.1" class="pilcrow">¶</a>
 </li>
-              <li class="compact" id="section-5.5.4.3-1.2">Request message:  Optional Transfer Reject request<a href="#section-5.5.4.3-1.2" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.5.4.3-1.2">Request message:  None<a href="#section-5.5.4.3-1.2" class="pilcrow">¶</a>
 </li>
-              <li class="compact" id="section-5.5.4.3-1.3">Response message: Transfer response<a href="#section-5.5.4.3-1.3" class="pilcrow">¶</a>
-</li>
-              <li class="compact" id="section-5.5.4.3-1.4">HTTP status code success: 200 (OK)<a href="#section-5.5.4.3-1.4" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.5.4.3-1.3">Response message: Status<a href="#section-5.5.4.3-1.3" class="pilcrow">¶</a>
 </li>
             </ul>
-<p id="section-5.5.4.3-2">The semantics of the HTTP DELETE method are determined by the role of
-the client sending the request. For the current sponsoring
-client of the object, the DELETE method is defined as "reject transfer".<a href="#section-5.5.4.3-2" class="pilcrow">¶</a></p>
-<p id="section-5.5.4.3-3">The current sponsoring client MUST use the HTTP DELETE method to
-reject a transfer requested by the new sponsoring client.<a href="#section-5.5.4.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.5.4.3-4">Example Reject request:<a href="#section-5.5.4.3-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5.4.3-5">
+<p id="section-5.5.4.3-2">The semantics of the HTTP DELETE method are determined by the role of the client sending the request. For the current sponsoring client of the object, the DELETE method is defined as "reject transfer".<a href="#section-5.5.4.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.4.3-3">Example request:<a href="#section-5.5.4.3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5.4.3-4">
 <pre>C: DELETE /repp/v1/domains/example.nl/transfers/latest HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
+C: REPP-Cltrid: ABC-12345
 
 
-</pre><a href="#section-5.5.4.3-5" class="pilcrow">¶</a>
+</pre><a href="#section-5.5.4.3-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.4.3-6">Example Reject response:<a href="#section-5.5.4.3-6" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.5.4.3-7">
-<pre>TODO
+<p id="section-5.5.4.3-5">Example Reject response:<a href="#section-5.5.4.3-5" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.5.4.3-6">
+<pre>S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Example REPP server v1.0
+S: Content-Length: 80
+S: REPP-Svtrid: XYZ-12345
+S: REPP-Cltrid: ABC-12345
+S: REPP-Eppcode: 1000
+S:
+S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+S:  &lt;response&gt;
+S:    &lt;result code="1000"&gt;
+S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+S:    &lt;/result&gt;
+S:    &lt;trID&gt;
+S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+S:    &lt;/trID&gt;
+S:  &lt;/response&gt;
+S:&lt;/epp&gt;
 
-</pre><a href="#section-5.5.4.3-7" class="pilcrow">¶</a>
+
+</pre><a href="#section-5.5.4.3-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2517,15 +2566,12 @@ C: REPP-cltrid: ABC-12345
 <ul class="compact">
 <li class="compact" id="section-5.5.4.4-1.1">Request: PUT /{collection}/{id}/transfers/latest<a href="#section-5.5.4.4-1.1" class="pilcrow">¶</a>
 </li>
-              <li class="compact" id="section-5.5.4.4-1.2">Request message: Optional Transfer Approve request<a href="#section-5.5.4.4-1.2" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.5.4.4-1.2">Request message: None<a href="#section-5.5.4.4-1.2" class="pilcrow">¶</a>
 </li>
-              <li class="compact" id="section-5.5.4.4-1.3">Response message: Transfer response.<a href="#section-5.5.4.4-1.3" class="pilcrow">¶</a>
-</li>
-              <li class="compact" id="section-5.5.4.4-1.4">HTTP status code success: 200 (OK)<a href="#section-5.5.4.4-1.4" class="pilcrow">¶</a>
+              <li class="compact" id="section-5.5.4.4-1.3">Response message: Status<a href="#section-5.5.4.4-1.3" class="pilcrow">¶</a>
 </li>
             </ul>
-<p id="section-5.5.4.4-2">The current sponsoring client MUST use the HTTP PUT method to approve
-a transfer requested by the new sponsoring client.<a href="#section-5.5.4.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.4.4-2">The current sponsoring client MUST use the HTTP PUT method to approve a transfer requested by the new sponsoring client.<a href="#section-5.5.4.4-2" class="pilcrow">¶</a></p>
 <p id="section-5.5.4.4-3">Example Approve request:<a href="#section-5.5.4.4-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.5.4.4-4">
 <pre>C: PUT /repp/v1/domains/example.nl/transfers/latest HTTP/2
@@ -2533,14 +2579,34 @@ C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Accept-Language: en
-C: REPP-cltrid: ABC-12345
+C: REPP-Cltrid: ABC-12345
+C: Content-Length: 0
 
 
 </pre><a href="#section-5.5.4.4-4" class="pilcrow">¶</a>
 </div>
 <p id="section-5.5.4.4-5">Example Approve response:<a href="#section-5.5.4.4-5" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.5.4.4-6">
-<pre>TODO
+<pre>S: HTTP/2 200 OK
+S: Date: Fri, 17 Nov 2023 12:00:00 UTC
+S: Server: Example REPP server v1.0
+S: Content-Length: 80
+S: REPP-Svtrid: XYZ-12345
+S: REPP-Cltrid: ABC-12345
+S: REPP-Eppcode: 1000
+S:
+S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+S:  &lt;response&gt;
+S:    &lt;result code="1000"&gt;
+S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+S:    &lt;/result&gt;
+S:    &lt;trID&gt;
+S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+S:    &lt;/trID&gt;
+S:  &lt;/response&gt;
+S:&lt;/epp&gt;
 
 </pre><a href="#section-5.5.4.4-6" class="pilcrow">¶</a>
 </div>
@@ -2554,27 +2620,25 @@ C: REPP-cltrid: ABC-12345
 <a href="#section-5.5.5" class="section-number selfRef">5.5.5. </a><a href="#name-update" class="section-name selfRef">Update</a>
           </h4>
 <ul class="compact">
-<li class="compact" id="section-5.5.5-1.1">Request: PUT /{collection}/{id}<a href="#section-5.5.5-1.1" class="pilcrow">¶</a>
+<li class="compact" id="section-5.5.5-1.1">Request: PATCH /{collection}/{id}<a href="#section-5.5.5-1.1" class="pilcrow">¶</a>
 </li>
             <li class="compact" id="section-5.5.5-1.2">Request message: Object Update message<a href="#section-5.5.5-1.2" class="pilcrow">¶</a>
 </li>
-            <li class="compact" id="section-5.5.5-1.3">Response message: Optional Update response message<a href="#section-5.5.5-1.3" class="pilcrow">¶</a>
-</li>
-            <li class="compact" id="section-5.5.5-1.4">HTTP status code success: 200 (OK)<a href="#section-5.5.5-1.4" class="pilcrow">¶</a>
+            <li class="compact" id="section-5.5.5-1.3">Response message: Status<a href="#section-5.5.5-1.3" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-5.5.5-2">An object Update request MUST be performed with the HTTP PUT method on a unique object resource. The payload MUST contain an Update request as described in the EPP RFCs. The HTTP response MUST contain a Location header and an optional EPP response message in the message body.<a href="#section-5.5.5-2" class="pilcrow">¶</a></p>
-<p id="section-5.5.5-3">Example Update request:<a href="#section-5.5.5-3" class="pilcrow">¶</a></p>
+<p id="section-5.5.5-2">An object Update request MUST be performed using the HTTP PATCH method. The request message body MUST contain an EPP Update request, and the object-id value in the request MUST match the value of the object-id path parameter in the URL.<a href="#section-5.5.5-2" class="pilcrow">¶</a></p>
+<p id="section-5.5.5-3">Example request:<a href="#section-5.5.5-3" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.5.5-4">
-<pre>C: POST /repp/v1/domains/example.nl HTTP/2
+<pre>C: PATCH /repp/v1/domains/example.nl HTTP/2
 C: Host: repp.example.nl
 C: Authorization: Bearer &lt;token&gt;
 C: Accept: application/epp+xml
 C: Content-Type: application/epp+xml
 C: Accept-Language: en
-C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
+C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
 C: Content-Length: 252
-
+C:
 C:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 C:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
 C:  &lt;command&gt;
@@ -2582,7 +2646,7 @@ C:    &lt;update&gt;
 C:      &lt;domain:update
 C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
 C:        &lt;domain:name&gt;example.nl&lt;/domain:name&gt;
-C:           &lt;!-- The rest of the response is omitted here --&gt;
+C:           &lt;!-- The rest of the request is omitted here --&gt;
 C:      &lt;/domain:update&gt;
 C:    &lt;/update&gt;
 C:    &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
@@ -2591,15 +2655,16 @@ C:&lt;/epp&gt;
 
 </pre><a href="#section-5.5.5-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.5-5">Example Update response:<a href="#section-5.5.5-5" class="pilcrow">¶</a></p>
+<p id="section-5.5.5-5">Example response:<a href="#section-5.5.5-5" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.5.5-6">
 <pre>S: HTTP/2 200 OK
 S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 328
-S: Content-Type: application/epp+xml
-
+S: Server: Example REPP server v1.0
+S: Content-Length: 80
+S: REPP-Svtrid: XYZ-12345
+S: REPP-Cltrid: ABC-12345
+S: REPP-Eppcode: 1000
+S:
 S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
 S:  &lt;response&gt;
@@ -2615,78 +2680,7 @@ S:&lt;/epp&gt;
 
 </pre><a href="#section-5.5.5-6" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5.5-7">Example Update response, without EPP response in message body:<a href="#section-5.5.5-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.5.5-8">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 0
-S: REPP-svtrid: XYZ-12345
-S: REPP-cltrid: ABC-12345
-S: REPP-eppcode: 1000
-
-
-</pre><a href="#section-5.5.5-8" class="pilcrow">¶</a>
-</div>
 </section>
-</div>
-</section>
-</div>
-<div id="extensions">
-<section id="section-5.6">
-        <h3 id="name-extensions">
-<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-extensions" class="section-name selfRef">Extensions</a>
-        </h3>
-<ul class="compact">
-<li class="compact" id="section-5.6-1.1">Request: * /extensions/*<a href="#section-5.6-1.1" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.6-1.2">Request message: *<a href="#section-5.6-1.2" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.6-1.3">Response message: *<a href="#section-5.6-1.3" class="pilcrow">¶</a>
-</li>
-          <li class="compact" id="section-5.6-1.4">HTTP status code success: *<a href="#section-5.6-1.4" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-5.6-2">EPP protocol extensions, as defined in <a href="https://rfc-editor.org/rfc/rfc5730#appendix-Secion%202.7.3" class="relref">secion 2.7.3</a> are supported using the generic "/extensions" resource.
-The HTTP method used for a extension is not defined but must follow the RESTful principles.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
-<p id="section-5.6-3">Example Extension request:
-The example below, shows the use of the "Domain Cancel Delete" command as defined as a custom command in <span>[<a href="#SIDN-EXT" class="cite xref">SIDN-EXT</a>]</span> by the .nl domain registry operator. Where the registrar can use the HTPP DELETE method on a domain name resource to cancel an active domain delete transaction and move the domain from the quarantine state back to the active state.<a href="#section-5.6-3" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.6-4">
-<pre>C: DELETE /repp/v1/extensions/domains/example.nl/quarantine HTTP/2
-C: Host: repp.example.nl
-C: Authorization: Bearer &lt;token&gt;
-C: Accept: application/epp+xml
-C: Accept-Language: en
-C: REPP-svcs: urn:ietf:params:xml:ns:domain-1.0
-C: REPP-cltrid: ABC-12345
-
-
-</pre><a href="#section-5.6-4" class="pilcrow">¶</a>
-</div>
-<p id="section-5.6-5">Example Extension response:<a href="#section-5.6-5" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.6-6">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Acme REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 328
-S: Content-Type: application/epp+xml
-
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
-
-</pre><a href="#section-5.6-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2754,12 +2748,8 @@ S:&lt;/epp&gt;
 <span class="refAuthor">Hollenbeck, S.</span>, <span class="refTitle">"Extensible Provisioning Protocol (EPP) Contact Mapping"</span>, <span class="seriesInfo">STD 69</span>, <span class="seriesInfo">RFC 5733</span>, <span class="seriesInfo">DOI 10.17487/RFC5733</span>, <time datetime="2009-08" class="refDate">August 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5733">https://www.rfc-editor.org/info/rfc5733</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8259">[RFC8259]</dt>
-        <dd>
-<span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">STD 90</span>, <span class="seriesInfo">RFC 8259</span>, <span class="seriesInfo">DOI 10.17487/RFC8259</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8259">https://www.rfc-editor.org/info/rfc8259</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC9110">[RFC9110]</dt>
       <dd>
-<span class="refAuthor">Fielding, R., Ed.</span>, <span class="refAuthor">Nottingham, M., Ed.</span>, and <span class="refAuthor">J. Reschke, Ed.</span>, <span class="refTitle">"HTTP Semantics"</span>, <span class="seriesInfo">STD 97</span>, <span class="seriesInfo">RFC 9110</span>, <span class="seriesInfo">DOI 10.17487/RFC9110</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9110">https://www.rfc-editor.org/info/rfc9110</a>&gt;</span>. </dd>
+<span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">STD 90</span>, <span class="seriesInfo">RFC 8259</span>, <span class="seriesInfo">DOI 10.17487/RFC8259</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8259">https://www.rfc-editor.org/info/rfc8259</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -2768,10 +2758,6 @@ S:&lt;/epp&gt;
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
-<dt id="SIDN-EXT">[SIDN-EXT]</dt>
-        <dd>
-<span class="refAuthor">SIDN</span>, <span class="refTitle">"Extensible Provisioning Protocol v1.0 schema .NL extensions"</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="http://rxsd.domain-registry.nl/sidn-ext-epp-1.0.xsd">http://rxsd.domain-registry.nl/sidn-ext-epp-1.0.xsd</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="XMLCOM-WEB">[XMLCOM-WEB]</dt>
       <dd>
 <span class="refAuthor">XML.com</span>, <span class="refTitle">"Converting Between XML and JSON"</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html">https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html</a>&gt;</span>. </dd>
