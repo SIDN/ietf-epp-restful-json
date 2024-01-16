@@ -117,7 +117,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 1.  Introduction
 
    The Extensible Provisioning Protocol (EPP) [RFC5730] uses an on XML
-   based protocol.  This protocol is wel defined, using XML Schema
+   based protocol.  The EPP protocol is well defined, using XML Schema
    Definition (XSD) for validation of XML messages, the XSDs are
    published as part of the EPP RFCs.  This document describes rules for
    converting valid EPP XML messages to the JavaScript Object Notation
@@ -378,8 +378,8 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 5.  Examples
 
-   This section lists examples for every EPP command supported by REPP,
-   the examples
+   This section lists examples for each of the existing EPP commands
+   that are support by REPP.
 
 5.1.  Hello
 
@@ -434,7 +434,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
    Example JSON response:
 
-   XML namespaces are not converted to JSON and are ignored.
+
 
 
 

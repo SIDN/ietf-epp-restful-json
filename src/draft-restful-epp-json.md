@@ -43,7 +43,7 @@ This document describes the rules for converting an EPP [@!RFC5730] XML message 
 
 # Introduction
 
-The Extensible Provisioning Protocol (EPP) [@!RFC5730] uses an on XML based protocol. This protocol is wel defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with RESTful EPP (REPP).
+The Extensible Provisioning Protocol (EPP) [@!RFC5730] uses an on XML based protocol. The EPP protocol is well defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with RESTful EPP (REPP).
 
 # Terminology
 
@@ -249,7 +249,7 @@ The rules above are based on the conversion approach found on [@?XMLCOM-WEB]
 
 # Examples
 
-This section lists examples for every EPP command supported by REPP, the examples  
+This section lists examples for each of the existing EPP commands that are support by REPP.
 
 ## Hello
 
@@ -297,8 +297,6 @@ Example XML response:
 </epp>
 ```
 Example JSON response:
-
-XML namespaces are not converted to JSON and are ignored.
 
 ```json
 {

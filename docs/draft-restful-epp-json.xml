@@ -23,7 +23,7 @@
 <middle>
 
 <section anchor="introduction"><name>Introduction</name>
-<t>The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> uses an on XML based protocol. This protocol is wel defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with RESTful EPP (REPP).</t>
+<t>The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> uses an on XML based protocol. The EPP protocol is well defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with RESTful EPP (REPP).</t>
 </section>
 
 <section anchor="terminology"><name>Terminology</name>
@@ -223,7 +223,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="examples"><name>Examples</name>
-<t>This section lists examples for every EPP command supported by REPP, the examples</t>
+<t>This section lists examples for each of the existing EPP commands that are support by REPP.</t>
 
 <section anchor="hello"><name>Hello</name>
 <t>The Hello request message does not exist in the context of REPP.</t>
@@ -269,7 +269,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
 ]]>
 </sourcecode>
 <t>Example JSON response:</t>
-<t>XML namespaces are not converted to JSON and are ignored.</t>
 
 <sourcecode type="json"><![CDATA[{
     "epp": {
