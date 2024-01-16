@@ -55,12 +55,12 @@ Copyright Notice
 
 Wullink & Davids          Expires 19 July 2024                  [Page 1]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Conventions Used in This Document . . . . . . . . . . . . . .   3
    4.  Conversion Rules  . . . . . . . . . . . . . . . . . . . . . .   3
@@ -99,11 +99,11 @@ Table of Contents
            epp+json  . . . . . . . . . . . . . . . . . . . . . . . .  27
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
-1.  Introduction
 
-   The Extensible Provisioning Protocol (EPP) [RFC5730] uses an XML
-   based protocol.  The schemas for validating EPP XML messages are
-   published as part of the EPP RFCs.
+
+
+
+
 
 
 
@@ -111,15 +111,18 @@ Table of Contents
 
 Wullink & Davids          Expires 19 July 2024                  [Page 2]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
-   RESTful EPP (REPP), however has suport for multiple data formats such
-   as the JavaScript Object Notation (JSON) Data Interchange Format
-   [RFC8259].
+1.  Introduction
 
-   This document describes the rules for converting a valid EPP XML
-   message to JSON message, which can be used with REPP.
+   The Extensible Provisioning Protocol (EPP) [RFC5730] uses an on XML
+   based protocol.  This protocol is wel defined, using XML Schema
+   Definition (XSD) for validation of XML messages, the XSDs are
+   published as part of the EPP RFCs.  This document describes rules for
+   converting valid EPP XML messages to the JavaScript Object Notation
+   (JSON) Data Interchange Format [RFC8259], for use with RESTful EPP
+   (REPP).
 
 2.  Terminology
 
@@ -127,8 +130,6 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    EPP RFCs - This is a reference to the EPP version 1.0 specifications
    [RFC5730], [RFC5731], [RFC5732] and [RFC5733].
-
-   Stateful EPP - The definition according to Section 2 of [RFC5730].
 
    RESTful EPP or REPP - The RESTful transport for EPP described in this
    document.
@@ -141,18 +142,16 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    JSON is case sensitive.  Unless stated otherwise, JSON specifications
    and examples provided in this document MUST be interpreted in the
-   character case presented.
-
-   The examples in this document assume that request and response
-   messages are properly formatted JSON documents.
-
+   character case presented.  The examples in this document assume that
+   request and response messages are properly formatted JSON documents.
    Indentation and white space in examples are provided only to
    illustrate element relationships and for improving readability, and
    are not REQUIRED features of the protocol.
 
 4.  Conversion Rules
 
-   In general a single XML element allows for the following forms
+   A XML element may use one of 7 possible forms, the sections below
+   describe how these forms MUST be translated to valid JSON.
 
    1.  Empty
    2.  Pure text content
@@ -165,9 +164,10 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
+
 Wullink & Davids          Expires 19 July 2024                  [Page 3]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 4.1.  Empty
@@ -223,7 +223,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                  [Page 4]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    {
@@ -279,7 +279,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                  [Page 5]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    {
@@ -335,7 +335,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                  [Page 6]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    JSON:
@@ -378,6 +378,9 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 5.  Examples
 
+   This section lists examples for every EPP command supported by REPP,
+   the examples
+
 5.1.  Hello
 
    The Hello request message does not exist in the context of REPP.
@@ -386,12 +389,9 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-
-
-
 Wullink & Davids          Expires 19 July 2024                  [Page 7]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -447,7 +447,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                  [Page 8]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    {
@@ -503,7 +503,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                  [Page 9]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 5.5.  Info
@@ -559,7 +559,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 10]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    {
@@ -615,7 +615,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 11]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
                },
@@ -671,7 +671,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 12]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    {
@@ -727,7 +727,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 13]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    Example JSON response:
@@ -783,7 +783,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 14]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -839,7 +839,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 15]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    {
@@ -895,7 +895,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 16]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -951,7 +951,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 17]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    {
@@ -1007,7 +1007,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 18]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1063,7 +1063,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 19]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 5.10.  Delete
@@ -1119,7 +1119,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 20]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1175,7 +1175,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 21]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 5.12.  Transfer Request
@@ -1231,7 +1231,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 22]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    {
@@ -1287,7 +1287,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 23]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    Example JSON Domain Cancel Transfer response:
@@ -1343,7 +1343,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 24]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1399,7 +1399,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 25]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1455,7 +1455,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 Wullink & Davids          Expires 19 July 2024                 [Page 26]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 9.  Acknowledgments
@@ -1511,7 +1511,7 @@ Appendix A.  Appendix A.  Media Type Registration: application/epp+json
 
 Wullink & Davids          Expires 19 July 2024                 [Page 27]
 
-Internet-Draft          RESTful Transport for EPP           January 2024
+Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
    Required parameters: none

@@ -3,7 +3,7 @@
 <rfc version="3" ipr="trust200902" docName="draft-wullink-restful-epp-json-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" tocDepth="4">
 
 <front>
-<title abbrev="RESTful Transport for EPP">XML to JSON conversion rules for RESTful EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
+<title abbrev="XML to JSON for RESTful EPP">XML to JSON conversion rules for RESTful EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="M." surname="Wullink" fullname="Maarten Wullink"><organization>SIDN Labs</organization><address><postal><street></street>
 </postal><email>maarten.wullink@sidn.nl</email>
 <uri>https://sidn.nl/</uri>
@@ -23,17 +23,13 @@
 <middle>
 
 <section anchor="introduction"><name>Introduction</name>
-<t>The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> uses an XML based protocol.
-The schemas for validating EPP XML messages are published as part of the EPP RFCs.</t>
-<t>RESTful EPP (REPP), however has suport for multiple data formats such as the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>.</t>
-<t>This document describes the rules for converting a valid EPP XML message to JSON message, which can be used with REPP.</t>
+<t>The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> uses an on XML based protocol. This protocol is wel defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with RESTful EPP (REPP).</t>
 </section>
 
 <section anchor="terminology"><name>Terminology</name>
 <t>In this document the following terminology is used.</t>
 <t>EPP RFCs - This is a reference to the EPP version 1.0
 specifications <xref target="RFC5730"></xref>, <xref target="RFC5731"></xref>, <xref target="RFC5732"></xref> and <xref target="RFC5733"></xref>.</t>
-<t>Stateful EPP - The definition according to <xref target="RFC5730" sectionFormat="of" section="2"></xref>.</t>
 <t>RESTful EPP or REPP - The RESTful transport for EPP described in
 this document.</t>
 </section>
@@ -42,16 +38,13 @@ this document.</t>
 <t>The key words &quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;,
 &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;, &quot;MAY&quot;, and &quot;OPTIONAL&quot; in this
 document are to be interpreted as described in <xref target="RFC2119"></xref>.</t>
-<t>JSON is case sensitive. Unless stated otherwise, JSON specifications
-and examples provided in this document MUST be interpreted in the
-character case presented.</t>
-<t>The examples in this document assume that request and response messages
-are properly formatted JSON documents.</t>
-<t>Indentation and white space in examples are provided only to illustrate element relationships and for improving readability, and are not REQUIRED features of the protocol.</t>
+<t>JSON is case sensitive. Unless stated otherwise, JSON specifications and examples provided in this document MUST be interpreted in the
+character case presented. The examples in this document assume that request and response messages
+are properly formatted JSON documents. Indentation and white space in examples are provided only to illustrate element relationships and for improving readability, and are not REQUIRED features of the protocol.</t>
 </section>
 
 <section anchor="conversion-rules"><name>Conversion Rules</name>
-<t>In general a single XML element allows for the following forms</t>
+<t>A XML element may use one of 7 possible forms, the sections below describe how these forms MUST be translated to valid JSON.</t>
 
 <ol spacing="compact">
 <li>Empty</li>
@@ -230,6 +223,7 @@ are properly formatted JSON documents.</t>
 </section>
 
 <section anchor="examples"><name>Examples</name>
+<t>This section lists examples for every EPP command supported by REPP, the examples</t>
 
 <section anchor="hello"><name>Hello</name>
 <t>The Hello request message does not exist in the context of REPP.</t>

@@ -1,6 +1,6 @@
 %%%
 title = "XML to JSON conversion rules for RESTful EPP"
-abbrev = "RESTful Transport for EPP"
+abbrev = "XML to JSON for RESTful EPP"
 ipr = "trust200902"
 area = "Internet"
 workgroup = "Network Working Group"
@@ -43,11 +43,7 @@ This document describes the rules for converting an EPP [@!RFC5730] XML message 
 
 # Introduction
 
-The Extensible Provisioning Protocol (EPP) [@!RFC5730] uses an XML based protocol. The protocol is wel defined, using XML schemas for validation of XML messages and are published as part of the EPP RFCs.
-
-RESTful EPP (REPP), however has suport for multiple data formats such as the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259].  
-
-This document describes the rules for converting a valid EPP XML message to JSON message, which can be used with REPP. 
+The Extensible Provisioning Protocol (EPP) [@!RFC5730] uses an on XML based protocol. This protocol is wel defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with RESTful EPP (REPP).
 
 # Terminology
 
@@ -55,8 +51,6 @@ In this document the following terminology is used.
 
 EPP RFCs - This is a reference to the EPP version 1.0
 specifications [@!RFC5730], [@!RFC5731], [@!RFC5732] and [@!RFC5733].
-
-Stateful EPP - The definition according to [@!RFC5730, section 2].
 
 RESTful EPP or REPP - The RESTful transport for EPP described in
 this document.
@@ -68,19 +62,14 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
 document are to be interpreted as described in [@!RFC2119].
 
-JSON is case sensitive. Unless stated otherwise, JSON specifications
-and examples provided in this document MUST be interpreted in the
-character case presented.
-
-The examples in this document assume that request and response messages
-are properly formatted JSON documents.  
-
-Indentation and white space in examples are provided only to illustrate element relationships and for improving readability, and are not REQUIRED features of the protocol.
+JSON is case sensitive. Unless stated otherwise, JSON specifications and examples provided in this document MUST be interpreted in the
+character case presented. The examples in this document assume that request and response messages
+are properly formatted JSON documents. Indentation and white space in examples are provided only to illustrate element relationships and for improving readability, and are not REQUIRED features of the protocol.
 
 
 # Conversion Rules
 
-In general a single XML element allows for the following forms
+A XML element may use one of 7 possible forms, the sections below describe how these forms MUST be translated to valid JSON.
 
 1. Empty
 2. Pure text content
@@ -259,6 +248,8 @@ The rules above are based on the conversion approach found on [@?XMLCOM-WEB]
 
 
 # Examples
+
+This section lists examples for every EPP command supported by REPP, the examples  
 
 ## Hello
 
