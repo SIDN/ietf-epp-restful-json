@@ -1209,7 +1209,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Wullink &amp; Davids</td>
-<td class="center">Expires 18 July 2024</td>
+<td class="center">Expires 19 July 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1222,12 +1222,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-wullink-restful-epp-json-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-01-15" class="published">15 January 2024</time>
+<time datetime="2024-01-16" class="published">16 January 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-07-18">18 July 2024</time></dd>
+<dd class="expires"><time datetime="2024-07-19">19 July 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1265,7 +1265,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1813,7 +1813,7 @@ are properly formatted JSON documents.<a href="#section-3-3" class="pilcrow">¶<
 <a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-info" class="section-name selfRef">Info</a>
         </h3>
 <p id="section-5.5-1">The Info request message is not used for REPP.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
-<p id="section-5.5-2">Example XML response:<a href="#section-5.5-2" class="pilcrow">¶</a></p>
+<p id="section-5.5-2">Example XML Domain Info response:<a href="#section-5.5-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.5-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
@@ -1858,7 +1858,7 @@ are properly formatted JSON documents.<a href="#section-3-3" class="pilcrow">¶<
 
 </pre><a href="#section-5.5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-5.5-4">Example JSON response:<a href="#section-5.5-4" class="pilcrow">¶</a></p>
+<p id="section-5.5-4">Example JSON Domain Info response:<a href="#section-5.5-4" class="pilcrow">¶</a></p>
 <div class="breakable lang-json sourcecode" id="section-5.5-5">
 <pre>{
     "epp": {
@@ -2041,34 +2041,68 @@ are properly formatted JSON documents.<a href="#section-3-3" class="pilcrow">¶<
         <h3 id="name-transfer-query">
 <a href="#section-5.8" class="section-number selfRef">5.8. </a><a href="#name-transfer-query" class="section-name selfRef">Transfer Query</a>
         </h3>
-<p id="section-5.8-1">The Transfer Query request message is not used for REPP.<a href="#section-5.8-1" class="pilcrow">¶</a></p>
-<p id="section-5.8-2">Example Transfer Query response:<a href="#section-5.8-2" class="pilcrow">¶</a></p>
+<p id="section-5.8-1">The Domain Transfer Query request message is not used for REPP.<a href="#section-5.8-1" class="pilcrow">¶</a></p>
+<p id="section-5.8-2">Example XML  Domain Transfer Query response:<a href="#section-5.8-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.8-3">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 230
-S: Content-Type: application/epp+xml
-S: Content-Language: en
-S: REPP-Eppcode: 1000
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;resData&gt;
-S:      &lt;!-- The rest of the response is omitted here --&gt;
-S:    &lt;/resData&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;response&gt;
+        &lt;result code="1000"&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:trnData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:trStatus&gt;pending&lt;/domain:trStatus&gt;
+                &lt;domain:reID&gt;ClientX&lt;/domain:reID&gt;
+                &lt;domain:reDate&gt;2000-06-06T22:00:00.0Z&lt;/domain:reDate&gt;
+                &lt;domain:acID&gt;ClientY&lt;/domain:acID&gt;
+                &lt;domain:acDate&gt;2000-06-11T22:00:00.0Z&lt;/domain:acDate&gt;
+                &lt;domain:exDate&gt;2002-09-08T22:00:00.0Z&lt;/domain:exDate&gt;
+            &lt;/domain:trnData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54322-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 
 </pre><a href="#section-5.8-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.8-4">Example JSON Domain Transfer Query response:<a href="#section-5.8-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.8-5">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "resData": {
+                "domain:trnData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:trStatus": "pending",
+                    "domain:reID": "ClientX",
+                    "domain:reDate": "2000-06-06T22:00:00.0Z",
+                    "domain:acID": "ClientY",
+                    "domain:acDate": "2000-06-11T22:00:00.0Z",
+                    "domain:exDate": "2002-09-08T22:00:00.0Z"
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54322-XYZ"
+            }
+        }
+    }
+}
+
+</pre><a href="#section-5.8-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2077,64 +2111,131 @@ S:&lt;/epp&gt;
         <h3 id="name-create">
 <a href="#section-5.9" class="section-number selfRef">5.9. </a><a href="#name-create" class="section-name selfRef">Create</a>
         </h3>
-<p id="section-5.9-1">Example Domain Create request:<a href="#section-5.9-1" class="pilcrow">¶</a></p>
+<p id="section-5.9-1">Example XML Domain Create request:<a href="#section-5.9-1" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.9-2">
-<pre>C: POST /repp/v1/domains HTTP/2
-C: Host: repp.example.nl
-C: Authorization: Bearer &lt;token&gt;
-C: Accept: application/epp+xml
-C: Content-Type: application/epp+xml
-C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-C: Accept-Language: en
-C: Content-Length: 220
-C:
-C:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-C:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-C:  &lt;command&gt;
-C:    &lt;create&gt;
-C:      &lt;domain:create
-C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
-C:        &lt;domain:name&gt;example.nl&lt;/domain:name&gt;
-C:        &lt;!-- The rest of the request is omitted here --&gt;
-C:      &lt;/domain:create&gt;
-C:    &lt;/create&gt;
-C:    &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-C:  &lt;/command&gt;
-C:&lt;/epp&gt;
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;command&gt;
+        &lt;create&gt;
+            &lt;domain:create
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:period unit="y"&gt;2&lt;/domain:period&gt;
+                &lt;domain:ns&gt;
+                    &lt;domain:hostObj&gt;ns1.example.net&lt;/domain:hostObj&gt;
+                    &lt;domain:hostObj&gt;ns2.example.net&lt;/domain:hostObj&gt;
+                &lt;/domain:ns&gt;
+                &lt;domain:registrant&gt;jd1234&lt;/domain:registrant&gt;
+                &lt;domain:contact type="admin"&gt;sh8013&lt;/domain:contact&gt;
+                &lt;domain:contact type="tech"&gt;sh8013&lt;/domain:contact&gt;
+                &lt;domain:authInfo&gt;
+                    &lt;domain:pw&gt;2fooBAR&lt;/domain:pw&gt;
+                &lt;/domain:authInfo&gt;
+            &lt;/domain:create&gt;
+        &lt;/create&gt;
+        &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+    &lt;/command&gt;
+&lt;/epp&gt;
 
 </pre><a href="#section-5.9-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.9-3">Example Domain Create response:<a href="#section-5.9-3" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.9-4">
-<pre>S: HTTP/2 200
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 642
-S: Content-Type: application/epp+xml
-S: Location: https://repp.example.nl/repp/v1/domains/example.nl
-S: REPP-Eppcode: 1000
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
-S:     xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
-S:   &lt;response&gt;
-S:      &lt;result code="1000"&gt;
-S:         &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:      &lt;/result&gt;
-S:      &lt;resData&gt;
-S:         &lt;domain:creData&gt;
-S:            &lt;!-- The rest of the response is omitted here --&gt;
-S:         &lt;/domain:creData&gt;
-S:      &lt;/resData&gt;
-S:      &lt;trID&gt;
-S:         &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:         &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
-S:      &lt;/trID&gt;
-S:   &lt;/response&gt;
-S:&lt;/epp&gt;
+<p id="section-5.9-3">Example JSON Domain Create request:<a href="#section-5.9-3" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.9-4">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "command": {
+            "create": {
+                "domain:create": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:period": {
+                        "@unit": "y",
+                        "#text": "2"
+                    },
+                    "domain:ns": {
+                        "domain:hostObj": [
+                            "ns1.example.net",
+                            "ns2.example.net"
+                        ]
+                    },
+                    "domain:registrant": "jd1234",
+                    "domain:contact": [
+                        {
+                            "@type": "admin",
+                            "#text": "sh8013"
+                        },
+                        {
+                            "@type": "tech",
+                            "#text": "sh8013"
+                        }
+                    ],
+                    "domain:authInfo": {
+                        "domain:pw": "2fooBAR"
+                    }
+                }
+            },
+            "clTRID": "ABC-12345"
+        }
+    }
+}
 
 </pre><a href="#section-5.9-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.9-5">Example XML Domain Create response:<a href="#section-5.9-5" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.9-6">
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;response&gt;
+        &lt;result code="1000"&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:creData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:crDate&gt;1999-04-03T22:00:00.0Z&lt;/domain:crDate&gt;
+                &lt;domain:exDate&gt;2001-04-03T22:00:00.0Z&lt;/domain:exDate&gt;
+            &lt;/domain:creData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
+
+</pre><a href="#section-5.9-6" class="pilcrow">¶</a>
+</div>
+<p id="section-5.9-7">Example JSON Domain Create response:<a href="#section-5.9-7" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.9-8">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "resData": {
+                "domain:creData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:crDate": "1999-04-03T22:00:00.0Z",
+                    "domain:exDate": "2001-04-03T22:00:00.0Z"
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54321-XYZ"
+            }
+        }
+    }
+}
+
+</pre><a href="#section-5.9-8" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2144,30 +2245,43 @@ S:&lt;/epp&gt;
 <a href="#section-5.10" class="section-number selfRef">5.10. </a><a href="#name-delete" class="section-name selfRef">Delete</a>
         </h3>
 <p id="section-5.10-1">The Delete request message is not used for REPP.<a href="#section-5.10-1" class="pilcrow">¶</a></p>
-<p id="section-5.10-2">Example Domain Delete response:<a href="#section-5.10-2" class="pilcrow">¶</a></p>
+<p id="section-5.10-2">Example XML Domain Delete response:<a href="#section-5.10-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.10-3">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;response&gt;
+        &lt;result code="1000"&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 
 </pre><a href="#section-5.10-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.10-4">Example JSON Domain Delete response:<a href="#section-5.10-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.10-5">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54321-XYZ"
+            }
+        }
+    }
+}
+
+</pre><a href="#section-5.10-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2177,34 +2291,57 @@ S:&lt;/epp&gt;
 <a href="#section-5.11" class="section-number selfRef">5.11. </a><a href="#name-renew" class="section-name selfRef">Renew</a>
         </h3>
 <p id="section-5.11-1">The Renew request message is not used for REPP.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
-<p id="section-5.11-2">Example Renew response:<a href="#section-5.11-2" class="pilcrow">¶</a></p>
+<p id="section-5.11-2">Example XML Domain Renew response:<a href="#section-5.11-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.11-3">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 205
-S: Location: https://repp.example.nl/repp/v1/domains/example.nl
-S: Content-Type: application/epp+xml
-S: REPP-Eppcode: 1000
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;resData&gt;
-S:      &lt;!-- The rest of the response is omitted here --&gt;
-S:    &lt;/resData&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;response&gt;
+        &lt;result code="1000"&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:renData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:exDate&gt;2005-04-03T22:00:00.0Z&lt;/domain:exDate&gt;
+            &lt;/domain:renData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54322-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 
 </pre><a href="#section-5.11-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.11-4">Example JSON Domain Renew response:<a href="#section-5.11-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.11-5">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "resData": {
+                "domain:renData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:exDate": "2005-04-03T22:00:00.0Z"
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54322-XYZ"
+            }
+        }
+    }
+}
+
+</pre><a href="#section-5.11-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2214,34 +2351,67 @@ S:&lt;/epp&gt;
 <a href="#section-5.12" class="section-number selfRef">5.12. </a><a href="#name-transfer-request" class="section-name selfRef">Transfer Request</a>
         </h3>
 <p id="section-5.12-1">The Transfer request message is not used for REPP.<a href="#section-5.12-1" class="pilcrow">¶</a></p>
-<p id="section-5.12-2">Example Transfer response:<a href="#section-5.12-2" class="pilcrow">¶</a></p>
+<p id="section-5.12-2">Example XML Domain Transfer response:<a href="#section-5.12-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.12-3">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 328
-S: Content-Type: application/epp+xml
-S: Location: https://repp.example.nl/repp/v1/domains/example.nl/transfers/latest
-S: REPP-Eppcode: 1001
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1001"&gt;
-S:      &lt;msg&gt;Command completed successfully; action pending&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;resData&gt;
-S:      &lt;!-- The rest of the response is omitted here --&gt;
-S:    &lt;/resData&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;response&gt;
+        &lt;result code="1001"&gt;
+            &lt;msg&gt;Command completed successfully; action pending&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:trnData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:trStatus&gt;pending&lt;/domain:trStatus&gt;
+                &lt;domain:reID&gt;ClientX&lt;/domain:reID&gt;
+                &lt;domain:reDate&gt;2000-06-08T22:00:00.0Z&lt;/domain:reDate&gt;
+                &lt;domain:acID&gt;ClientY&lt;/domain:acID&gt;
+                &lt;domain:acDate&gt;2000-06-13T22:00:00.0Z&lt;/domain:acDate&gt;
+                &lt;domain:exDate&gt;2002-09-08T22:00:00.0Z&lt;/domain:exDate&gt;
+            &lt;/domain:trnData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54322-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 
 </pre><a href="#section-5.12-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.12-4">Example JSON Domain Transfer response:<a href="#section-5.12-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.12-5">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1001",
+                "msg": "Command completed successfully; action pending"
+            },
+            "resData": {
+                "domain:trnData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:trStatus": "pending",
+                    "domain:reID": "ClientX",
+                    "domain:reDate": "2000-06-08T22:00:00.0Z",
+                    "domain:acID": "ClientY",
+                    "domain:acDate": "2000-06-13T22:00:00.0Z",
+                    "domain:exDate": "2002-09-08T22:00:00.0Z"
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54322-XYZ"
+            }
+        }
+    }
+}
+
+</pre><a href="#section-5.12-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2251,30 +2421,43 @@ S:&lt;/epp&gt;
 <a href="#section-5.13" class="section-number selfRef">5.13. </a><a href="#name-transfer-cancel" class="section-name selfRef">Transfer Cancel</a>
         </h3>
 <p id="section-5.13-1">The Transfer Cancel request message is not used for REPP.<a href="#section-5.13-1" class="pilcrow">¶</a></p>
-<p id="section-5.13-2">Example response:<a href="#section-5.13-2" class="pilcrow">¶</a></p>
+<p id="section-5.13-2">Example XML Domain Cancel Transfer response:<a href="#section-5.13-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.13-3">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;response&gt;
+        &lt;result code="1000"&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 
 </pre><a href="#section-5.13-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.13-4">Example JSON Domain Cancel Transfer response:<a href="#section-5.13-4" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.13-5">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "XYZ-12345"
+            }
+        }
+    }
+}
+
+</pre><a href="#section-5.13-5" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2283,33 +2466,7 @@ S:&lt;/epp&gt;
         <h3 id="name-transfer-reject">
 <a href="#section-5.14" class="section-number selfRef">5.14. </a><a href="#name-transfer-reject" class="section-name selfRef">Transfer Reject</a>
         </h3>
-<p id="section-5.14-1">The Transfer Reject request message is not used for REPP.<a href="#section-5.14-1" class="pilcrow">¶</a></p>
-<p id="section-5.14-2">Example Reject response:<a href="#section-5.14-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.14-3">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
-
-
-</pre><a href="#section-5.14-3" class="pilcrow">¶</a>
-</div>
+<p id="section-5.14-1">The Transfer Reject request message is not used for REPP and the response message is the same as for the Transfer Cancel command.<a href="#section-5.14-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="transfer-approve">
@@ -2317,32 +2474,7 @@ S:&lt;/epp&gt;
         <h3 id="name-transfer-approve">
 <a href="#section-5.15" class="section-number selfRef">5.15. </a><a href="#name-transfer-approve" class="section-name selfRef">Transfer Approve</a>
         </h3>
-<p id="section-5.15-1">The Transfer Approve request message is not used for REPP.<a href="#section-5.15-1" class="pilcrow">¶</a></p>
-<p id="section-5.15-2">Example Approve response:<a href="#section-5.15-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.15-3">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
-
-</pre><a href="#section-5.15-3" class="pilcrow">¶</a>
-</div>
+<p id="section-5.15-1">The Transfer Approve request message is not used for REPP and the response message is the same as for the Transfer Cancel command.<a href="#section-5.15-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="update">
@@ -2350,48 +2482,92 @@ S:&lt;/epp&gt;
         <h3 id="name-update">
 <a href="#section-5.16" class="section-number selfRef">5.16. </a><a href="#name-update" class="section-name selfRef">Update</a>
         </h3>
-<p id="section-5.16-1">Example request:<a href="#section-5.16-1" class="pilcrow">¶</a></p>
+<p id="section-5.16-1">Example XML Domain Update request:<a href="#section-5.16-1" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.16-2">
-<pre>C:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-C:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-C:  &lt;command&gt;
-C:    &lt;update&gt;
-C:      &lt;domain:update
-C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
-C:        &lt;domain:name&gt;example.nl&lt;/domain:name&gt;
-C:           &lt;!-- The rest of the request is omitted here --&gt;
-C:      &lt;/domain:update&gt;
-C:    &lt;/update&gt;
-C:    &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-C:  &lt;/command&gt;
-C:&lt;/epp&gt;
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;command&gt;
+        &lt;update&gt;
+            &lt;domain:update
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0"&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:chg&gt;
+                    &lt;domain:registrant&gt;sh8013&lt;/domain:registrant&gt;
+                    &lt;domain:authInfo&gt;
+                        &lt;domain:pw&gt;2BARfoo&lt;/domain:pw&gt;
+                    &lt;/domain:authInfo&gt;
+                &lt;/domain:chg&gt;
+            &lt;/domain:update&gt;
+        &lt;/update&gt;
+        &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+    &lt;/command&gt;
+&lt;/epp&gt;
 
 </pre><a href="#section-5.16-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.16-3">Example response:<a href="#section-5.16-3" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.16-4">
-<pre>S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
-S:&lt;epp xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
-S:  &lt;response&gt;
-S:    &lt;result code="1000"&gt;
-S:      &lt;msg&gt;Command completed successfully&lt;/msg&gt;
-S:    &lt;/result&gt;
-S:    &lt;trID&gt;
-S:      &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
-S:      &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
-S:    &lt;/trID&gt;
-S:  &lt;/response&gt;
-S:&lt;/epp&gt;
+<p id="section-5.16-3">Example JSON Domain Update request:<a href="#section-5.16-3" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.16-4">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "command": {
+            "update": {
+                "domain:update": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:chg": {
+                        "domain:registrant": "sh8013",
+                        "domain:authInfo": {
+                            "domain:pw": "2BARfoo"
+                        }
+                    }
+                }
+            },
+            "clTRID": "ABC-12345"
+        }
+    }
+}
 
 </pre><a href="#section-5.16-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.16-5">Example XML Domain Update response:<a href="#section-5.16-5" class="pilcrow">¶</a></p>
+<div class="lang-xml sourcecode" id="section-5.16-6">
+<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+&lt;epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
+    &lt;response&gt;
+        &lt;result code="1000"&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
+
+</pre><a href="#section-5.16-6" class="pilcrow">¶</a>
+</div>
+<p id="section-5.16-7">Example JSON Domain Update response:<a href="#section-5.16-7" class="pilcrow">¶</a></p>
+<div class="lang-json sourcecode" id="section-5.16-8">
+<pre>{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "XYZ-12345"
+            }
+        }
+    }
+}
+
+</pre><a href="#section-5.16-8" class="pilcrow">¶</a>
 </div>
 </section>
 </div>

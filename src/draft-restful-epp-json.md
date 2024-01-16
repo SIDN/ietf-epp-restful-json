@@ -43,8 +43,7 @@ This document describes the rules for converting an EPP [@!RFC5730] XML message 
 
 # Introduction
 
-The Extensible Provisioning Protocol (EPP) [@!RFC5730] uses an XML based protocol.
-The schemas for validating EPP XML messages are published as part of the EPP RFCs.
+The Extensible Provisioning Protocol (EPP) [@!RFC5730] uses an XML based protocol. The protocol is wel defined, using XML schemas for validation of XML messages and are published as part of the EPP RFCs.
 
 RESTful EPP (REPP), however has suport for multiple data formats such as the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259].  
 
@@ -363,7 +362,7 @@ The Check request and responses messages are not used for REPP.
 
 The Info request message is not used for REPP.
 
-Example XML response:
+Example XML Domain Info response:
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <epp
@@ -407,7 +406,7 @@ Example XML response:
 </epp>
 ```
 
-Example JSON response:
+Example JSON Domain Info response:
 
 ```json
 {
@@ -576,157 +575,295 @@ Example JSON response:
 
 ## Transfer Query
 
-The Transfer Query request message is not used for REPP.
+The Domain Transfer Query request message is not used for REPP.
 
-Example Transfer Query response:
+Example XML  Domain Transfer Query response:
 
 ```xml
-S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 230
-S: Content-Type: application/epp+xml
-S: Content-Language: en
-S: REPP-Eppcode: 1000
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1000">
-S:      <msg>Command completed successfully</msg>
-S:    </result>
-S:    <resData>
-S:      <!-- The rest of the response is omitted here -->
-S:    </resData>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>XYZ-12345</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <response>
+        <result code="1000">
+            <msg>Command completed successfully</msg>
+        </result>
+        <resData>
+            <domain:trnData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                <domain:name>example.com</domain:name>
+                <domain:trStatus>pending</domain:trStatus>
+                <domain:reID>ClientX</domain:reID>
+                <domain:reDate>2000-06-06T22:00:00.0Z</domain:reDate>
+                <domain:acID>ClientY</domain:acID>
+                <domain:acDate>2000-06-11T22:00:00.0Z</domain:acDate>
+                <domain:exDate>2002-09-08T22:00:00.0Z</domain:exDate>
+            </domain:trnData>
+        </resData>
+        <trID>
+            <clTRID>ABC-12345</clTRID>
+            <svTRID>54322-XYZ</svTRID>
+        </trID>
+    </response>
+</epp>
+```
+
+Example JSON Domain Transfer Query response:
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "resData": {
+                "domain:trnData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:trStatus": "pending",
+                    "domain:reID": "ClientX",
+                    "domain:reDate": "2000-06-06T22:00:00.0Z",
+                    "domain:acID": "ClientY",
+                    "domain:acDate": "2000-06-11T22:00:00.0Z",
+                    "domain:exDate": "2002-09-08T22:00:00.0Z"
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54322-XYZ"
+            }
+        }
+    }
+}
 ```
 
 ## Create
 
-Example Domain Create request:
+Example XML Domain Create request:
 
 ```xml
-C: POST /repp/v1/domains HTTP/2
-C: Host: repp.example.nl
-C: Authorization: Bearer <token>
-C: Accept: application/epp+xml
-C: Content-Type: application/epp+xml
-C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-C: Accept-Language: en
-C: Content-Length: 220
-C:
-C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-C:  <command>
-C:    <create>
-C:      <domain:create
-C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-C:        <domain:name>example.nl</domain:name>
-C:        <!-- The rest of the request is omitted here -->
-C:      </domain:create>
-C:    </create>
-C:    <clTRID>ABC-12345</clTRID>
-C:  </command>
-C:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <command>
+        <create>
+            <domain:create
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                <domain:name>example.com</domain:name>
+                <domain:period unit="y">2</domain:period>
+                <domain:ns>
+                    <domain:hostObj>ns1.example.net</domain:hostObj>
+                    <domain:hostObj>ns2.example.net</domain:hostObj>
+                </domain:ns>
+                <domain:registrant>jd1234</domain:registrant>
+                <domain:contact type="admin">sh8013</domain:contact>
+                <domain:contact type="tech">sh8013</domain:contact>
+                <domain:authInfo>
+                    <domain:pw>2fooBAR</domain:pw>
+                </domain:authInfo>
+            </domain:create>
+        </create>
+        <clTRID>ABC-12345</clTRID>
+    </command>
+</epp>
 ```
 
-Example Domain Create response:
+Example JSON Domain Create request:
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "command": {
+            "create": {
+                "domain:create": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:period": {
+                        "@unit": "y",
+                        "#text": "2"
+                    },
+                    "domain:ns": {
+                        "domain:hostObj": [
+                            "ns1.example.net",
+                            "ns2.example.net"
+                        ]
+                    },
+                    "domain:registrant": "jd1234",
+                    "domain:contact": [
+                        {
+                            "@type": "admin",
+                            "#text": "sh8013"
+                        },
+                        {
+                            "@type": "tech",
+                            "#text": "sh8013"
+                        }
+                    ],
+                    "domain:authInfo": {
+                        "domain:pw": "2fooBAR"
+                    }
+                }
+            },
+            "clTRID": "ABC-12345"
+        }
+    }
+}
+```
+
+
+Example XML Domain Create response:
 
 ```xml
-S: HTTP/2 200
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 642
-S: Content-Type: application/epp+xml
-S: Location: https://repp.example.nl/repp/v1/domains/example.nl
-S: REPP-Eppcode: 1000
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
-S:     xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-S:   <response>
-S:      <result code="1000">
-S:         <msg>Command completed successfully</msg>
-S:      </result>
-S:      <resData>
-S:         <domain:creData>
-S:            <!-- The rest of the response is omitted here -->
-S:         </domain:creData>
-S:      </resData>
-S:      <trID>
-S:         <clTRID>ABC-12345</clTRID>
-S:         <svTRID>54321-XYZ</svTRID>
-S:      </trID>
-S:   </response>
-S:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <response>
+        <result code="1000">
+            <msg>Command completed successfully</msg>
+        </result>
+        <resData>
+            <domain:creData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                <domain:name>example.com</domain:name>
+                <domain:crDate>1999-04-03T22:00:00.0Z</domain:crDate>
+                <domain:exDate>2001-04-03T22:00:00.0Z</domain:exDate>
+            </domain:creData>
+        </resData>
+        <trID>
+            <clTRID>ABC-12345</clTRID>
+            <svTRID>54321-XYZ</svTRID>
+        </trID>
+    </response>
+</epp>
+```
+
+Example JSON Domain Create response:
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "resData": {
+                "domain:creData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:crDate": "1999-04-03T22:00:00.0Z",
+                    "domain:exDate": "2001-04-03T22:00:00.0Z"
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54321-XYZ"
+            }
+        }
+    }
+}
 ```
 
 ## Delete
 
 The Delete request message is not used for REPP.
 
-Example Domain Delete response:
+Example XML Domain Delete response:
 
 ```xml
-S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1000">
-S:      <msg>Command completed successfully</msg>
-S:    </result>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>XYZ-12345</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <response>
+        <result code="1000">
+            <msg>Command completed successfully</msg>
+        </result>
+        <trID>
+            <clTRID>ABC-12345</clTRID>
+            <svTRID>54321-XYZ</svTRID>
+        </trID>
+    </response>
+</epp>
+```
+
+Example JSON Domain Delete response:
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54321-XYZ"
+            }
+        }
+    }
+}
 ```
 
 ## Renew
 
 The Renew request message is not used for REPP.
 
-Example Renew response:
+Example XML Domain Renew response:
 
 ```xml
-S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 205
-S: Location: https://repp.example.nl/repp/v1/domains/example.nl
-S: Content-Type: application/epp+xml
-S: REPP-Eppcode: 1000
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1000">
-S:      <msg>Command completed successfully</msg>
-S:    </result>
-S:    <resData>
-S:      <!-- The rest of the response is omitted here -->
-S:    </resData>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>XYZ-12345</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <response>
+        <result code="1000">
+            <msg>Command completed successfully</msg>
+        </result>
+        <resData>
+            <domain:renData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                <domain:name>example.com</domain:name>
+                <domain:exDate>2005-04-03T22:00:00.0Z</domain:exDate>
+            </domain:renData>
+        </resData>
+        <trID>
+            <clTRID>ABC-12345</clTRID>
+            <svTRID>54322-XYZ</svTRID>
+        </trID>
+    </response>
+</epp>
+```
+
+Example JSON Domain Renew response:
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "resData": {
+                "domain:renData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:exDate": "2005-04-03T22:00:00.0Z"
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54322-XYZ"
+            }
+        }
+    }
+}
 ```
 
 ## Transfer Request
@@ -734,34 +871,68 @@ S:</epp>
 The Transfer request message is not used for REPP.
 
 
-Example Transfer response:
+Example XML Domain Transfer response:
 
 ```xml
-S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Language: en
-S: Content-Length: 328
-S: Content-Type: application/epp+xml
-S: Location: https://repp.example.nl/repp/v1/domains/example.nl/transfers/latest
-S: REPP-Eppcode: 1001
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1001">
-S:      <msg>Command completed successfully; action pending</msg>
-S:    </result>
-S:    <resData>
-S:      <!-- The rest of the response is omitted here -->
-S:    </resData>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>XYZ-12345</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <response>
+        <result code="1001">
+            <msg>Command completed successfully; action pending</msg>
+        </result>
+        <resData>
+            <domain:trnData
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                <domain:name>example.com</domain:name>
+                <domain:trStatus>pending</domain:trStatus>
+                <domain:reID>ClientX</domain:reID>
+                <domain:reDate>2000-06-08T22:00:00.0Z</domain:reDate>
+                <domain:acID>ClientY</domain:acID>
+                <domain:acDate>2000-06-13T22:00:00.0Z</domain:acDate>
+                <domain:exDate>2002-09-08T22:00:00.0Z</domain:exDate>
+            </domain:trnData>
+        </resData>
+        <trID>
+            <clTRID>ABC-12345</clTRID>
+            <svTRID>54322-XYZ</svTRID>
+        </trID>
+    </response>
+</epp>
 ```
+
+Example JSON Domain Transfer response:
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1001",
+                "msg": "Command completed successfully; action pending"
+            },
+            "resData": {
+                "domain:trnData": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:trStatus": "pending",
+                    "domain:reID": "ClientX",
+                    "domain:reDate": "2000-06-08T22:00:00.0Z",
+                    "domain:acID": "ClientY",
+                    "domain:acDate": "2000-06-13T22:00:00.0Z",
+                    "domain:exDate": "2002-09-08T22:00:00.0Z"
+                }
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "54322-XYZ"
+            }
+        }
+    }
+}
+```
+
 
 
 ## Transfer Cancel
@@ -769,133 +940,140 @@ S:</epp>
 The Transfer Cancel request message is not used for REPP.
 
 
-Example response:
+Example XML Domain Cancel Transfer response:
 
 ```xml
-S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1000">
-S:      <msg>Command completed successfully</msg>
-S:    </result>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>XYZ-12345</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <response>
+        <result code="1000">
+            <msg>Command completed successfully</msg>
+        </result>
+        <trID>
+            <clTRID>ABC-12345</clTRID>
+            <svTRID>XYZ-12345</svTRID>
+        </trID>
+    </response>
+</epp>
+```
+
+Example JSON Domain Cancel Transfer response:
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "XYZ-12345"
+            }
+        }
+    }
+}
 ```
 
 ## Transfer Reject
 
-The Transfer Reject request message is not used for REPP.
-
-Example Reject response:
-
-```xml
-S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1000">
-S:      <msg>Command completed successfully</msg>
-S:    </result>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>XYZ-12345</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>
-
-```
+The Transfer Reject request message is not used for REPP and the response message is the same as for the Transfer Cancel command.
 
 ## Transfer Approve
 
-The Transfer Approve request message is not used for REPP.
-
-Example Approve response:
-
-```xml
-S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1000">
-S:      <msg>Command completed successfully</msg>
-S:    </result>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>XYZ-12345</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>
-```
+The Transfer Approve request message is not used for REPP and the response message is the same as for the Transfer Cancel command.
 
 ## Update
 
-Example request:
+Example XML Domain Update request:
 
 ```xml
-C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-C:  <command>
-C:    <update>
-C:      <domain:update
-C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-C:        <domain:name>example.nl</domain:name>
-C:           <!-- The rest of the request is omitted here -->
-C:      </domain:update>
-C:    </update>
-C:    <clTRID>ABC-12345</clTRID>
-C:  </command>
-C:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <command>
+        <update>
+            <domain:update
+                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                <domain:name>example.com</domain:name>
+                <domain:chg>
+                    <domain:registrant>sh8013</domain:registrant>
+                    <domain:authInfo>
+                        <domain:pw>2BARfoo</domain:pw>
+                    </domain:authInfo>
+                </domain:chg>
+            </domain:update>
+        </update>
+        <clTRID>ABC-12345</clTRID>
+    </command>
+</epp>
 ```
 
-Example response:
+Example JSON Domain Update request:
+
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "command": {
+            "update": {
+                "domain:update": {
+                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                    "domain:name": "example.com",
+                    "domain:chg": {
+                        "domain:registrant": "sh8013",
+                        "domain:authInfo": {
+                            "domain:pw": "2BARfoo"
+                        }
+                    }
+                }
+            },
+            "clTRID": "ABC-12345"
+        }
+    }
+}
+```
+
+Example XML Domain Update response:
 
 ```xml
-S: HTTP/2 200 OK
-S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-S: Server: Example REPP server v1.0
-S: Content-Length: 80
-S: REPP-Svtrid: XYZ-12345
-S: REPP-Cltrid: ABC-12345
-S: REPP-Eppcode: 1000
-S:
-S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-S:  <response>
-S:    <result code="1000">
-S:      <msg>Command completed successfully</msg>
-S:    </result>
-S:    <trID>
-S:      <clTRID>ABC-12345</clTRID>
-S:      <svTRID>XYZ-12345</svTRID>
-S:    </trID>
-S:  </response>
-S:</epp>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp
+    xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <response>
+        <result code="1000">
+            <msg>Command completed successfully</msg>
+        </result>
+        <trID>
+            <clTRID>ABC-12345</clTRID>
+            <svTRID>XYZ-12345</svTRID>
+        </trID>
+    </response>
+</epp>
+```
+
+Example JSON Domain Update response:
+
+```json
+{
+    "epp": {
+        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+        "response": {
+            "result": {
+                "@code": "1000",
+                "msg": "Command completed successfully"
+            },
+            "trID": {
+                "clTRID": "ABC-12345",
+                "svTRID": "XYZ-12345"
+            }
+        }
+    }
+}
 ```
 
 # IANA Considerations

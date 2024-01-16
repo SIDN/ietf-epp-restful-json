@@ -5,7 +5,7 @@
 Network Working Group                                         M. Wullink
 Internet-Draft                                                 M. Davids
 Intended status: Standards Track                               SIDN Labs
-Expires: 18 July 2024                                    15 January 2024
+Expires: 19 July 2024                                    16 January 2024
 
 
               XML to JSON conversion rules for RESTful EPP
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 July 2024.
+   This Internet-Draft will expire on 19 July 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 1]
+Wullink & Davids          Expires 19 July 2024                  [Page 1]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -80,24 +80,24 @@ Table of Contents
      5.6.  Poll  . . . . . . . . . . . . . . . . . . . . . . . . . .  12
      5.7.  Poll Ack  . . . . . . . . . . . . . . . . . . . . . . . .  13
      5.8.  Transfer Query  . . . . . . . . . . . . . . . . . . . . .  14
-     5.9.  Create  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     5.10. Delete  . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     5.11. Renew . . . . . . . . . . . . . . . . . . . . . . . . . .  18
-     5.12. Transfer Request  . . . . . . . . . . . . . . . . . . . .  19
-     5.13. Transfer Cancel . . . . . . . . . . . . . . . . . . . . .  20
-     5.14. Transfer Reject . . . . . . . . . . . . . . . . . . . . .  21
-     5.15. Transfer Approve  . . . . . . . . . . . . . . . . . . . .  22
-     5.16. Update  . . . . . . . . . . . . . . . . . . . . . . . . .  22
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
-   7.  Internationalization Considerations . . . . . . . . . . . . .  23
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
-   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  23
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  24
+     5.9.  Create  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+     5.10. Delete  . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     5.11. Renew . . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     5.12. Transfer Request  . . . . . . . . . . . . . . . . . . . .  22
+     5.13. Transfer Cancel . . . . . . . . . . . . . . . . . . . . .  23
+     5.14. Transfer Reject . . . . . . . . . . . . . . . . . . . . .  24
+     5.15. Transfer Approve  . . . . . . . . . . . . . . . . . . . .  24
+     5.16. Update  . . . . . . . . . . . . . . . . . . . . . . . . .  24
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  26
+   7.  Internationalization Considerations . . . . . . . . . . . . .  26
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  26
+   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  27
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  27
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  27
    Appendix A.  Appendix A.  Media Type Registration: application/
-           epp+json  . . . . . . . . . . . . . . . . . . . . . . . .  24
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
+           epp+json  . . . . . . . . . . . . . . . . . . . . . . . .  27
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 2]
+Wullink & Davids          Expires 19 July 2024                  [Page 2]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -165,7 +165,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 3]
+Wullink & Davids          Expires 19 July 2024                  [Page 3]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -221,7 +221,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 4]
+Wullink & Davids          Expires 19 July 2024                  [Page 4]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -277,7 +277,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 5]
+Wullink & Davids          Expires 19 July 2024                  [Page 5]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -333,7 +333,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 6]
+Wullink & Davids          Expires 19 July 2024                  [Page 6]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -389,7 +389,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 7]
+Wullink & Davids          Expires 19 July 2024                  [Page 7]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -445,7 +445,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 8]
+Wullink & Davids          Expires 19 July 2024                  [Page 8]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -501,7 +501,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                  [Page 9]
+Wullink & Davids          Expires 19 July 2024                  [Page 9]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -510,7 +510,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    The Info request message is not used for REPP.
 
-   Example XML response:
+   Example XML Domain Info response:
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
    <epp
@@ -553,11 +553,11 @@ Internet-Draft          RESTful Transport for EPP           January 2024
        </response>
    </epp>
 
-   Example JSON response:
+   Example JSON Domain Info response:
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 10]
+Wullink & Davids          Expires 19 July 2024                 [Page 10]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -613,7 +613,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 11]
+Wullink & Davids          Expires 19 July 2024                 [Page 11]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -669,7 +669,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 12]
+Wullink & Davids          Expires 19 July 2024                 [Page 12]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -725,7 +725,7 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 13]
+Wullink & Davids          Expires 19 July 2024                 [Page 13]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
@@ -754,11 +754,9 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 5.8.  Transfer Query
 
-   The Transfer Query request message is not used for REPP.
+   The Domain Transfer Query request message is not used for REPP.
 
-   Example Transfer Query response:
-
-
+   Example XML Domain Transfer Query response:
 
 
 
@@ -781,38 +779,100 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 14]
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 14]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Length: 230
-   S: Content-Type: application/epp+xml
-   S: Content-Language: en
-   S: REPP-Eppcode: 1000
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <resData>
-   S:      <!-- The rest of the response is omitted here -->
-   S:    </resData>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1000">
+               <msg>Command completed successfully</msg>
+           </result>
+           <resData>
+               <domain:trnData
+                   xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                   <domain:name>example.com</domain:name>
+                   <domain:trStatus>pending</domain:trStatus>
+                   <domain:reID>ClientX</domain:reID>
+                   <domain:reDate>2000-06-06T22:00:00.0Z</domain:reDate>
+                   <domain:acID>ClientY</domain:acID>
+                   <domain:acDate>2000-06-11T22:00:00.0Z</domain:acDate>
+                   <domain:exDate>2002-09-08T22:00:00.0Z</domain:exDate>
+               </domain:trnData>
+           </resData>
+           <trID>
+               <clTRID>ABC-12345</clTRID>
+               <svTRID>54322-XYZ</svTRID>
+           </trID>
+       </response>
+   </epp>
+
+   Example JSON Domain Transfer Query response:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 15]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
+
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1000",
+                   "msg": "Command completed successfully"
+               },
+               "resData": {
+                   "domain:trnData": {
+                       "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                       "domain:name": "example.com",
+                       "domain:trStatus": "pending",
+                       "domain:reID": "ClientX",
+                       "domain:reDate": "2000-06-06T22:00:00.0Z",
+                       "domain:acID": "ClientY",
+                       "domain:acDate": "2000-06-11T22:00:00.0Z",
+                       "domain:exDate": "2002-09-08T22:00:00.0Z"
+                   }
+               },
+               "trID": {
+                   "clTRID": "ABC-12345",
+                   "svTRID": "54322-XYZ"
+               }
+           }
+       }
+   }
 
 5.9.  Create
 
-   Example Domain Create request:
+   Example XML Domain Create request:
 
 
 
@@ -833,43 +893,37 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 15]
+Wullink & Davids          Expires 19 July 2024                 [Page 16]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   C: POST /repp/v1/domains HTTP/2
-   C: Host: repp.example.nl
-   C: Authorization: Bearer <token>
-   C: Accept: application/epp+xml
-   C: Content-Type: application/epp+xml
-   C: REPP-Svcs: urn:ietf:params:xml:ns:domain-1.0
-   C: Accept-Language: en
-   C: Content-Length: 220
-   C:
-   C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   C:  <command>
-   C:    <create>
-   C:      <domain:create
-   C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-   C:        <domain:name>example.nl</domain:name>
-   C:        <!-- The rest of the request is omitted here -->
-   C:      </domain:create>
-   C:    </create>
-   C:    <clTRID>ABC-12345</clTRID>
-   C:  </command>
-   C:</epp>
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <command>
+           <create>
+               <domain:create
+                   xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                   <domain:name>example.com</domain:name>
+                   <domain:period unit="y">2</domain:period>
+                   <domain:ns>
+                       <domain:hostObj>ns1.example.net</domain:hostObj>
+                       <domain:hostObj>ns2.example.net</domain:hostObj>
+                   </domain:ns>
+                   <domain:registrant>jd1234</domain:registrant>
+                   <domain:contact type="admin">sh8013</domain:contact>
+                   <domain:contact type="tech">sh8013</domain:contact>
+                   <domain:authInfo>
+                       <domain:pw>2fooBAR</domain:pw>
+                   </domain:authInfo>
+               </domain:create>
+           </create>
+           <clTRID>ABC-12345</clTRID>
+       </command>
+   </epp>
 
-   Example Domain Create response:
-
-
-
-
+   Example JSON Domain Create request:
 
 
 
@@ -893,93 +947,168 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 16]
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 17]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   S: HTTP/2 200
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Language: en
-   S: Content-Length: 642
-   S: Content-Type: application/epp+xml
-   S: Location: https://repp.example.nl/repp/v1/domains/example.nl
-   S: REPP-Eppcode: 1000
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0"
-   S:     xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-   S:   <response>
-   S:      <result code="1000">
-   S:         <msg>Command completed successfully</msg>
-   S:      </result>
-   S:      <resData>
-   S:         <domain:creData>
-   S:            <!-- The rest of the response is omitted here -->
-   S:         </domain:creData>
-   S:      </resData>
-   S:      <trID>
-   S:         <clTRID>ABC-12345</clTRID>
-   S:         <svTRID>54321-XYZ</svTRID>
-   S:      </trID>
-   S:   </response>
-   S:</epp>
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "command": {
+               "create": {
+                   "domain:create": {
+                       "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                       "domain:name": "example.com",
+                       "domain:period": {
+                           "@unit": "y",
+                           "#text": "2"
+                       },
+                       "domain:ns": {
+                           "domain:hostObj": [
+                               "ns1.example.net",
+                               "ns2.example.net"
+                           ]
+                       },
+                       "domain:registrant": "jd1234",
+                       "domain:contact": [
+                           {
+                               "@type": "admin",
+                               "#text": "sh8013"
+                           },
+                           {
+                               "@type": "tech",
+                               "#text": "sh8013"
+                           }
+                       ],
+                       "domain:authInfo": {
+                           "domain:pw": "2fooBAR"
+                       }
+                   }
+               },
+               "clTRID": "ABC-12345"
+           }
+       }
+   }
+
+   Example XML Domain Create response:
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 18]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
+
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1000">
+               <msg>Command completed successfully</msg>
+           </result>
+           <resData>
+               <domain:creData
+                   xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                   <domain:name>example.com</domain:name>
+                   <domain:crDate>1999-04-03T22:00:00.0Z</domain:crDate>
+                   <domain:exDate>2001-04-03T22:00:00.0Z</domain:exDate>
+               </domain:creData>
+           </resData>
+           <trID>
+               <clTRID>ABC-12345</clTRID>
+               <svTRID>54321-XYZ</svTRID>
+           </trID>
+       </response>
+   </epp>
+
+   Example JSON Domain Create response:
+
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1000",
+                   "msg": "Command completed successfully"
+               },
+               "resData": {
+                   "domain:creData": {
+                       "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                       "domain:name": "example.com",
+                       "domain:crDate": "1999-04-03T22:00:00.0Z",
+                       "domain:exDate": "2001-04-03T22:00:00.0Z"
+                   }
+               },
+               "trID": {
+                   "clTRID": "ABC-12345",
+                   "svTRID": "54321-XYZ"
+               }
+           }
+       }
+   }
+
+
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 19]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
 
 5.10.  Delete
 
    The Delete request message is not used for REPP.
 
-   Example Domain Delete response:
+   Example XML Domain Delete response:
 
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1000">
+               <msg>Command completed successfully</msg>
+           </result>
+           <trID>
+               <clTRID>ABC-12345</clTRID>
+               <svTRID>54321-XYZ</svTRID>
+           </trID>
+       </response>
+   </epp>
 
+   Example JSON Domain Delete response:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 17]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
-
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Length: 80
-   S: REPP-Svtrid: XYZ-12345
-   S: REPP-Cltrid: ABC-12345
-   S: REPP-Eppcode: 1000
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1000",
+                   "msg": "Command completed successfully"
+               },
+               "trID": {
+                   "clTRID": "ABC-12345",
+                   "svTRID": "54321-XYZ"
+               }
+           }
+       }
+   }
 
 5.11.  Renew
 
    The Renew request message is not used for REPP.
 
-   Example Renew response:
+   Example XML Domain Renew response:
 
 
 
@@ -988,58 +1117,100 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 18]
+Wullink & Davids          Expires 19 July 2024                 [Page 20]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Language: en
-   S: Content-Length: 205
-   S: Location: https://repp.example.nl/repp/v1/domains/example.nl
-   S: Content-Type: application/epp+xml
-   S: REPP-Eppcode: 1000
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <resData>
-   S:      <!-- The rest of the response is omitted here -->
-   S:    </resData>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1000">
+               <msg>Command completed successfully</msg>
+           </result>
+           <resData>
+               <domain:renData
+                   xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                   <domain:name>example.com</domain:name>
+                   <domain:exDate>2005-04-03T22:00:00.0Z</domain:exDate>
+               </domain:renData>
+           </resData>
+           <trID>
+               <clTRID>ABC-12345</clTRID>
+               <svTRID>54322-XYZ</svTRID>
+           </trID>
+       </response>
+   </epp>
+
+   Example JSON Domain Renew response:
+
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1000",
+                   "msg": "Command completed successfully"
+               },
+               "resData": {
+                   "domain:renData": {
+                       "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                       "domain:name": "example.com",
+                       "domain:exDate": "2005-04-03T22:00:00.0Z"
+                   }
+               },
+               "trID": {
+                   "clTRID": "ABC-12345",
+                   "svTRID": "54322-XYZ"
+               }
+           }
+       }
+   }
+
+
+
+
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 21]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
 
 5.12.  Transfer Request
 
    The Transfer request message is not used for REPP.
 
-   Example Transfer response:
+   Example XML Domain Transfer response:
+
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1001">
+               <msg>Command completed successfully; action pending</msg>
+           </result>
+           <resData>
+               <domain:trnData
+                   xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                   <domain:name>example.com</domain:name>
+                   <domain:trStatus>pending</domain:trStatus>
+                   <domain:reID>ClientX</domain:reID>
+                   <domain:reDate>2000-06-08T22:00:00.0Z</domain:reDate>
+                   <domain:acID>ClientY</domain:acID>
+                   <domain:acDate>2000-06-13T22:00:00.0Z</domain:acDate>
+                   <domain:exDate>2002-09-08T22:00:00.0Z</domain:exDate>
+               </domain:trnData>
+           </resData>
+           <trID>
+               <clTRID>ABC-12345</clTRID>
+               <svTRID>54322-XYZ</svTRID>
+           </trID>
+       </response>
+   </epp>
+
+   Example JSON Domain Transfer response:
 
 
 
@@ -1058,202 +1229,210 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
 
 
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 19]
+Wullink & Davids          Expires 19 July 2024                 [Page 22]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Language: en
-   S: Content-Length: 328
-   S: Content-Type: application/epp+xml
-   S: Location: https://repp.example.nl/repp/v1/domains/example.nl/transfers/latest
-   S: REPP-Eppcode: 1001
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1001">
-   S:      <msg>Command completed successfully; action pending</msg>
-   S:    </result>
-   S:    <resData>
-   S:      <!-- The rest of the response is omitted here -->
-   S:    </resData>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1001",
+                   "msg": "Command completed successfully; action pending"
+               },
+               "resData": {
+                   "domain:trnData": {
+                       "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                       "domain:name": "example.com",
+                       "domain:trStatus": "pending",
+                       "domain:reID": "ClientX",
+                       "domain:reDate": "2000-06-08T22:00:00.0Z",
+                       "domain:acID": "ClientY",
+                       "domain:acDate": "2000-06-13T22:00:00.0Z",
+                       "domain:exDate": "2002-09-08T22:00:00.0Z"
+                   }
+               },
+               "trID": {
+                   "clTRID": "ABC-12345",
+                   "svTRID": "54322-XYZ"
+               }
+           }
+       }
+   }
 
 5.13.  Transfer Cancel
 
    The Transfer Cancel request message is not used for REPP.
 
-   Example response:
+   Example XML Domain Cancel Transfer response:
+
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1000">
+               <msg>Command completed successfully</msg>
+           </result>
+           <trID>
+               <clTRID>ABC-12345</clTRID>
+               <svTRID>XYZ-12345</svTRID>
+           </trID>
+       </response>
+   </epp>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 20]
+Wullink & Davids          Expires 19 July 2024                 [Page 23]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Length: 80
-   S: REPP-Svtrid: XYZ-12345
-   S: REPP-Cltrid: ABC-12345
-   S: REPP-Eppcode: 1000
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+   Example JSON Domain Cancel Transfer response:
+
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1000",
+                   "msg": "Command completed successfully"
+               },
+               "trID": {
+                   "clTRID": "ABC-12345",
+                   "svTRID": "XYZ-12345"
+               }
+           }
+       }
+   }
 
 5.14.  Transfer Reject
 
-   The Transfer Reject request message is not used for REPP.
-
-   Example Reject response:
-
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Length: 80
-   S: REPP-Svtrid: XYZ-12345
-   S: REPP-Cltrid: ABC-12345
-   S: REPP-Eppcode: 1000
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 21]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
+   The Transfer Reject request message is not used for REPP and the
+   response message is the same as for the Transfer Cancel command.
 
 5.15.  Transfer Approve
 
-   The Transfer Approve request message is not used for REPP.
-
-   Example Approve response:
-
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Length: 80
-   S: REPP-Svtrid: XYZ-12345
-   S: REPP-Cltrid: ABC-12345
-   S: REPP-Eppcode: 1000
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+   The Transfer Approve request message is not used for REPP and the
+   response message is the same as for the Transfer Cancel command.
 
 5.16.  Update
 
-   Example request:
-
-   C:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   C:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   C:  <command>
-   C:    <update>
-   C:      <domain:update
-   C:       xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-   C:        <domain:name>example.nl</domain:name>
-   C:           <!-- The rest of the request is omitted here -->
-   C:      </domain:update>
-   C:    </update>
-   C:    <clTRID>ABC-12345</clTRID>
-   C:  </command>
-   C:</epp>
-
-   Example response:
+   Example XML Domain Update request:
 
 
 
 
 
-Wullink & Davids          Expires 18 July 2024                 [Page 22]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 24]
 
 Internet-Draft          RESTful Transport for EPP           January 2024
 
 
-   S: HTTP/2 200 OK
-   S: Date: Fri, 17 Nov 2023 12:00:00 UTC
-   S: Server: Example REPP server v1.0
-   S: Content-Length: 80
-   S: REPP-Svtrid: XYZ-12345
-   S: REPP-Cltrid: ABC-12345
-   S: REPP-Eppcode: 1000
-   S:
-   S:<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-   S:<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
-   S:  <response>
-   S:    <result code="1000">
-   S:      <msg>Command completed successfully</msg>
-   S:    </result>
-   S:    <trID>
-   S:      <clTRID>ABC-12345</clTRID>
-   S:      <svTRID>XYZ-12345</svTRID>
-   S:    </trID>
-   S:  </response>
-   S:</epp>
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <command>
+           <update>
+               <domain:update
+                   xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                   <domain:name>example.com</domain:name>
+                   <domain:chg>
+                       <domain:registrant>sh8013</domain:registrant>
+                       <domain:authInfo>
+                           <domain:pw>2BARfoo</domain:pw>
+                       </domain:authInfo>
+                   </domain:chg>
+               </domain:update>
+           </update>
+           <clTRID>ABC-12345</clTRID>
+       </command>
+   </epp>
+
+   Example JSON Domain Update request:
+
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "command": {
+               "update": {
+                   "domain:update": {
+                       "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
+                       "domain:name": "example.com",
+                       "domain:chg": {
+                           "domain:registrant": "sh8013",
+                           "domain:authInfo": {
+                               "domain:pw": "2BARfoo"
+                           }
+                       }
+                   }
+               },
+               "clTRID": "ABC-12345"
+           }
+       }
+   }
+
+   Example XML Domain Update response:
+
+
+
+
+
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 25]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
+
+   <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+   <epp
+       xmlns="urn:ietf:params:xml:ns:epp-1.0">
+       <response>
+           <result code="1000">
+               <msg>Command completed successfully</msg>
+           </result>
+           <trID>
+               <clTRID>ABC-12345</clTRID>
+               <svTRID>XYZ-12345</svTRID>
+           </trID>
+       </response>
+   </epp>
+
+   Example JSON Domain Update response:
+
+   {
+       "epp": {
+           "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
+           "response": {
+               "result": {
+                   "@code": "1000",
+                   "msg": "Command completed successfully"
+               },
+               "trID": {
+                   "clTRID": "ABC-12345",
+                   "svTRID": "XYZ-12345"
+               }
+           }
+       }
+   }
 
 6.  IANA Considerations
 
@@ -1268,6 +1447,17 @@ Internet-Draft          RESTful Transport for EPP           January 2024
 
    TODO
 
+
+
+
+
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 26]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
+
 9.  Acknowledgments
 
    TODO
@@ -1280,15 +1470,6 @@ Internet-Draft          RESTful Transport for EPP           January 2024
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 23]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
 
    [RFC5730]  Hollenbeck, S., "Extensible Provisioning Protocol (EPP)",
               STD 69, RFC 5730, DOI 10.17487/RFC5730, August 2009,
@@ -1325,6 +1506,14 @@ Appendix A.  Appendix A.  Media Type Registration: application/epp+json
 
    MIME subtype name: epp+json
 
+
+
+
+Wullink & Davids          Expires 19 July 2024                 [Page 27]
+
+Internet-Draft          RESTful Transport for EPP           January 2024
+
+
    Required parameters: none
 
    Optional parameters: Same as the charset parameter of application/
@@ -1338,13 +1527,6 @@ Appendix A.  Appendix A.  Media Type Registration: application/epp+json
    specified in the Security Considerations section of this document.
 
    Published specification: This document.
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 24]
-
-Internet-Draft          RESTful Transport for EPP           January 2024
-
 
    Applications that use this media type: RESTful EPP client and server
    implementations.
@@ -1383,18 +1565,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wullink & Davids          Expires 18 July 2024                 [Page 25]
+Wullink & Davids          Expires 19 July 2024                 [Page 28]
