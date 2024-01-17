@@ -1,5 +1,5 @@
 %%%
-title = "XML to JSON conversion rules for RESTful EPP"
+title = "XML to JSON conversion for RESTful EPP"
 abbrev = "XML to JSON for RESTful EPP"
 ipr = "trust200902"
 area = "Internet"
@@ -69,7 +69,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 
 # Conversion Rules
 
-A XML element may use one of 7 possible forms, the sections below describe how these forms MUST be translated to valid JSON.
+A XML element may exist in one of 7 distinct forms, the sections below describe how these forms MUST be translated to valid JSON.
 
 1. Empty
 2. Pure text content

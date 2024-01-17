@@ -5,10 +5,10 @@
 Network Working Group                                         M. Wullink
 Internet-Draft                                                 M. Davids
 Intended status: Standards Track                               SIDN Labs
-Expires: 19 July 2024                                    16 January 2024
+Expires: 20 July 2024                                    17 January 2024
 
 
-              XML to JSON conversion rules for RESTful EPP
+                 XML to JSON conversion for RESTful EPP
                    draft-wullink-restful-epp-json-00
 
 Abstract
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 July 2024.
+   This Internet-Draft will expire on 20 July 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 1]
+Wullink & Davids          Expires 20 July 2024                  [Page 1]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 2]
+Wullink & Davids          Expires 20 July 2024                  [Page 2]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -150,8 +150,8 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 4.  Conversion Rules
 
-   A XML element may use one of 7 possible forms, the sections below
-   describe how these forms MUST be translated to valid JSON.
+   A XML element may exist in one of 7 distinct forms, the sections
+   below describe how these forms MUST be translated to valid JSON.
 
    1.  Empty
    2.  Pure text content
@@ -165,7 +165,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 3]
+Wullink & Davids          Expires 20 July 2024                  [Page 3]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -221,7 +221,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 4]
+Wullink & Davids          Expires 20 July 2024                  [Page 4]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -277,7 +277,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 5]
+Wullink & Davids          Expires 20 July 2024                  [Page 5]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -333,7 +333,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 6]
+Wullink & Davids          Expires 20 July 2024                  [Page 6]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -389,7 +389,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 7]
+Wullink & Davids          Expires 20 July 2024                  [Page 7]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -445,7 +445,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 8]
+Wullink & Davids          Expires 20 July 2024                  [Page 8]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -501,7 +501,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                  [Page 9]
+Wullink & Davids          Expires 20 July 2024                  [Page 9]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -557,7 +557,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 10]
+Wullink & Davids          Expires 20 July 2024                 [Page 10]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -613,7 +613,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 11]
+Wullink & Davids          Expires 20 July 2024                 [Page 11]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -669,7 +669,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 12]
+Wullink & Davids          Expires 20 July 2024                 [Page 12]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -725,7 +725,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 13]
+Wullink & Davids          Expires 20 July 2024                 [Page 13]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -781,7 +781,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 14]
+Wullink & Davids          Expires 20 July 2024                 [Page 14]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -837,7 +837,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 15]
+Wullink & Davids          Expires 20 July 2024                 [Page 15]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -893,7 +893,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 16]
+Wullink & Davids          Expires 20 July 2024                 [Page 16]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -949,7 +949,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 17]
+Wullink & Davids          Expires 20 July 2024                 [Page 17]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 18]
+Wullink & Davids          Expires 20 July 2024                 [Page 18]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 19]
+Wullink & Davids          Expires 20 July 2024                 [Page 19]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1117,7 +1117,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 20]
+Wullink & Davids          Expires 20 July 2024                 [Page 20]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1173,7 +1173,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 21]
+Wullink & Davids          Expires 20 July 2024                 [Page 21]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 22]
+Wullink & Davids          Expires 20 July 2024                 [Page 22]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1285,7 +1285,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 23]
+Wullink & Davids          Expires 20 July 2024                 [Page 23]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1341,7 +1341,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 24]
+Wullink & Davids          Expires 20 July 2024                 [Page 24]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1397,7 +1397,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 25]
+Wullink & Davids          Expires 20 July 2024                 [Page 25]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1453,7 +1453,7 @@ Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 26]
+Wullink & Davids          Expires 20 July 2024                 [Page 26]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1509,7 +1509,7 @@ Appendix A.  Appendix A.  Media Type Registration: application/epp+json
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 27]
+Wullink & Davids          Expires 20 July 2024                 [Page 27]
 
 Internet-Draft         XML to JSON for RESTful EPP          January 2024
 
@@ -1565,4 +1565,4 @@ Authors' Addresses
 
 
 
-Wullink & Davids          Expires 19 July 2024                 [Page 28]
+Wullink & Davids          Expires 20 July 2024                 [Page 28]

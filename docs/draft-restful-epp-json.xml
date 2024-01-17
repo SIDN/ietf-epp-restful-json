@@ -3,7 +3,7 @@
 <rfc version="3" ipr="trust200902" docName="draft-wullink-restful-epp-json-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" tocDepth="4">
 
 <front>
-<title abbrev="XML to JSON for RESTful EPP">XML to JSON conversion rules for RESTful EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
+<title abbrev="XML to JSON for RESTful EPP">XML to JSON conversion for RESTful EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="M." surname="Wullink" fullname="Maarten Wullink"><organization>SIDN Labs</organization><address><postal><street></street>
 </postal><email>maarten.wullink@sidn.nl</email>
 <uri>https://sidn.nl/</uri>
@@ -44,7 +44,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="conversion-rules"><name>Conversion Rules</name>
-<t>A XML element may use one of 7 possible forms, the sections below describe how these forms MUST be translated to valid JSON.</t>
+<t>A XML element may exist in one of 7 distinct forms, the sections below describe how these forms MUST be translated to valid JSON.</t>
 
 <ol spacing="compact">
 <li>Empty</li>
