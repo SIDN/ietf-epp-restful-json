@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>XML to JSON conversion for RESTful EPP</title>
+<title>XML to JSON Conversion rules for EPP</title>
 <meta content="Maarten Wullink" name="author">
 <meta content="Marco Davids" name="author">
 <meta content="
-       This document describes the rules for converting an EPP   XML message to a JSON   message for use with RESTful EPP [REF-TO-REPP-HERE]. 
+       This document describes the rules for converting The Extensible Provisioning Protocol (EPP)   XML based messages to a JSON   for use with EPP and RESTful EPP[REF-TO-REPP-HERE]. 
     " name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
 <meta content="draft-wullink-restful-epp-json-00" name="ietf.draft">
@@ -1204,7 +1204,7 @@ li > p:last-of-type:only-child {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">XML to JSON for RESTful EPP</td>
+<td class="center">XML to JSON for EPP</td>
 <td class="right">January 2024</td>
 </tr></thead>
 <tfoot><tr>
@@ -1241,10 +1241,10 @@ li > p:last-of-type:only-child {
 </dd>
 </dl>
 </div>
-<h1 id="title">XML to JSON conversion for RESTful EPP</h1>
+<h1 id="title">XML to JSON Conversion rules for EPP</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes the rules for converting an EPP <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> XML message to a JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> message for use with RESTful EPP [REF-TO-REPP-HERE].<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> XML based messages to a JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> for use with EPP and RESTful EPP[REF-TO-REPP-HERE].<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1420,7 +1420,7 @@ li > p:last-of-type:only-child {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> uses an on XML based protocol. The EPP protocol is well defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>, for use with RESTful EPP (REPP).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>, for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.<a href="#section-1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">

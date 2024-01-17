@@ -3,7 +3,7 @@
 <rfc version="3" ipr="trust200902" docName="draft-wullink-restful-epp-json-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" tocDepth="4">
 
 <front>
-<title abbrev="XML to JSON for RESTful EPP">XML to JSON conversion for RESTful EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
+<title abbrev="XML to JSON for EPP">XML to JSON Conversion rules for EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="M." surname="Wullink" fullname="Maarten Wullink"><organization>SIDN Labs</organization><address><postal><street></street>
 </postal><email>maarten.wullink@sidn.nl</email>
 <uri>https://sidn.nl/</uri>
@@ -15,7 +15,7 @@
 <workgroup>Network Working Group</workgroup>
 
 <abstract>
-<t>This document describes the rules for converting an EPP <xref target="RFC5730"></xref> XML message to a JSON <xref target="RFC8259"></xref> message for use with RESTful EPP [REF-TO-REPP-HERE].</t>
+<t>This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> XML based messages to a JSON <xref target="RFC8259"></xref> for use with EPP and RESTful EPP[REF-TO-REPP-HERE].</t>
 </abstract>
 
 </front>
@@ -23,7 +23,7 @@
 <middle>
 
 <section anchor="introduction"><name>Introduction</name>
-<t>The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> uses an on XML based protocol. The EPP protocol is well defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with RESTful EPP (REPP).</t>
+<t>This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.</t>
 </section>
 
 <section anchor="terminology"><name>Terminology</name>

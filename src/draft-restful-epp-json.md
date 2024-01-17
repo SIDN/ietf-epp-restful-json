@@ -1,6 +1,6 @@
 %%%
-title = "XML to JSON conversion for RESTful EPP"
-abbrev = "XML to JSON for RESTful EPP"
+title = "XML to JSON Conversion rules for EPP"
+abbrev = "XML to JSON for EPP"
 ipr = "trust200902"
 area = "Internet"
 workgroup = "Network Working Group"
@@ -37,13 +37,13 @@ organization = "SIDN Labs"
 
 .# Abstract
 
-This document describes the rules for converting an EPP [@!RFC5730] XML message to a JSON [@!RFC8259] message for use with RESTful EPP [REF-TO-REPP-HERE].
+This document describes the rules for converting The Extensible Provisioning Protocol (EPP) [@!RFC5730] XML based messages to a JSON [@!RFC8259] for use with EPP and RESTful EPP[REF-TO-REPP-HERE].
 
 {mainmatter}
 
 # Introduction
 
-The Extensible Provisioning Protocol (EPP) [@!RFC5730] uses an on XML based protocol. The EPP protocol is well defined, using XML Schema Definition (XSD) for validation of XML messages, the XSDs are published as part of the EPP RFCs. This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with RESTful EPP (REPP).
+This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) [@!RFC5730] describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages. 
 
 # Terminology
 
