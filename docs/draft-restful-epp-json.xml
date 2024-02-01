@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.miek.nl" -->
-<rfc version="3" ipr="trust200902" docName="draft-wullink-restful-epp-json-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" tocDepth="4">
+<rfc version="3" ipr="trust200902" docName="draft-wullink-restful-epp-json-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" consensus="true" tocDepth="4">
 
 <front>
 <title abbrev="XML to JSON for EPP">XML to JSON Conversion rules for EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
@@ -15,7 +15,7 @@
 <workgroup>Network Working Group</workgroup>
 
 <abstract>
-<t>This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> XML based messages to a JSON <xref target="RFC8259"></xref> for use with EPP and RESTful EPP[REF-TO-REPP-HERE].</t>
+<t>This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> XML based messages and the corresponding XSD schemas to a JSON <xref target="RFC8259"></xref> and JSON schema [REF-TO-JSON-SCHEMA-HERE] for use with EPP and RESTful EPP[REF-TO-REPP-HERE].</t>
 </abstract>
 
 </front>
@@ -23,7 +23,14 @@
 <middle>
 
 <section anchor="introduction"><name>Introduction</name>
-<t>This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.</t>
+<t>This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages. JSON Schema [REF-TO-JSON-SCHEMA-HERE] is a method of specifying formal syntax for JSON format.</t>
+
+<section anchor="motivation"><name>Motivation</name>
+<t>RESTful EPP introduces a new transport mechanism for EPP messages that aligns more closely with modern cloud infrastructure, enhancing the scalability of EPP server deployments. While RESTful protocols do not mandate a specific media type for resource description, the widespread adoption of JSON in web services has established it as the de facto standard for modern APIs. The increasing availability of tools, software libraries, and a skilled workforce, coupled with the declining popularity of XML, has led several registries to adopt JSON for data exchange within their API ecosystems. By extending EPP to support JSON, registries can offer a unified API ecosystem that extends beyond domain name and IP address provisioning, maintaining a consistent technology stack, data formats, and developer experience.</t>
+<t>JSON's syntax, known for its straightforwardness and minimal verbosity compared to XML, significantly eases the tasks of writing, reading, and maintaining code. This simplicity is especially advantageous for the rapid comprehension and integration of provisioning APIs.</t>
+<t>The lightweight nature of JSON can result in faster processing and data transfers, a critical aspect in high-volume transaction environments such as domain registration. Enhanced API response times can lead to more efficient domain lookups, registrations, and updates. Moreover, JSON parsing is typically faster and more straightforward than XML parsing, contributing to improved system performance amid frequent interactions between EPP clients and servers.</t>
+<t>However, the absence of a standardized JSON format for domain provisioning has led to the emergence of TLD-specific implementations that lack interoperability, increasing the development effort required for integration. Similarly, at the registrar level, the absence of standards has resulted in numerous incompatible API implementations provided to clients and resellers. Standardizing a JSON format for domain provisioning within the EPP framework could mitigate these challenges, reducing fragmentation and simplifying integration efforts across the domain registration industry.</t>
+</section>
 </section>
 
 <section anchor="terminology"><name>Terminology</name>
@@ -60,15 +67,13 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>An empty XML element MUST be mapped to to a key matching the name of the element and a null value.</t>
 <t>XML:</t>
 
-<sourcecode type="xml"><![CDATA[<hello/>
-]]>
+<sourcecode type="xml">&lt;hello/&gt;
 </sourcecode>
 <t>JSON:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "hello": null
+<sourcecode type="json">{
+    &quot;hello&quot;: null
 }
-]]>
 </sourcecode>
 </section>
 
@@ -76,15 +81,13 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>An XML element containing text only MUST be mapped to a key matching the name of the element and the text MUST be used for the value</t>
 <t>XML:</t>
 
-<sourcecode type="xml"><![CDATA[<lang>en</lang>
-]]>
+<sourcecode type="xml">&lt;lang&gt;en&lt;/lang&gt;
 </sourcecode>
 <t>JSON:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "lang": "en"
+<sourcecode type="json">{
+    &quot;lang&quot;: &quot;en&quot;
 }
-]]>
 </sourcecode>
 </section>
 
@@ -92,18 +95,16 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>An XML element containing one or more atributes only, MUST be mapped to a JSON object matching the name of the element. Each XML attribute, prefixed using the <tt>@</tt> character, MUST be added as a key-value pair to the object.</t>
 <t>XML:</t>
 
-<sourcecode type="xml"><![CDATA[<msgQ count="5" id="12345"/>
-]]>
+<sourcecode type="xml">&lt;msgQ count=&quot;5&quot; id=&quot;12345&quot;/&gt;
 </sourcecode>
 <t>JSON:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "msgQ": {
-        "@count": "5",
-        "@id": "12345"
+<sourcecode type="json">{
+    &quot;msgQ&quot;: {
+        &quot;@count&quot;: &quot;5&quot;,
+        &quot;@id&quot;: &quot;12345&quot;
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -111,18 +112,16 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>An XML element containing one or more atributes and text content only, MUST be mapped to a JSON object matching the name of the element. The text content MUST, prefixed using the string <tt>#text</tt>, MUST be added as a key-value pair to the object.</t>
 <t>XML:</t>
 
-<sourcecode type="xml"><![CDATA[<msg lang="en">Command completed successfully</msg>
-]]>
+<sourcecode type="xml">&lt;msg lang=&quot;en&quot;&gt;Command completed successfully&lt;/msg&gt;
 </sourcecode>
 <t>JSON:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "msg": {
-        "@lang": "en",
-        "#text": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;msg&quot;: {
+        &quot;@lang&quot;: &quot;en&quot;,
+        &quot;#text&quot;: &quot;Command completed successfully&quot;
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -130,21 +129,19 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>An XML element containing one or more child elements, where each child uses an unique name, MUST be mapped to a JSON object matching the name of the element. Each child element MUST be added as a key-value pair to the parent object.</t>
 <t>XML:</t>
 
-<sourcecode type="xml"><![CDATA[<trID>
-    <clTRID>ABC-12345</clTRID>
-    <svTRID>54321-XYZ</svTRID>
-</trID>
-]]>
+<sourcecode type="xml">&lt;trID&gt;
+    &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+    &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
+&lt;/trID&gt;
 </sourcecode>
 <t>JSON:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "trID": {
-        "clTRID": "ABC-12345",
-        "svTRID": "54321-XYZ"
+<sourcecode type="json">{
+    &quot;trID&quot;: {
+        &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+        &quot;svTRID&quot;: &quot;54321-XYZ&quot;
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -152,23 +149,21 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>An XML element containing multiple child elements, where multiple child elements use the same name, MUST be mapped to a JSON object containing an array. The name of the array MUST match the name of the non-unique children, each child element MUST be converted to JSON and added to the array.</t>
 <t>XML:</t>
 
-<sourcecode type="xml"><![CDATA[<host>
-    <addr>192.0.2.1</addr>
-    <addr>192.0.2.2</addr>
-</host>
-]]>
+<sourcecode type="xml">&lt;host&gt;
+    &lt;addr&gt;192.0.2.1&lt;/addr&gt;
+    &lt;addr&gt;192.0.2.2&lt;/addr&gt;
+&lt;/host&gt;
 </sourcecode>
 <t>JSON:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "host": {
-        "addr": [
-            "192.0.2.1",
-            "192.0.2.2"
+<sourcecode type="json">{
+    &quot;host&quot;: {
+        &quot;addr&quot;: [
+            &quot;192.0.2.1&quot;,
+            &quot;192.0.2.2&quot;
         ]
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -176,47 +171,43 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>An XML element containing one or more child elements and contiguous text, MUST be mapped to a JSON object containing a key-value entry for each child element, the text value MUST result in a key named <tt>#text</tt>.</t>
 <t>XML:</t>
 
-<sourcecode type="xml"><![CDATA[<msg lang="en">
+<sourcecode type="xml">&lt;msg lang=&quot;en&quot;&gt;
     Credit balance low.
-    <limit>100</limit>
-    <bal>5</bal>
-</msg>
-]]>
+    &lt;limit&gt;100&lt;/limit&gt;
+    &lt;bal&gt;5&lt;/bal&gt;
+&lt;/msg&gt;
 </sourcecode>
 <t>JSON:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "msg": {
-        "@lang": "en",
-        "limit": 100,
-        "bal": 5,
-        "#text": "Credit balance low."
+<sourcecode type="json">{
+    &quot;msg&quot;: {
+        &quot;@lang&quot;: &quot;en&quot;,
+        &quot;limit&quot;: 100,
+        &quot;bal&quot;: 5,
+        &quot;#text&quot;: &quot;Credit balance low.&quot;
     }
 }
-]]>
 </sourcecode>
 <t>When child elements are mixed with multiple text segments, the resulting <tt>#text</tt> key-value entry MUST be an array, containing all text segments.</t>
 <t>XML:</t>
 
-<sourcecode type="xml"><![CDATA[<msg lang="en">
+<sourcecode type="xml">&lt;msg lang=&quot;en&quot;&gt;
     Credit balance low.
-    <limit>100</limit>
-    <bal>5</bal>
+    &lt;limit&gt;100&lt;/limit&gt;
+    &lt;bal&gt;5&lt;/bal&gt;
     Please increase balance.
-</msg>
-]]>
+&lt;/msg&gt;
 </sourcecode>
 <t>JSON:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "msg": {
-        "@lang": "en",
-        "limit": 100,
-        "bal": 5,
-        "#text": ["Credit balance low.", "Please increase balance asap."]
+<sourcecode type="json">{
+    &quot;msg&quot;: {
+        &quot;@lang&quot;: &quot;en&quot;,
+        &quot;limit&quot;: 100,
+        &quot;bal&quot;: 5,
+        &quot;#text&quot;: [&quot;Credit balance low.&quot;, &quot;Please increase balance asap.&quot;]
     }
 }
-]]>
 </sourcecode>
 <t>The rules above are based on the conversion approach found on <xref target="XMLCOM-WEB"></xref></t>
 </section>
@@ -229,82 +220,80 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Hello request message does not exist in the context of REPP.</t>
 <t>Example XML response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <greeting>
-        <svID>Example EPP server epp.example.com</svID>
-        <svDate>2000-06-08T22:00:00.0Z</svDate>
-        <svcMenu>
-            <version>1.0</version>
-            <lang>en</lang>
-            <lang>fr</lang>
-            <objURI>urn:ietf:params:xml:ns:obj1</objURI>
-            <objURI>urn:ietf:params:xml:ns:obj2</objURI>
-            <objURI>urn:ietf:params:xml:ns:obj3</objURI>
-            <svcExtension>
-                <extURI>http://custom/obj1ext-1.0</extURI>
-            </svcExtension>
-        </svcMenu>
-        <dcp>
-            <access>
-                <all/>
-            </access>
-            <statement>
-                <purpose>
-                    <admin/>
-                    <prov/>
-                </purpose>
-                <recipient>
-                    <ours/>
-                    <public/>
-                </recipient>
-                <retention>
-                    <stated/>
-                </retention>
-            </statement>
-        </dcp>
-    </greeting>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;greeting&gt;
+        &lt;svID&gt;Example EPP server epp.example.com&lt;/svID&gt;
+        &lt;svDate&gt;2000-06-08T22:00:00.0Z&lt;/svDate&gt;
+        &lt;svcMenu&gt;
+            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;lang&gt;en&lt;/lang&gt;
+            &lt;lang&gt;fr&lt;/lang&gt;
+            &lt;objURI&gt;urn:ietf:params:xml:ns:obj1&lt;/objURI&gt;
+            &lt;objURI&gt;urn:ietf:params:xml:ns:obj2&lt;/objURI&gt;
+            &lt;objURI&gt;urn:ietf:params:xml:ns:obj3&lt;/objURI&gt;
+            &lt;svcExtension&gt;
+                &lt;extURI&gt;http://custom/obj1ext-1.0&lt;/extURI&gt;
+            &lt;/svcExtension&gt;
+        &lt;/svcMenu&gt;
+        &lt;dcp&gt;
+            &lt;access&gt;
+                &lt;all/&gt;
+            &lt;/access&gt;
+            &lt;statement&gt;
+                &lt;purpose&gt;
+                    &lt;admin/&gt;
+                    &lt;prov/&gt;
+                &lt;/purpose&gt;
+                &lt;recipient&gt;
+                    &lt;ours/&gt;
+                    &lt;public/&gt;
+                &lt;/recipient&gt;
+                &lt;retention&gt;
+                    &lt;stated/&gt;
+                &lt;/retention&gt;
+            &lt;/statement&gt;
+        &lt;/dcp&gt;
+    &lt;/greeting&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "greeting": {
-            "svID": "Example REPP server v1.0",
-            "svDate": "2000-06-08T22:00:00.0Z",
-            "svcMenu": {
-                "version": "1.0",
-                "lang": [
-                    "en",
-                    "fr"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;greeting&quot;: {
+            &quot;svID&quot;: &quot;Example REPP server v1.0&quot;,
+            &quot;svDate&quot;: &quot;2000-06-08T22:00:00.0Z&quot;,
+            &quot;svcMenu&quot;: {
+                &quot;version&quot;: &quot;1.0&quot;,
+                &quot;lang&quot;: [
+                    &quot;en&quot;,
+                    &quot;fr&quot;
                 ]
             },
-            "dcp": {
-                "access": {
-                    "all": null
+            &quot;dcp&quot;: {
+                &quot;access&quot;: {
+                    &quot;all&quot;: null
                 },
-                "statement": {
-                    "purpose": {
-                        "admin": null,
-                        "prov": null
+                &quot;statement&quot;: {
+                    &quot;purpose&quot;: {
+                        &quot;admin&quot;: null,
+                        &quot;prov&quot;: null
                     },
-                    "recipient": {
-                        "ours": null,
-                        "public": null
+                    &quot;recipient&quot;: {
+                        &quot;ours&quot;: null,
+                        &quot;public&quot;: null
                     },
-                    "retention": {
-                        "stated": null
+                    &quot;retention&quot;: {
+                        &quot;stated&quot;: null
                     }
                 }
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -324,107 +313,105 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Info request message is not used for REPP.</t>
 <t>Example XML Domain Info response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1000">
-            <msg>Command completed successfully</msg>
-        </result>
-        <resData>
-            <domain:infData
-                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-                <domain:name>example.com</domain:name>
-                <domain:roid>EXAMPLE1-REP</domain:roid>
-                <domain:status s="ok"/>
-                <domain:registrant>jd1234</domain:registrant>
-                <domain:contact type="admin">sh8013</domain:contact>
-                <domain:contact type="tech">sh8013</domain:contact>
-                <domain:ns>
-                    <domain:hostObj>ns1.example.com</domain:hostObj>
-                    <domain:hostObj>ns1.example.net</domain:hostObj>
-                </domain:ns>
-                <domain:host>ns1.example.com</domain:host>
-                <domain:host>ns2.example.com</domain:host>
-                <domain:clID>ClientX</domain:clID>
-                <domain:crID>ClientY</domain:crID>
-                <domain:crDate>1999-04-03T22:00:00.0Z</domain:crDate>
-                <domain:upID>ClientX</domain:upID>
-                <domain:upDate>1999-12-03T09:00:00.0Z</domain:upDate>
-                <domain:exDate>2005-04-03T22:00:00.0Z</domain:exDate>
-                <domain:trDate>2000-04-08T09:00:00.0Z</domain:trDate>
-                <domain:authInfo>
-                    <domain:pw>2fooBAR</domain:pw>
-                </domain:authInfo>
-            </domain:infData>
-        </resData>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>54322-XYZ</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1000&quot;&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:infData
+                xmlns:domain=&quot;urn:ietf:params:xml:ns:domain-1.0&quot;&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:roid&gt;EXAMPLE1-REP&lt;/domain:roid&gt;
+                &lt;domain:status s=&quot;ok&quot;/&gt;
+                &lt;domain:registrant&gt;jd1234&lt;/domain:registrant&gt;
+                &lt;domain:contact type=&quot;admin&quot;&gt;sh8013&lt;/domain:contact&gt;
+                &lt;domain:contact type=&quot;tech&quot;&gt;sh8013&lt;/domain:contact&gt;
+                &lt;domain:ns&gt;
+                    &lt;domain:hostObj&gt;ns1.example.com&lt;/domain:hostObj&gt;
+                    &lt;domain:hostObj&gt;ns1.example.net&lt;/domain:hostObj&gt;
+                &lt;/domain:ns&gt;
+                &lt;domain:host&gt;ns1.example.com&lt;/domain:host&gt;
+                &lt;domain:host&gt;ns2.example.com&lt;/domain:host&gt;
+                &lt;domain:clID&gt;ClientX&lt;/domain:clID&gt;
+                &lt;domain:crID&gt;ClientY&lt;/domain:crID&gt;
+                &lt;domain:crDate&gt;1999-04-03T22:00:00.0Z&lt;/domain:crDate&gt;
+                &lt;domain:upID&gt;ClientX&lt;/domain:upID&gt;
+                &lt;domain:upDate&gt;1999-12-03T09:00:00.0Z&lt;/domain:upDate&gt;
+                &lt;domain:exDate&gt;2005-04-03T22:00:00.0Z&lt;/domain:exDate&gt;
+                &lt;domain:trDate&gt;2000-04-08T09:00:00.0Z&lt;/domain:trDate&gt;
+                &lt;domain:authInfo&gt;
+                    &lt;domain:pw&gt;2fooBAR&lt;/domain:pw&gt;
+                &lt;/domain:authInfo&gt;
+            &lt;/domain:infData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54322-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Info response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1000",
-                "msg": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1000&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully&quot;
             },
-            "resData": {
-                "domain:infData": {
-                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
-                    "domain:name": "example.com",
-                    "domain:roid": "EXAMPLE1-REP",
-                    "domain:status": {
-                        "@s": "ok"
+            &quot;resData&quot;: {
+                &quot;domain:infData&quot;: {
+                    &quot;@xmlns:domain&quot;: &quot;urn:ietf:params:xml:ns:domain-1.0&quot;,
+                    &quot;domain:name&quot;: &quot;example.com&quot;,
+                    &quot;domain:roid&quot;: &quot;EXAMPLE1-REP&quot;,
+                    &quot;domain:status&quot;: {
+                        &quot;@s&quot;: &quot;ok&quot;
                     },
-                    "domain:registrant": "jd1234",
-                    "domain:contact": [
+                    &quot;domain:registrant&quot;: &quot;jd1234&quot;,
+                    &quot;domain:contact&quot;: [
                         {
-                            "@type": "admin",
-                            "#text": "sh8013"
+                            &quot;@type&quot;: &quot;admin&quot;,
+                            &quot;#text&quot;: &quot;sh8013&quot;
                         },
                         {
-                            "@type": "tech",
-                            "#text": "sh8013"
+                            &quot;@type&quot;: &quot;tech&quot;,
+                            &quot;#text&quot;: &quot;sh8013&quot;
                         }
                     ],
-                    "domain:ns": {
-                        "domain:hostObj": [
-                            "ns1.example.com",
-                            "ns1.example.net"
+                    &quot;domain:ns&quot;: {
+                        &quot;domain:hostObj&quot;: [
+                            &quot;ns1.example.com&quot;,
+                            &quot;ns1.example.net&quot;
                         ]
                     },
-                    "domain:host": [
-                        "ns1.example.com",
-                        "ns2.example.com"
+                    &quot;domain:host&quot;: [
+                        &quot;ns1.example.com&quot;,
+                        &quot;ns2.example.com&quot;
                     ],
-                    "domain:clID": "ClientX",
-                    "domain:crID": "ClientY",
-                    "domain:crDate": "1999-04-03T22:00:00.0Z",
-                    "domain:upID": "ClientX",
-                    "domain:upDate": "1999-12-03T09:00:00.0Z",
-                    "domain:exDate": "2005-04-03T22:00:00.0Z",
-                    "domain:trDate": "2000-04-08T09:00:00.0Z",
-                    "domain:authInfo": {
-                        "domain:pw": "2fooBAR"
+                    &quot;domain:clID&quot;: &quot;ClientX&quot;,
+                    &quot;domain:crID&quot;: &quot;ClientY&quot;,
+                    &quot;domain:crDate&quot;: &quot;1999-04-03T22:00:00.0Z&quot;,
+                    &quot;domain:upID&quot;: &quot;ClientX&quot;,
+                    &quot;domain:upDate&quot;: &quot;1999-12-03T09:00:00.0Z&quot;,
+                    &quot;domain:exDate&quot;: &quot;2005-04-03T22:00:00.0Z&quot;,
+                    &quot;domain:trDate&quot;: &quot;2000-04-08T09:00:00.0Z&quot;,
+                    &quot;domain:authInfo&quot;: {
+                        &quot;domain:pw&quot;: &quot;2fooBAR&quot;
                     }
                 }
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "54322-XYZ"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;54322-XYZ&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -432,57 +419,55 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Poll request message is not used for REPP.</t>
 <t>Example XML response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1301">
-            <msg>Command completed successfully; ack to dequeue</msg>
-        </result>
-        <msgQ count="4" id="12346">
-            <qDate>2000-06-08T22:10:00.0Z</qDate>
-            <msg lang="en">Credit balance low.
-                <limit>100</limit>
-                <bal>5</bal>
-            </msg>
-        </msgQ>
-        <trID>
-            <clTRID>ABC-12346</clTRID>
-            <svTRID>54321-XYZ</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1301&quot;&gt;
+            &lt;msg&gt;Command completed successfully; ack to dequeue&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;msgQ count=&quot;4&quot; id=&quot;12346&quot;&gt;
+            &lt;qDate&gt;2000-06-08T22:10:00.0Z&lt;/qDate&gt;
+            &lt;msg lang=&quot;en&quot;&gt;Credit balance low.
+                &lt;limit&gt;100&lt;/limit&gt;
+                &lt;bal&gt;5&lt;/bal&gt;
+            &lt;/msg&gt;
+        &lt;/msgQ&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12346&lt;/clTRID&gt;
+            &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1301",
-                "msg": "Command completed successfully; ack to dequeue"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1301&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully; ack to dequeue&quot;
             },
-            "msgQ": {
-                "@count": "4",
-                "@id": "12346",
-                "qDate": "2024-01-15T22:10:00.0Z",
-                "msg": {
-                    "@lang": "en",
-                    "limit": "100",
-                    "bal": "5",
-                    "#text": "Credit balance low."
+            &quot;msgQ&quot;: {
+                &quot;@count&quot;: &quot;4&quot;,
+                &quot;@id&quot;: &quot;12346&quot;,
+                &quot;qDate&quot;: &quot;2024-01-15T22:10:00.0Z&quot;,
+                &quot;msg&quot;: {
+                    &quot;@lang&quot;: &quot;en&quot;,
+                    &quot;limit&quot;: &quot;100&quot;,
+                    &quot;bal&quot;: &quot;5&quot;,
+                    &quot;#text&quot;: &quot;Credit balance low.&quot;
                 }
             },
-            "trID": {
-                "clTRID": "ABC-12346",
-                "svTRID": "54321-XYZ"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12346&quot;,
+                &quot;svTRID&quot;: &quot;54321-XYZ&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -490,44 +475,42 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Poll Ack request message is not used for REPP.</t>
 <t>Example XML response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1000">
-            <msg>Command completed successfully</msg>
-        </result>
-        <msgQ count="0" id="12345"/>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>XYZ-12345</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1000&quot;&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;msgQ count=&quot;0&quot; id=&quot;12345&quot;/&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1000",
-                "msg": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1000&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully&quot;
             },
-            "msgQ": {
-                "@count": "0",
-                "@id": "12345"
+            &quot;msgQ&quot;: {
+                &quot;@count&quot;: &quot;0&quot;,
+                &quot;@id&quot;: &quot;12345&quot;
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "XYZ-12345"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;XYZ-12345&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -535,188 +518,182 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Domain Transfer Query request message is not used for REPP.</t>
 <t>Example XML  Domain Transfer Query response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1000">
-            <msg>Command completed successfully</msg>
-        </result>
-        <resData>
-            <domain:trnData
-                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-                <domain:name>example.com</domain:name>
-                <domain:trStatus>pending</domain:trStatus>
-                <domain:reID>ClientX</domain:reID>
-                <domain:reDate>2000-06-06T22:00:00.0Z</domain:reDate>
-                <domain:acID>ClientY</domain:acID>
-                <domain:acDate>2000-06-11T22:00:00.0Z</domain:acDate>
-                <domain:exDate>2002-09-08T22:00:00.0Z</domain:exDate>
-            </domain:trnData>
-        </resData>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>54322-XYZ</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1000&quot;&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:trnData
+                xmlns:domain=&quot;urn:ietf:params:xml:ns:domain-1.0&quot;&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:trStatus&gt;pending&lt;/domain:trStatus&gt;
+                &lt;domain:reID&gt;ClientX&lt;/domain:reID&gt;
+                &lt;domain:reDate&gt;2000-06-06T22:00:00.0Z&lt;/domain:reDate&gt;
+                &lt;domain:acID&gt;ClientY&lt;/domain:acID&gt;
+                &lt;domain:acDate&gt;2000-06-11T22:00:00.0Z&lt;/domain:acDate&gt;
+                &lt;domain:exDate&gt;2002-09-08T22:00:00.0Z&lt;/domain:exDate&gt;
+            &lt;/domain:trnData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54322-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Transfer Query response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1000",
-                "msg": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1000&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully&quot;
             },
-            "resData": {
-                "domain:trnData": {
-                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
-                    "domain:name": "example.com",
-                    "domain:trStatus": "pending",
-                    "domain:reID": "ClientX",
-                    "domain:reDate": "2000-06-06T22:00:00.0Z",
-                    "domain:acID": "ClientY",
-                    "domain:acDate": "2000-06-11T22:00:00.0Z",
-                    "domain:exDate": "2002-09-08T22:00:00.0Z"
+            &quot;resData&quot;: {
+                &quot;domain:trnData&quot;: {
+                    &quot;@xmlns:domain&quot;: &quot;urn:ietf:params:xml:ns:domain-1.0&quot;,
+                    &quot;domain:name&quot;: &quot;example.com&quot;,
+                    &quot;domain:trStatus&quot;: &quot;pending&quot;,
+                    &quot;domain:reID&quot;: &quot;ClientX&quot;,
+                    &quot;domain:reDate&quot;: &quot;2000-06-06T22:00:00.0Z&quot;,
+                    &quot;domain:acID&quot;: &quot;ClientY&quot;,
+                    &quot;domain:acDate&quot;: &quot;2000-06-11T22:00:00.0Z&quot;,
+                    &quot;domain:exDate&quot;: &quot;2002-09-08T22:00:00.0Z&quot;
                 }
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "54322-XYZ"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;54322-XYZ&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
 <section anchor="create"><name>Create</name>
 <t>Example XML Domain Create request:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <command>
-        <create>
-            <domain:create
-                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-                <domain:name>example.com</domain:name>
-                <domain:period unit="y">2</domain:period>
-                <domain:ns>
-                    <domain:hostObj>ns1.example.net</domain:hostObj>
-                    <domain:hostObj>ns2.example.net</domain:hostObj>
-                </domain:ns>
-                <domain:registrant>jd1234</domain:registrant>
-                <domain:contact type="admin">sh8013</domain:contact>
-                <domain:contact type="tech">sh8013</domain:contact>
-                <domain:authInfo>
-                    <domain:pw>2fooBAR</domain:pw>
-                </domain:authInfo>
-            </domain:create>
-        </create>
-        <clTRID>ABC-12345</clTRID>
-    </command>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;command&gt;
+        &lt;create&gt;
+            &lt;domain:create
+                xmlns:domain=&quot;urn:ietf:params:xml:ns:domain-1.0&quot;&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:period unit=&quot;y&quot;&gt;2&lt;/domain:period&gt;
+                &lt;domain:ns&gt;
+                    &lt;domain:hostObj&gt;ns1.example.net&lt;/domain:hostObj&gt;
+                    &lt;domain:hostObj&gt;ns2.example.net&lt;/domain:hostObj&gt;
+                &lt;/domain:ns&gt;
+                &lt;domain:registrant&gt;jd1234&lt;/domain:registrant&gt;
+                &lt;domain:contact type=&quot;admin&quot;&gt;sh8013&lt;/domain:contact&gt;
+                &lt;domain:contact type=&quot;tech&quot;&gt;sh8013&lt;/domain:contact&gt;
+                &lt;domain:authInfo&gt;
+                    &lt;domain:pw&gt;2fooBAR&lt;/domain:pw&gt;
+                &lt;/domain:authInfo&gt;
+            &lt;/domain:create&gt;
+        &lt;/create&gt;
+        &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+    &lt;/command&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Create request:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "command": {
-            "create": {
-                "domain:create": {
-                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
-                    "domain:name": "example.com",
-                    "domain:period": {
-                        "@unit": "y",
-                        "#text": "2"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;command&quot;: {
+            &quot;create&quot;: {
+                &quot;domain:create&quot;: {
+                    &quot;@xmlns:domain&quot;: &quot;urn:ietf:params:xml:ns:domain-1.0&quot;,
+                    &quot;domain:name&quot;: &quot;example.com&quot;,
+                    &quot;domain:period&quot;: {
+                        &quot;@unit&quot;: &quot;y&quot;,
+                        &quot;#text&quot;: &quot;2&quot;
                     },
-                    "domain:ns": {
-                        "domain:hostObj": [
-                            "ns1.example.net",
-                            "ns2.example.net"
+                    &quot;domain:ns&quot;: {
+                        &quot;domain:hostObj&quot;: [
+                            &quot;ns1.example.net&quot;,
+                            &quot;ns2.example.net&quot;
                         ]
                     },
-                    "domain:registrant": "jd1234",
-                    "domain:contact": [
+                    &quot;domain:registrant&quot;: &quot;jd1234&quot;,
+                    &quot;domain:contact&quot;: [
                         {
-                            "@type": "admin",
-                            "#text": "sh8013"
+                            &quot;@type&quot;: &quot;admin&quot;,
+                            &quot;#text&quot;: &quot;sh8013&quot;
                         },
                         {
-                            "@type": "tech",
-                            "#text": "sh8013"
+                            &quot;@type&quot;: &quot;tech&quot;,
+                            &quot;#text&quot;: &quot;sh8013&quot;
                         }
                     ],
-                    "domain:authInfo": {
-                        "domain:pw": "2fooBAR"
+                    &quot;domain:authInfo&quot;: {
+                        &quot;domain:pw&quot;: &quot;2fooBAR&quot;
                     }
                 }
             },
-            "clTRID": "ABC-12345"
+            &quot;clTRID&quot;: &quot;ABC-12345&quot;
         }
     }
 }
-]]>
 </sourcecode>
 <t>Example XML Domain Create response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1000">
-            <msg>Command completed successfully</msg>
-        </result>
-        <resData>
-            <domain:creData
-                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-                <domain:name>example.com</domain:name>
-                <domain:crDate>1999-04-03T22:00:00.0Z</domain:crDate>
-                <domain:exDate>2001-04-03T22:00:00.0Z</domain:exDate>
-            </domain:creData>
-        </resData>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>54321-XYZ</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1000&quot;&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:creData
+                xmlns:domain=&quot;urn:ietf:params:xml:ns:domain-1.0&quot;&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:crDate&gt;1999-04-03T22:00:00.0Z&lt;/domain:crDate&gt;
+                &lt;domain:exDate&gt;2001-04-03T22:00:00.0Z&lt;/domain:exDate&gt;
+            &lt;/domain:creData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Create response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1000",
-                "msg": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1000&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully&quot;
             },
-            "resData": {
-                "domain:creData": {
-                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
-                    "domain:name": "example.com",
-                    "domain:crDate": "1999-04-03T22:00:00.0Z",
-                    "domain:exDate": "2001-04-03T22:00:00.0Z"
+            &quot;resData&quot;: {
+                &quot;domain:creData&quot;: {
+                    &quot;@xmlns:domain&quot;: &quot;urn:ietf:params:xml:ns:domain-1.0&quot;,
+                    &quot;domain:name&quot;: &quot;example.com&quot;,
+                    &quot;domain:crDate&quot;: &quot;1999-04-03T22:00:00.0Z&quot;,
+                    &quot;domain:exDate&quot;: &quot;2001-04-03T22:00:00.0Z&quot;
                 }
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "54321-XYZ"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;54321-XYZ&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -724,39 +701,37 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Delete request message is not used for REPP.</t>
 <t>Example XML Domain Delete response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1000">
-            <msg>Command completed successfully</msg>
-        </result>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>54321-XYZ</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1000&quot;&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Delete response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1000",
-                "msg": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1000&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully&quot;
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "54321-XYZ"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;54321-XYZ&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -764,53 +739,51 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Renew request message is not used for REPP.</t>
 <t>Example XML Domain Renew response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1000">
-            <msg>Command completed successfully</msg>
-        </result>
-        <resData>
-            <domain:renData
-                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-                <domain:name>example.com</domain:name>
-                <domain:exDate>2005-04-03T22:00:00.0Z</domain:exDate>
-            </domain:renData>
-        </resData>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>54322-XYZ</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1000&quot;&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:renData
+                xmlns:domain=&quot;urn:ietf:params:xml:ns:domain-1.0&quot;&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:exDate&gt;2005-04-03T22:00:00.0Z&lt;/domain:exDate&gt;
+            &lt;/domain:renData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54322-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Renew response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1000",
-                "msg": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1000&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully&quot;
             },
-            "resData": {
-                "domain:renData": {
-                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
-                    "domain:name": "example.com",
-                    "domain:exDate": "2005-04-03T22:00:00.0Z"
+            &quot;resData&quot;: {
+                &quot;domain:renData&quot;: {
+                    &quot;@xmlns:domain&quot;: &quot;urn:ietf:params:xml:ns:domain-1.0&quot;,
+                    &quot;domain:name&quot;: &quot;example.com&quot;,
+                    &quot;domain:exDate&quot;: &quot;2005-04-03T22:00:00.0Z&quot;
                 }
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "54322-XYZ"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;54322-XYZ&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -818,63 +791,61 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Transfer request message is not used for REPP.</t>
 <t>Example XML Domain Transfer response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1001">
-            <msg>Command completed successfully; action pending</msg>
-        </result>
-        <resData>
-            <domain:trnData
-                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-                <domain:name>example.com</domain:name>
-                <domain:trStatus>pending</domain:trStatus>
-                <domain:reID>ClientX</domain:reID>
-                <domain:reDate>2000-06-08T22:00:00.0Z</domain:reDate>
-                <domain:acID>ClientY</domain:acID>
-                <domain:acDate>2000-06-13T22:00:00.0Z</domain:acDate>
-                <domain:exDate>2002-09-08T22:00:00.0Z</domain:exDate>
-            </domain:trnData>
-        </resData>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>54322-XYZ</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1001&quot;&gt;
+            &lt;msg&gt;Command completed successfully; action pending&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;resData&gt;
+            &lt;domain:trnData
+                xmlns:domain=&quot;urn:ietf:params:xml:ns:domain-1.0&quot;&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:trStatus&gt;pending&lt;/domain:trStatus&gt;
+                &lt;domain:reID&gt;ClientX&lt;/domain:reID&gt;
+                &lt;domain:reDate&gt;2000-06-08T22:00:00.0Z&lt;/domain:reDate&gt;
+                &lt;domain:acID&gt;ClientY&lt;/domain:acID&gt;
+                &lt;domain:acDate&gt;2000-06-13T22:00:00.0Z&lt;/domain:acDate&gt;
+                &lt;domain:exDate&gt;2002-09-08T22:00:00.0Z&lt;/domain:exDate&gt;
+            &lt;/domain:trnData&gt;
+        &lt;/resData&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;54322-XYZ&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Transfer response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1001",
-                "msg": "Command completed successfully; action pending"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1001&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully; action pending&quot;
             },
-            "resData": {
-                "domain:trnData": {
-                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
-                    "domain:name": "example.com",
-                    "domain:trStatus": "pending",
-                    "domain:reID": "ClientX",
-                    "domain:reDate": "2000-06-08T22:00:00.0Z",
-                    "domain:acID": "ClientY",
-                    "domain:acDate": "2000-06-13T22:00:00.0Z",
-                    "domain:exDate": "2002-09-08T22:00:00.0Z"
+            &quot;resData&quot;: {
+                &quot;domain:trnData&quot;: {
+                    &quot;@xmlns:domain&quot;: &quot;urn:ietf:params:xml:ns:domain-1.0&quot;,
+                    &quot;domain:name&quot;: &quot;example.com&quot;,
+                    &quot;domain:trStatus&quot;: &quot;pending&quot;,
+                    &quot;domain:reID&quot;: &quot;ClientX&quot;,
+                    &quot;domain:reDate&quot;: &quot;2000-06-08T22:00:00.0Z&quot;,
+                    &quot;domain:acID&quot;: &quot;ClientY&quot;,
+                    &quot;domain:acDate&quot;: &quot;2000-06-13T22:00:00.0Z&quot;,
+                    &quot;domain:exDate&quot;: &quot;2002-09-08T22:00:00.0Z&quot;
                 }
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "54322-XYZ"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;54322-XYZ&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -882,39 +853,37 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>The Transfer Cancel request message is not used for REPP.</t>
 <t>Example XML Domain Cancel Transfer response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1000">
-            <msg>Command completed successfully</msg>
-        </result>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>XYZ-12345</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1000&quot;&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Cancel Transfer response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1000",
-                "msg": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1000&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully&quot;
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "XYZ-12345"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;XYZ-12345&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 
@@ -929,86 +898,82 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <section anchor="update"><name>Update</name>
 <t>Example XML Domain Update request:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <command>
-        <update>
-            <domain:update
-                xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
-                <domain:name>example.com</domain:name>
-                <domain:chg>
-                    <domain:registrant>sh8013</domain:registrant>
-                    <domain:authInfo>
-                        <domain:pw>2BARfoo</domain:pw>
-                    </domain:authInfo>
-                </domain:chg>
-            </domain:update>
-        </update>
-        <clTRID>ABC-12345</clTRID>
-    </command>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;command&gt;
+        &lt;update&gt;
+            &lt;domain:update
+                xmlns:domain=&quot;urn:ietf:params:xml:ns:domain-1.0&quot;&gt;
+                &lt;domain:name&gt;example.com&lt;/domain:name&gt;
+                &lt;domain:chg&gt;
+                    &lt;domain:registrant&gt;sh8013&lt;/domain:registrant&gt;
+                    &lt;domain:authInfo&gt;
+                        &lt;domain:pw&gt;2BARfoo&lt;/domain:pw&gt;
+                    &lt;/domain:authInfo&gt;
+                &lt;/domain:chg&gt;
+            &lt;/domain:update&gt;
+        &lt;/update&gt;
+        &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+    &lt;/command&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Update request:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "command": {
-            "update": {
-                "domain:update": {
-                    "@xmlns:domain": "urn:ietf:params:xml:ns:domain-1.0",
-                    "domain:name": "example.com",
-                    "domain:chg": {
-                        "domain:registrant": "sh8013",
-                        "domain:authInfo": {
-                            "domain:pw": "2BARfoo"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;command&quot;: {
+            &quot;update&quot;: {
+                &quot;domain:update&quot;: {
+                    &quot;@xmlns:domain&quot;: &quot;urn:ietf:params:xml:ns:domain-1.0&quot;,
+                    &quot;domain:name&quot;: &quot;example.com&quot;,
+                    &quot;domain:chg&quot;: {
+                        &quot;domain:registrant&quot;: &quot;sh8013&quot;,
+                        &quot;domain:authInfo&quot;: {
+                            &quot;domain:pw&quot;: &quot;2BARfoo&quot;
                         }
                     }
                 }
             },
-            "clTRID": "ABC-12345"
+            &quot;clTRID&quot;: &quot;ABC-12345&quot;
         }
     }
 }
-]]>
 </sourcecode>
 <t>Example XML Domain Update response:</t>
 
-<sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<epp
-    xmlns="urn:ietf:params:xml:ns:epp-1.0">
-    <response>
-        <result code="1000">
-            <msg>Command completed successfully</msg>
-        </result>
-        <trID>
-            <clTRID>ABC-12345</clTRID>
-            <svTRID>XYZ-12345</svTRID>
-        </trID>
-    </response>
-</epp>
-]]>
+<sourcecode type="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;epp
+    xmlns=&quot;urn:ietf:params:xml:ns:epp-1.0&quot;&gt;
+    &lt;response&gt;
+        &lt;result code=&quot;1000&quot;&gt;
+            &lt;msg&gt;Command completed successfully&lt;/msg&gt;
+        &lt;/result&gt;
+        &lt;trID&gt;
+            &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
+            &lt;svTRID&gt;XYZ-12345&lt;/svTRID&gt;
+        &lt;/trID&gt;
+    &lt;/response&gt;
+&lt;/epp&gt;
 </sourcecode>
 <t>Example JSON Domain Update response:</t>
 
-<sourcecode type="json"><![CDATA[{
-    "epp": {
-        "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
-        "response": {
-            "result": {
-                "@code": "1000",
-                "msg": "Command completed successfully"
+<sourcecode type="json">{
+    &quot;epp&quot;: {
+        &quot;@xmlns&quot;: &quot;urn:ietf:params:xml:ns:epp-1.0&quot;,
+        &quot;response&quot;: {
+            &quot;result&quot;: {
+                &quot;@code&quot;: &quot;1000&quot;,
+                &quot;msg&quot;: &quot;Command completed successfully&quot;
             },
-            "trID": {
-                "clTRID": "ABC-12345",
-                "svTRID": "XYZ-12345"
+            &quot;trID&quot;: {
+                &quot;clTRID&quot;: &quot;ABC-12345&quot;,
+                &quot;svTRID&quot;: &quot;XYZ-12345&quot;
             }
         }
     }
 }
-]]>
 </sourcecode>
 </section>
 </section>
@@ -1032,14 +997,13 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </middle>
 
 <back>
-<references><name>References</name>
 <references><name>Normative References</name>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5731.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5732.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5733.xml"/>
-<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8259.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5730.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5731.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5732.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5733.xml"/>
+<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8259.xml"/>
 </references>
 <references><name>Informative References</name>
 <reference anchor="XMLCOM-WEB" target="https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html">
@@ -1051,7 +1015,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
     <date year="2006"></date>
   </front>
 </reference>
-</references>
 </references>
 
 <section anchor="appendix-a-media-type-registration-application-epp-json"><name>Appendix A.  Media Type Registration: application/epp+json</name>

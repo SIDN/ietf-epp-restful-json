@@ -37,13 +37,23 @@ organization = "SIDN Labs"
 
 .# Abstract
 
-This document describes the rules for converting The Extensible Provisioning Protocol (EPP) [@!RFC5730] XML based messages to a JSON [@!RFC8259] for use with EPP and RESTful EPP[REF-TO-REPP-HERE].
+This document describes the rules for converting The Extensible Provisioning Protocol (EPP) [@!RFC5730] XML based messages and the corresponding XSD schemas to a JSON [@!RFC8259] and JSON schema [REF-TO-JSON-SCHEMA-HERE] for use with EPP and RESTful EPP[REF-TO-REPP-HERE].
 
 {mainmatter}
 
 # Introduction
 
-This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) [@!RFC5730] describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages. 
+This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) [@!RFC5730] describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages. JSON Schema [REF-TO-JSON-SCHEMA-HERE] is a method of specifying formal syntax for JSON format.
+
+## Motivation
+
+RESTful EPP introduces a new transport mechanism for EPP messages that aligns more closely with modern cloud infrastructure, enhancing the scalability of EPP server deployments. While RESTful protocols do not mandate a specific media type for resource description, the widespread adoption of JSON in web services has established it as the de facto standard for modern APIs. The increasing availability of tools, software libraries, and a skilled workforce, coupled with the declining popularity of XML, has led several registries to adopt JSON for data exchange within their API ecosystems. By extending EPP to support JSON, registries can offer a unified API ecosystem that extends beyond domain name and IP address provisioning, maintaining a consistent technology stack, data formats, and developer experience.
+
+JSON's syntax, known for its straightforwardness and minimal verbosity compared to XML, significantly eases the tasks of writing, reading, and maintaining code. This simplicity is especially advantageous for the rapid comprehension and integration of provisioning APIs.
+
+The lightweight nature of JSON can result in faster processing and data transfers, a critical aspect in high-volume transaction environments such as domain registration. Enhanced API response times can lead to more efficient domain lookups, registrations, and updates. Moreover, JSON parsing is typically faster and more straightforward than XML parsing, contributing to improved system performance amid frequent interactions between EPP clients and servers.
+
+However, the absence of a standardized JSON format for domain provisioning has led to the emergence of TLD-specific implementations that lack interoperability, increasing the development effort required for integration. Similarly, at the registrar level, the absence of standards has resulted in numerous incompatible API implementations provided to clients and resellers. Standardizing a JSON format for domain provisioning within the EPP framework could mitigate these challenges, reducing fragmentation and simplifying integration efforts across the domain registration industry.
 
 # Terminology
 
