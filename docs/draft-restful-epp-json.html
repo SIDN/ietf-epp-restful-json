@@ -8,26 +8,30 @@
 <meta content="Maarten Wullink" name="author">
 <meta content="Marco Davids" name="author">
 <meta content="
-       This document describes the rules for converting The Extensible Provisioning Protocol (EPP)   XML based messages to a JSON   for use with EPP and RESTful EPP[REF-TO-REPP-HERE]. 
+       This document describes the rules for converting The Extensible Provisioning Protocol (EPP)   XML based messages and the corresponding XSD schemas to a JSON   and JSON schema [REF-TO-JSON-SCHEMA-HERE] for use with EPP and RESTful EPP[REF-TO-REPP-HERE]. 
     " name="description">
-<meta content="xml2rfc 3.18.2" name="generator">
+<meta content="xml2rfc 3.12.3" name="generator">
 <meta content="draft-wullink-restful-epp-json-00" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.2
-    Python 3.11.6
-    ConfigArgParse 1.7
-    google-i18n-address 3.1.0
+  xml2rfc 3.12.3
+    Python 3.10.8
+    appdirs 1.4.4
+    ConfigArgParse 1.5.3
+    google-i18n-address 2.5.0
+    html5lib 1.1
     intervaltree 3.1.0
-    Jinja2 3.1.2
-    lxml 4.9.3
-    platformdirs 4.0.0
-    pycountry 22.3.5
-    PyYAML 6.0.1
-    requests 2.31.0
-    setuptools 68.2.2
+    Jinja2 2.11.3
+    kitchen 1.2.6
+    lxml 4.6.5
+    MarkupSafe 2.0.1
+    pycairo 1.20.1
+    pycountry 22.1.10
+    pyflakes 2.4.0
+    PyYAML 6.0
+    requests 2.27.1
+    setuptools 57.4.0
     six 1.16.0
-    wcwidth 0.2.9
-    weasyprint 55.0
+    WeasyPrint 0.42.3
 -->
 <link href="../docs/draft-restful-epp-json.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -39,7 +43,7 @@
   this can be consolidated so that style settings occur only in one place, but
   for now the contents of this file consists first of the initial CSS work as
   provided to the RFC Formatter (xml2rfc) work, followed by itemized and
-  commented changes found necessary during the development of the v3
+  commented changes found necssary during the development of the v3
   formatters.
 
 */
@@ -49,14 +53,9 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
 
-:root {
-  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
-  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
-  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
-}
-
 @viewport {
   zoom: 1.0;
+  width: extend-to-zoom;
 }
 @-ms-viewport {
   width: extend-to-zoom;
@@ -71,10 +70,9 @@ body {
   color: #222;
   background-color: #fff;
   font-size: 14px;
-  font-family: var(--font-sans);
+  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
   line-height: 1.6;
   scroll-behavior: smooth;
-  overflow-wrap: break-word;
 }
 .ears {
   display: none;
@@ -161,15 +159,6 @@ div {
 svg {
   display: block;
 }
-svg[font-family~="serif" i], svg [font-family~="serif" i] {
-  font-family: var(--font-serif);
-}
-svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
-  font-family: var(--font-sans);
-}
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
 .alignCenter.art-text {
   background-color: #f9f9f9;
   border: 1px solid #eee;
@@ -184,8 +173,11 @@ svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
   margin: 1em 0;
 }
 .alignCenter > *:first-child {
-  display: table;
   border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
   margin: 0 auto;
 }
 
@@ -253,8 +245,7 @@ a[href]:hover {
   background-color: #f2f2f2;
 }
 figcaption a[href],
-a[href].selfRef,
-.iref + a[href].internal {
+a[href].selfRef {
   color: #222;
 }
 /* XXX probably not this:
@@ -264,9 +255,9 @@ a.selfRef:hover {
 } */
 
 /* Figures */
-tt, code, pre {
+tt, code, pre, code {
   background-color: #f9f9f9;
-  font-family: var(--font-mono);
+  font-family: 'Roboto Mono', monospace;
 }
 pre {
   border: 1px solid #eee;
@@ -305,9 +296,6 @@ blockquote {
   border: 1px solid #ddd;
   border-radius: 3px;
   margin: 1em 0;
-}
-blockquote > *:last-child {
-  margin-bottom: 0;
 }
 cite {
   display: block;
@@ -506,7 +494,7 @@ address.vcard .nameRole {
   margin-left: 0;
 }
 address.vcard .label {
-  font-family: var(--font-sans);
+  font-family: "Noto Sans",Arial,Helvetica,sans-serif;
   margin: 0.5em 0;
 }
 address.vcard .type {
@@ -646,6 +634,7 @@ hr.addr {
 /* pagination */
 @media print {
   body {
+
     width: 100%;
   }
   p {
@@ -667,9 +656,6 @@ hr.addr {
   }
   figure {
     overflow: scroll;
-  }
-  .breakable pre {
-    break-inside: auto;
   }
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
@@ -738,7 +724,7 @@ hr.addr {
   size: A4;
   margin-bottom: 45mm;
   padding-top: 20px;
-  /* The following is commented out here, but set appropriately by in code, as
+  /* The follwing is commented out here, but set appropriately by in code, as
      the content depends on the document */
   /*
   @top-left {
@@ -838,12 +824,12 @@ section {
 }
 
 /* prevent monospace from becoming overly large */
-tt, code, pre {
+tt, code, pre, code {
   font-size: 95%;
 }
 
 /* Fix the height/width aspect for ascii art*/
-.sourcecode pre,
+pre.sourcecode,
 .art-text pre {
   line-height: 1.12;
 }
@@ -879,7 +865,7 @@ table th.text-right {
   text-align: right;
 }
 
-/* Make the alternative author contact information look less like just another
+/* Make the alternative author contact informatio look less like just another
    author, and group it closer with the primary author contact information */
 .alternative-contact {
   margin: 0.5em 0 0.25em 0;
@@ -1061,7 +1047,6 @@ aside > p {
 /* Sourcecode margin in print, when there's no pilcrow */
 @media print {
   .artwork,
-  .artwork > pre,
   .sourcecode {
     margin-bottom: 1em;
   }
@@ -1076,15 +1061,12 @@ ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
 ol.type-I { list-style-type: lower-roman; }
 /* Apply the print table and row borders in general, on request from the RPC,
-and increase the contrast between border and odd row background slightly */
+and increase the contrast between border and odd row background sligthtly */
 table {
   border: 1px solid #ddd;
 }
 td {
   border-top: 1px solid #ddd;
-}
-tr {
-  break-inside: avoid;
 }
 tr:nth-child(2n+1) > td {
   background-color: #f8f8f8;
@@ -1136,7 +1118,7 @@ span.break, dd.break {
     break-before: auto;
   }
 }
-/* Text in compact lists should not get extra bottom margin space,
+/* Text in compact lists should not get extra bottim margin space,
    since that would makes the list not compact */
 ul.compact p, .ulCompact p,
 ol.compact p, .olCompact p {
@@ -1161,7 +1143,7 @@ p tt, p code, li tt, li code {
 pre {
    margin-top: 0.5px;
 }
-/* Tweak the compact list text */
+/* Tweak the comact list text */
 ul.compact, .ulCompact,
 ol.compact, .olCompact,
 dl.compact, .dlCompact {
@@ -1179,7 +1161,7 @@ dd > div.artwork:first-child,
 dd > aside:first-child,
 dd > figure:first-child,
 dd > ol:first-child,
-dd > div.sourcecode:first-child,
+dd > div:first-child > pre.sourcecode,
 dd > table:first-child,
 dd > ul:first-child {
   clear: left;
@@ -1193,23 +1175,23 @@ li > p {
   margin-bottom: 0.5em
 }
 /* Don't let p margin spill out from inside list items */
-li > p:last-of-type:only-child {
+li > p:last-of-type {
   margin-bottom: 0;
 }
 </style>
 <link href="rfc-local.css" rel="stylesheet" type="text/css">
 </head>
-<body class="xml2rfc">
+<body>
 <script src="metadata.min.js"></script>
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">XML to JSON for EPP</td>
-<td class="right">January 2024</td>
+<td class="right">February 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Wullink &amp; Davids</td>
-<td class="center">Expires 20 July 2024</td>
+<td class="center">Expires 4 August 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1222,12 +1204,12 @@ li > p:last-of-type:only-child {
 <dd class="internet-draft">draft-wullink-restful-epp-json-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-01-17" class="published">17 January 2024</time>
+<time datetime="2024-02-01" class="published">1 February 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-07-20">20 July 2024</time></dd>
+<dd class="expires"><time datetime="2024-08-04">4 August 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1244,7 +1226,7 @@ li > p:last-of-type:only-child {
 <h1 id="title">XML to JSON Conversion rules for EPP</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> XML based messages to a JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> for use with EPP and RESTful EPP[REF-TO-REPP-HERE].<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="xref">RFC5730</a>]</span> XML based messages and the corresponding XSD schemas to a JSON <span>[<a href="#RFC8259" class="xref">RFC8259</a>]</span> and JSON schema [REF-TO-JSON-SCHEMA-HERE] for use with EPP and RESTful EPP[REF-TO-REPP-HERE].<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1265,7 +1247,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1295,121 +1277,121 @@ li > p:last-of-type:only-child {
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-motivation" class="xref">Motivation</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-terminology" class="xref">Terminology</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-conventions-used-in-this-do" class="internal xref">Conventions Used in This Document</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-conventions-used-in-this-do" class="xref">Conventions Used in This Document</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-conversion-rules" class="internal xref">Conversion Rules</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-conversion-rules" class="xref">Conversion Rules</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-empty" class="internal xref">Empty</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-empty" class="xref">Empty</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-pure-text-content" class="internal xref">Pure text content</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-pure-text-content" class="xref">Pure text content</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-attributes-only" class="internal xref">Attributes only</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-attributes-only" class="xref">Attributes only</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-pure-text-content-and-attri" class="internal xref">Pure text content and attributes</a></p>
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-pure-text-content-and-attri" class="xref">Pure text content and attributes</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-child-elements-with-differe" class="internal xref">Child elements with different names</a></p>
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-child-elements-with-differe" class="xref">Child elements with different names</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-child-elements-with-identic" class="internal xref">Child elements with identical names</a></p>
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="xref">4.6</a>.  <a href="#name-child-elements-with-identic" class="xref">Child elements with identical names</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
-                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="auto internal xref">4.7</a>.  <a href="#name-child-elements-and-contiguo" class="internal xref">Child elements and contiguous text</a></p>
+                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="xref">4.7</a>.  <a href="#name-child-elements-and-contiguo" class="xref">Child elements and contiguous text</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-examples" class="internal xref">Examples</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-examples" class="xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-hello" class="internal xref">Hello</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-hello" class="xref">Hello</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-login" class="internal xref">Login</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-login" class="xref">Login</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-logout" class="internal xref">Logout</a></p>
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-logout" class="xref">Logout</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-check" class="internal xref">Check</a></p>
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-check" class="xref">Check</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
-                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-info" class="internal xref">Info</a></p>
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="xref">5.5</a>.  <a href="#name-info" class="xref">Info</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
-                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-poll" class="internal xref">Poll</a></p>
+                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="xref">5.6</a>.  <a href="#name-poll" class="xref">Poll</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.7">
-                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="auto internal xref">5.7</a>.  <a href="#name-poll-ack" class="internal xref">Poll Ack</a></p>
+                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="xref">5.7</a>.  <a href="#name-poll-ack" class="xref">Poll Ack</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.8">
-                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="auto internal xref">5.8</a>.  <a href="#name-transfer-query" class="internal xref">Transfer Query</a></p>
+                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="xref">5.8</a>.  <a href="#name-transfer-query" class="xref">Transfer Query</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.9">
-                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="auto internal xref">5.9</a>.  <a href="#name-create" class="internal xref">Create</a></p>
+                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="xref">5.9</a>.  <a href="#name-create" class="xref">Create</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.10">
-                <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="auto internal xref">5.10</a>. <a href="#name-delete" class="internal xref">Delete</a></p>
+                <p id="section-toc.1-1.5.2.10.1"><a href="#section-5.10" class="xref">5.10</a>. <a href="#name-delete" class="xref">Delete</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.11">
-                <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="auto internal xref">5.11</a>. <a href="#name-renew" class="internal xref">Renew</a></p>
+                <p id="section-toc.1-1.5.2.11.1"><a href="#section-5.11" class="xref">5.11</a>. <a href="#name-renew" class="xref">Renew</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.12">
-                <p id="section-toc.1-1.5.2.12.1"><a href="#section-5.12" class="auto internal xref">5.12</a>. <a href="#name-transfer-request" class="internal xref">Transfer Request</a></p>
+                <p id="section-toc.1-1.5.2.12.1"><a href="#section-5.12" class="xref">5.12</a>. <a href="#name-transfer-request" class="xref">Transfer Request</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.13">
-                <p id="section-toc.1-1.5.2.13.1"><a href="#section-5.13" class="auto internal xref">5.13</a>. <a href="#name-transfer-cancel" class="internal xref">Transfer Cancel</a></p>
+                <p id="section-toc.1-1.5.2.13.1"><a href="#section-5.13" class="xref">5.13</a>. <a href="#name-transfer-cancel" class="xref">Transfer Cancel</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.14">
-                <p id="section-toc.1-1.5.2.14.1"><a href="#section-5.14" class="auto internal xref">5.14</a>. <a href="#name-transfer-reject" class="internal xref">Transfer Reject</a></p>
+                <p id="section-toc.1-1.5.2.14.1"><a href="#section-5.14" class="xref">5.14</a>. <a href="#name-transfer-reject" class="xref">Transfer Reject</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.15">
-                <p id="section-toc.1-1.5.2.15.1"><a href="#section-5.15" class="auto internal xref">5.15</a>. <a href="#name-transfer-approve" class="internal xref">Transfer Approve</a></p>
+                <p id="section-toc.1-1.5.2.15.1"><a href="#section-5.15" class="xref">5.15</a>. <a href="#name-transfer-approve" class="xref">Transfer Approve</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.16">
-                <p id="section-toc.1-1.5.2.16.1"><a href="#section-5.16" class="auto internal xref">5.16</a>. <a href="#name-update" class="internal xref">Update</a></p>
+                <p id="section-toc.1-1.5.2.16.1"><a href="#section-5.16" class="xref">5.16</a>. <a href="#name-update" class="xref">Update</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-internationalization-consid" class="internal xref">Internationalization Considerations</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-internationalization-consid" class="xref">Internationalization Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-acknowledgments" class="xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-references" class="internal xref">References</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-appendix-a-media-type-regis" class="internal xref">Appendix A.  Media Type Registration: application/epp+json</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#section-11" class="xref">11</a>. <a href="#name-informative-references" class="xref">Informative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-appendix-a-media-type-regis" class="xref">Appendix A.  Media Type Registration: application/epp+json</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1420,7 +1402,18 @@ li > p:last-of-type:only-child {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>, for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <span>[<a href="#RFC8259" class="xref">RFC8259</a>]</span>, for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="xref">RFC5730</a>]</span> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages. JSON Schema [REF-TO-JSON-SCHEMA-HERE] is a method of specifying formal syntax for JSON format.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<div id="motivation">
+<section id="section-1.1">
+        <h3 id="name-motivation">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-motivation" class="section-name selfRef">Motivation</a>
+        </h3>
+<p id="section-1.1-1">RESTful EPP introduces a new transport mechanism for EPP messages that aligns more closely with modern cloud infrastructure, enhancing the scalability of EPP server deployments. While RESTful protocols do not mandate a specific media type for resource description, the widespread adoption of JSON in web services has established it as the de facto standard for modern APIs. The increasing availability of tools, software libraries, and a skilled workforce, coupled with the declining popularity of XML, has led several registries to adopt JSON for data exchange within their API ecosystems. By extending EPP to support JSON, registries can offer a unified API ecosystem that extends beyond domain name and IP address provisioning, maintaining a consistent technology stack, data formats, and developer experience.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">JSON's syntax, known for its straightforwardness and minimal verbosity compared to XML, significantly eases the tasks of writing, reading, and maintaining code. This simplicity is especially advantageous for the rapid comprehension and integration of provisioning APIs.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">The lightweight nature of JSON can result in faster processing and data transfers, a critical aspect in high-volume transaction environments such as domain registration. Enhanced API response times can lead to more efficient domain lookups, registrations, and updates. Moreover, JSON parsing is typically faster and more straightforward than XML parsing, contributing to improved system performance amid frequent interactions between EPP clients and servers.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">However, the absence of a standardized JSON format for domain provisioning has led to the emergence of TLD-specific implementations that lack interoperability, increasing the development effort required for integration. Similarly, at the registrar level, the absence of standards has resulted in numerous incompatible API implementations provided to clients and resellers. Standardizing a JSON format for domain provisioning within the EPP framework could mitigate these challenges, reducing fragmentation and simplifying integration efforts across the domain registration industry.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="terminology">
@@ -1430,7 +1423,7 @@ li > p:last-of-type:only-child {
       </h2>
 <p id="section-2-1">In this document the following terminology is used.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">EPP RFCs - This is a reference to the EPP version 1.0
-specifications <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span>, <span>[<a href="#RFC5731" class="cite xref">RFC5731</a>]</span>, <span>[<a href="#RFC5732" class="cite xref">RFC5732</a>]</span> and <span>[<a href="#RFC5733" class="cite xref">RFC5733</a>]</span>.<a href="#section-2-2" class="pilcrow">¶</a></p>
+specifications <span>[<a href="#RFC5730" class="xref">RFC5730</a>]</span>, <span>[<a href="#RFC5731" class="xref">RFC5731</a>]</span>, <span>[<a href="#RFC5732" class="xref">RFC5732</a>]</span> and <span>[<a href="#RFC5733" class="xref">RFC5733</a>]</span>.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">RESTful EPP or REPP - The RESTful transport for EPP described in
 this document.<a href="#section-2-3" class="pilcrow">¶</a></p>
 </section>
@@ -1442,7 +1435,7 @@ this document.<a href="#section-2-3" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-3-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-document are to be interpreted as described in <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+document are to be interpreted as described in <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">JSON is case sensitive. Unless stated otherwise, JSON specifications and examples provided in this document MUST be interpreted in the
 character case presented. The examples in this document assume that request and response messages
 are properly formatted JSON documents. Indentation and white space in examples are provided only to illustrate element relationships and for improving readability, and are not REQUIRED features of the protocol.<a href="#section-3-2" class="pilcrow">¶</a></p>
@@ -1477,17 +1470,15 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-4.1-1">An empty XML element MUST be mapped to to a key matching the name of the element and a null value.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <p id="section-4.1-2">XML:<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-4.1-3">
-<pre>&lt;hello/&gt;
-
+<div id="section-4.1-3">
+<pre class="lang-xml sourcecode">&lt;hello/&gt;
 </pre><a href="#section-4.1-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.1-4">JSON:<a href="#section-4.1-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.1-5">
-<pre>{
+<div id="section-4.1-5">
+<pre class="lang-json sourcecode">{
     "hello": null
 }
-
 </pre><a href="#section-4.1-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1499,17 +1490,15 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-4.2-1">An XML element containing text only MUST be mapped to a key matching the name of the element and the text MUST be used for the value<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">XML:<a href="#section-4.2-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-4.2-3">
-<pre>&lt;lang&gt;en&lt;/lang&gt;
-
+<div id="section-4.2-3">
+<pre class="lang-xml sourcecode">&lt;lang&gt;en&lt;/lang&gt;
 </pre><a href="#section-4.2-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.2-4">JSON:<a href="#section-4.2-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.2-5">
-<pre>{
+<div id="section-4.2-5">
+<pre class="lang-json sourcecode">{
     "lang": "en"
 }
-
 </pre><a href="#section-4.2-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1521,20 +1510,18 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-4.3-1">An XML element containing one or more atributes only, MUST be mapped to a JSON object matching the name of the element. Each XML attribute, prefixed using the <code>@</code> character, MUST be added as a key-value pair to the object.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">XML:<a href="#section-4.3-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-4.3-3">
-<pre>&lt;msgQ count="5" id="12345"/&gt;
-
+<div id="section-4.3-3">
+<pre class="lang-xml sourcecode">&lt;msgQ count="5" id="12345"/&gt;
 </pre><a href="#section-4.3-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.3-4">JSON:<a href="#section-4.3-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.3-5">
-<pre>{
+<div id="section-4.3-5">
+<pre class="lang-json sourcecode">{
     "msgQ": {
         "@count": "5",
         "@id": "12345"
     }
 }
-
 </pre><a href="#section-4.3-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1546,20 +1533,18 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-4.4-1">An XML element containing one or more atributes and text content only, MUST be mapped to a JSON object matching the name of the element. The text content MUST, prefixed using the string <code>#text</code>, MUST be added as a key-value pair to the object.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
 <p id="section-4.4-2">XML:<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-4.4-3">
-<pre>&lt;msg lang="en"&gt;Command completed successfully&lt;/msg&gt;
-
+<div id="section-4.4-3">
+<pre class="lang-xml sourcecode">&lt;msg lang="en"&gt;Command completed successfully&lt;/msg&gt;
 </pre><a href="#section-4.4-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.4-4">JSON:<a href="#section-4.4-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.4-5">
-<pre>{
+<div id="section-4.4-5">
+<pre class="lang-json sourcecode">{
     "msg": {
         "@lang": "en",
         "#text": "Command completed successfully"
     }
 }
-
 </pre><a href="#section-4.4-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1571,23 +1556,21 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-4.5-1">An XML element containing one or more child elements, where each child uses an unique name, MUST be mapped to a JSON object matching the name of the element. Each child element MUST be added as a key-value pair to the parent object.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <p id="section-4.5-2">XML:<a href="#section-4.5-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-4.5-3">
-<pre>&lt;trID&gt;
+<div id="section-4.5-3">
+<pre class="lang-xml sourcecode">&lt;trID&gt;
     &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
     &lt;svTRID&gt;54321-XYZ&lt;/svTRID&gt;
 &lt;/trID&gt;
-
 </pre><a href="#section-4.5-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.5-4">JSON:<a href="#section-4.5-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.5-5">
-<pre>{
+<div id="section-4.5-5">
+<pre class="lang-json sourcecode">{
     "trID": {
         "clTRID": "ABC-12345",
         "svTRID": "54321-XYZ"
     }
 }
-
 </pre><a href="#section-4.5-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1599,17 +1582,16 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-4.6-1">An XML element containing multiple child elements, where multiple child elements use the same name, MUST be mapped to a JSON object containing an array. The name of the array MUST match the name of the non-unique children, each child element MUST be converted to JSON and added to the array.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
 <p id="section-4.6-2">XML:<a href="#section-4.6-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-4.6-3">
-<pre>&lt;host&gt;
+<div id="section-4.6-3">
+<pre class="lang-xml sourcecode">&lt;host&gt;
     &lt;addr&gt;192.0.2.1&lt;/addr&gt;
     &lt;addr&gt;192.0.2.2&lt;/addr&gt;
 &lt;/host&gt;
-
 </pre><a href="#section-4.6-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.6-4">JSON:<a href="#section-4.6-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.6-5">
-<pre>{
+<div id="section-4.6-5">
+<pre class="lang-json sourcecode">{
     "host": {
         "addr": [
             "192.0.2.1",
@@ -1617,7 +1599,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         ]
     }
 }
-
 </pre><a href="#section-4.6-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1629,18 +1610,17 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-4.7-1">An XML element containing one or more child elements and contiguous text, MUST be mapped to a JSON object containing a key-value entry for each child element, the text value MUST result in a key named <code>#text</code>.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
 <p id="section-4.7-2">XML:<a href="#section-4.7-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-4.7-3">
-<pre>&lt;msg lang="en"&gt;
+<div id="section-4.7-3">
+<pre class="lang-xml sourcecode">&lt;msg lang="en"&gt;
     Credit balance low.
     &lt;limit&gt;100&lt;/limit&gt;
     &lt;bal&gt;5&lt;/bal&gt;
 &lt;/msg&gt;
-
 </pre><a href="#section-4.7-3" class="pilcrow">¶</a>
 </div>
 <p id="section-4.7-4">JSON:<a href="#section-4.7-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.7-5">
-<pre>{
+<div id="section-4.7-5">
+<pre class="lang-json sourcecode">{
     "msg": {
         "@lang": "en",
         "limit": 100,
@@ -1648,24 +1628,22 @@ are properly formatted JSON documents. Indentation and white space in examples a
         "#text": "Credit balance low."
     }
 }
-
 </pre><a href="#section-4.7-5" class="pilcrow">¶</a>
 </div>
 <p id="section-4.7-6">When child elements are mixed with multiple text segments, the resulting <code>#text</code> key-value entry MUST be an array, containing all text segments.<a href="#section-4.7-6" class="pilcrow">¶</a></p>
 <p id="section-4.7-7">XML:<a href="#section-4.7-7" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-4.7-8">
-<pre>&lt;msg lang="en"&gt;
+<div id="section-4.7-8">
+<pre class="lang-xml sourcecode">&lt;msg lang="en"&gt;
     Credit balance low.
     &lt;limit&gt;100&lt;/limit&gt;
     &lt;bal&gt;5&lt;/bal&gt;
     Please increase balance.
 &lt;/msg&gt;
-
 </pre><a href="#section-4.7-8" class="pilcrow">¶</a>
 </div>
 <p id="section-4.7-9">JSON:<a href="#section-4.7-9" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-4.7-10">
-<pre>{
+<div id="section-4.7-10">
+<pre class="lang-json sourcecode">{
     "msg": {
         "@lang": "en",
         "limit": 100,
@@ -1673,10 +1651,9 @@ are properly formatted JSON documents. Indentation and white space in examples a
         "#text": ["Credit balance low.", "Please increase balance asap."]
     }
 }
-
 </pre><a href="#section-4.7-10" class="pilcrow">¶</a>
 </div>
-<p id="section-4.7-11">The rules above are based on the conversion approach found on <span>[<a href="#XMLCOM-WEB" class="cite xref">XMLCOM-WEB</a>]</span><a href="#section-4.7-11" class="pilcrow">¶</a></p>
+<p id="section-4.7-11">The rules above are based on the conversion approach found on <span>[<a href="#XMLCOM-WEB" class="xref">XMLCOM-WEB</a>]</span><a href="#section-4.7-11" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1694,8 +1671,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.1-1">The Hello request message does not exist in the context of REPP.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">Example XML response:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.1-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.1-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;greeting&gt;
@@ -1732,12 +1709,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/dcp&gt;
     &lt;/greeting&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.1-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.1-4">Example JSON response:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.1-5">
-<pre>{
+<div id="section-5.1-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "greeting": {
@@ -1771,7 +1747,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.1-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1807,8 +1782,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.5-1">The Info request message is not used for REPP.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 <p id="section-5.5-2">Example XML Domain Info response:<a href="#section-5.5-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.5-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.5-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -1848,12 +1823,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.5-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.5-4">Example JSON Domain Info response:<a href="#section-5.5-4" class="pilcrow">¶</a></p>
-<div class="breakable lang-json sourcecode" id="section-5.5-5">
-<pre>{
+<div id="section-5.5-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -1909,7 +1883,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.5-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1921,8 +1894,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.6-1">The Poll request message is not used for REPP.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
 <p id="section-5.6-2">Example XML response:<a href="#section-5.6-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.6-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.6-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -1942,12 +1915,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.6-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.6-4">Example JSON response:<a href="#section-5.6-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.6-5">
-<pre>{
+<div id="section-5.6-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -1973,7 +1945,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.6-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1985,8 +1956,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.7-1">The Poll Ack request message is not used for REPP.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
 <p id="section-5.7-2">Example XML response:<a href="#section-5.7-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.7-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.7-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -2000,12 +1971,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.7-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.7-4">Example JSON response:<a href="#section-5.7-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.7-5">
-<pre>{
+<div id="section-5.7-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -2024,7 +1994,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.7-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2036,8 +2005,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.8-1">The Domain Transfer Query request message is not used for REPP.<a href="#section-5.8-1" class="pilcrow">¶</a></p>
 <p id="section-5.8-2">Example XML  Domain Transfer Query response:<a href="#section-5.8-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.8-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.8-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -2062,12 +2031,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.8-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.8-4">Example JSON Domain Transfer Query response:<a href="#section-5.8-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.8-5">
-<pre>{
+<div id="section-5.8-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -2094,7 +2062,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.8-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2105,8 +2072,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <a href="#section-5.9" class="section-number selfRef">5.9. </a><a href="#name-create" class="section-name selfRef">Create</a>
         </h3>
 <p id="section-5.9-1">Example XML Domain Create request:<a href="#section-5.9-1" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.9-2">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.9-2">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;command&gt;
@@ -2130,12 +2097,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
     &lt;/command&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.9-2" class="pilcrow">¶</a>
 </div>
 <p id="section-5.9-3">Example JSON Domain Create request:<a href="#section-5.9-3" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.9-4">
-<pre>{
+<div id="section-5.9-4">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "command": {
@@ -2173,12 +2139,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.9-4" class="pilcrow">¶</a>
 </div>
 <p id="section-5.9-5">Example XML Domain Create response:<a href="#section-5.9-5" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.9-6">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.9-6">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -2199,12 +2164,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.9-6" class="pilcrow">¶</a>
 </div>
 <p id="section-5.9-7">Example JSON Domain Create response:<a href="#section-5.9-7" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.9-8">
-<pre>{
+<div id="section-5.9-8">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -2227,7 +2191,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.9-8" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2239,8 +2202,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.10-1">The Delete request message is not used for REPP.<a href="#section-5.10-1" class="pilcrow">¶</a></p>
 <p id="section-5.10-2">Example XML Domain Delete response:<a href="#section-5.10-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.10-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.10-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -2253,12 +2216,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.10-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.10-4">Example JSON Domain Delete response:<a href="#section-5.10-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.10-5">
-<pre>{
+<div id="section-5.10-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -2273,7 +2235,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.10-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2285,8 +2246,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.11-1">The Renew request message is not used for REPP.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
 <p id="section-5.11-2">Example XML Domain Renew response:<a href="#section-5.11-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.11-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.11-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -2306,12 +2267,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.11-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.11-4">Example JSON Domain Renew response:<a href="#section-5.11-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.11-5">
-<pre>{
+<div id="section-5.11-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -2333,7 +2293,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.11-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2345,8 +2304,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.12-1">The Transfer request message is not used for REPP.<a href="#section-5.12-1" class="pilcrow">¶</a></p>
 <p id="section-5.12-2">Example XML Domain Transfer response:<a href="#section-5.12-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.12-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.12-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -2371,12 +2330,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.12-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.12-4">Example JSON Domain Transfer response:<a href="#section-5.12-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.12-5">
-<pre>{
+<div id="section-5.12-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -2403,7 +2361,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.12-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2415,8 +2372,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
         </h3>
 <p id="section-5.13-1">The Transfer Cancel request message is not used for REPP.<a href="#section-5.13-1" class="pilcrow">¶</a></p>
 <p id="section-5.13-2">Example XML Domain Cancel Transfer response:<a href="#section-5.13-2" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.13-3">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.13-3">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -2429,12 +2386,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.13-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.13-4">Example JSON Domain Cancel Transfer response:<a href="#section-5.13-4" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.13-5">
-<pre>{
+<div id="section-5.13-5">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -2449,7 +2405,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.13-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2476,8 +2431,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <a href="#section-5.16" class="section-number selfRef">5.16. </a><a href="#name-update" class="section-name selfRef">Update</a>
         </h3>
 <p id="section-5.16-1">Example XML Domain Update request:<a href="#section-5.16-1" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.16-2">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.16-2">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;command&gt;
@@ -2496,12 +2451,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;clTRID&gt;ABC-12345&lt;/clTRID&gt;
     &lt;/command&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.16-2" class="pilcrow">¶</a>
 </div>
 <p id="section-5.16-3">Example JSON Domain Update request:<a href="#section-5.16-3" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.16-4">
-<pre>{
+<div id="section-5.16-4">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "command": {
@@ -2521,12 +2475,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.16-4" class="pilcrow">¶</a>
 </div>
 <p id="section-5.16-5">Example XML Domain Update response:<a href="#section-5.16-5" class="pilcrow">¶</a></p>
-<div class="lang-xml sourcecode" id="section-5.16-6">
-<pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
+<div id="section-5.16-6">
+<pre class="lang-xml sourcecode">&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
 &lt;epp
     xmlns="urn:ietf:params:xml:ns:epp-1.0"&gt;
     &lt;response&gt;
@@ -2539,12 +2492,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
         &lt;/trID&gt;
     &lt;/response&gt;
 &lt;/epp&gt;
-
 </pre><a href="#section-5.16-6" class="pilcrow">¶</a>
 </div>
 <p id="section-5.16-7">Example JSON Domain Update response:<a href="#section-5.16-7" class="pilcrow">¶</a></p>
-<div class="lang-json sourcecode" id="section-5.16-8">
-<pre>{
+<div id="section-5.16-8">
+<pre class="lang-json sourcecode">{
     "epp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
@@ -2559,7 +2511,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
         }
     }
 }
-
 </pre><a href="#section-5.16-8" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2599,51 +2550,46 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 </div>
 <section id="section-10">
-      <h2 id="name-references">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
+      <h2 id="name-normative-references">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
       </h2>
-<section id="section-10.1">
-        <h3 id="name-normative-references">
-<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
-        </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5730">[RFC5730]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Hollenbeck, S.</span>, <span class="refTitle">"Extensible Provisioning Protocol (EPP)"</span>, <span class="seriesInfo">STD 69</span>, <span class="seriesInfo">RFC 5730</span>, <span class="seriesInfo">DOI 10.17487/RFC5730</span>, <time datetime="2009-08" class="refDate">August 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5730">https://www.rfc-editor.org/info/rfc5730</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5731">[RFC5731]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Hollenbeck, S.</span>, <span class="refTitle">"Extensible Provisioning Protocol (EPP) Domain Name Mapping"</span>, <span class="seriesInfo">STD 69</span>, <span class="seriesInfo">RFC 5731</span>, <span class="seriesInfo">DOI 10.17487/RFC5731</span>, <time datetime="2009-08" class="refDate">August 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5731">https://www.rfc-editor.org/info/rfc5731</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5732">[RFC5732]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Hollenbeck, S.</span>, <span class="refTitle">"Extensible Provisioning Protocol (EPP) Host Mapping"</span>, <span class="seriesInfo">STD 69</span>, <span class="seriesInfo">RFC 5732</span>, <span class="seriesInfo">DOI 10.17487/RFC5732</span>, <time datetime="2009-08" class="refDate">August 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5732">https://www.rfc-editor.org/info/rfc5732</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5733">[RFC5733]</dt>
-        <dd>
+      <dd>
 <span class="refAuthor">Hollenbeck, S.</span>, <span class="refTitle">"Extensible Provisioning Protocol (EPP) Contact Mapping"</span>, <span class="seriesInfo">STD 69</span>, <span class="seriesInfo">RFC 5733</span>, <span class="seriesInfo">DOI 10.17487/RFC5733</span>, <time datetime="2009-08" class="refDate">August 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5733">https://www.rfc-editor.org/info/rfc5733</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8259">[RFC8259]</dt>
-      <dd>
+    <dd>
 <span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">STD 90</span>, <span class="seriesInfo">RFC 8259</span>, <span class="seriesInfo">DOI 10.17487/RFC8259</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8259">https://www.rfc-editor.org/info/rfc8259</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
-<section id="section-10.2">
-        <h3 id="name-informative-references">
-<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
-        </h3>
+<section id="section-11">
+      <h2 id="name-informative-references">
+<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+      </h2>
 <dl class="references">
 <dt id="XMLCOM-WEB">[XMLCOM-WEB]</dt>
-      <dd>
+    <dd>
 <span class="refAuthor">XML.com</span>, <span class="refTitle">"Converting Between XML and JSON"</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html">https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
-</section>
 </section>
 <div id="appendix-a-media-type-registration-application-epp-json">
 <section id="appendix-A">
@@ -2654,11 +2600,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="appendix-A-2">MIME subtype name: epp+json<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <p id="appendix-A-3">Required parameters: none<a href="#appendix-A-3" class="pilcrow">¶</a></p>
 <p id="appendix-A-4">Optional parameters: Same as the charset parameter of application/json
-   as specified in <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>.<a href="#appendix-A-4" class="pilcrow">¶</a></p>
+   as specified in <span>[<a href="#RFC8259" class="xref">RFC8259</a>]</span>.<a href="#appendix-A-4" class="pilcrow">¶</a></p>
 <p id="appendix-A-5">Encoding considerations: Same as the encoding considerations of
-   application/xml as specified in <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>.<a href="#appendix-A-5" class="pilcrow">¶</a></p>
+   application/xml as specified in <span>[<a href="#RFC8259" class="xref">RFC8259</a>]</span>.<a href="#appendix-A-5" class="pilcrow">¶</a></p>
 <p id="appendix-A-6">Security considerations: This type has all of the security
-   considerations described in <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> plus the considerations
+   considerations described in <span>[<a href="#RFC8259" class="xref">RFC8259</a>]</span> plus the considerations
    specified in the Security Considerations section of this document.<a href="#appendix-A-6" class="pilcrow">¶</a></p>
 <p id="appendix-A-7">Published specification: This document.<a href="#appendix-A-7" class="pilcrow">¶</a></p>
 <p id="appendix-A-8">Applications that use this media type: RESTful EPP client and server implementations.<a href="#appendix-A-8" class="pilcrow">¶</a></p>
