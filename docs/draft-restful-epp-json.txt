@@ -5,7 +5,9 @@
 Network Working Group                                         M. Wullink
 Internet-Draft                                                 M. Davids
 Intended status: Standards Track                               SIDN Labs
-Expires: 4 August 2024                                   1 February 2024
+Expires: 2 September 2024                                     P. Kowalik
+                                                                   DENIC
+                                                            1 March 2024
 
 
                   XML to JSON Conversion rules for EPP
@@ -34,12 +36,27 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 August 2024.
+   This Internet-Draft will expire on 2 September 2024.
 
 Copyright Notice
 
    Copyright (c) 2024 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
+
+
+
+
+
+
+
+
+
+
+
+Wullink, et al.         Expires 2 September 2024                [Page 1]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
@@ -50,82 +67,89 @@ Copyright Notice
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
 
-
-
-
-Wullink & Davids          Expires 4 August 2024                 [Page 1]
-
-Internet-Draft             XML to JSON for EPP             February 2024
-
-
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Motivation  . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   4
    3.  Conventions Used in This Document . . . . . . . . . . . . . .   4
-   4.  Conversion Rules  . . . . . . . . . . . . . . . . . . . . . .   4
-     4.1.  Empty . . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.2.  Pure text content . . . . . . . . . . . . . . . . . . . .   5
-     4.3.  Attributes only . . . . . . . . . . . . . . . . . . . . .   5
-     4.4.  Pure text content and attributes  . . . . . . . . . . . .   6
-     4.5.  Child elements with different names . . . . . . . . . . .   6
-     4.6.  Child elements with identical names . . . . . . . . . . .   7
-     4.7.  Child elements and contiguous text  . . . . . . . . . . .   7
-   5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     5.1.  Hello . . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     5.2.  Login . . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     5.3.  Logout  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     5.4.  Check . . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     5.5.  Info  . . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     5.6.  Poll  . . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     5.7.  Poll Ack  . . . . . . . . . . . . . . . . . . . . . . . .  14
-     5.8.  Transfer Query  . . . . . . . . . . . . . . . . . . . . .  15
-     5.9.  Create  . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     5.10. Delete  . . . . . . . . . . . . . . . . . . . . . . . . .  21
-     5.11. Renew . . . . . . . . . . . . . . . . . . . . . . . . . .  21
-     5.12. Transfer Request  . . . . . . . . . . . . . . . . . . . .  23
-     5.13. Transfer Cancel . . . . . . . . . . . . . . . . . . . . .  24
-     5.14. Transfer Reject . . . . . . . . . . . . . . . . . . . . .  25
-     5.15. Transfer Approve  . . . . . . . . . . . . . . . . . . . .  25
-     5.16. Update  . . . . . . . . . . . . . . . . . . . . . . . . .  25
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
-   7.  Internationalization Considerations . . . . . . . . . . . . .  27
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  27
-   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  28
-   10. Normative References  . . . . . . . . . . . . . . . . . . . .  28
-   11. Informative References  . . . . . . . . . . . . . . . . . . .  28
-   Appendix A.  Appendix A.  Media Type Registration: application/
-           epp+json  . . . . . . . . . . . . . . . . . . . . . . . .  28
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
+   4.  XSD Conversion Rules  . . . . . . . . . . . . . . . . . . . .   5
+     4.1.  Elements and Attributes . . . . . . . . . . . . . . . . .   5
+     4.2.  Simple Types and Enumerations . . . . . . . . . . . . . .   6
+     4.3.  Occurrence Constraints  . . . . . . . . . . . . . . . . .   7
+     4.4.  Complex Types . . . . . . . . . . . . . . . . . . . . . .   9
+     4.5.  Sequences . . . . . . . . . . . . . . . . . . . . . . . .   9
+     4.6.  Choices . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     4.7.  Mixed Content and Special Cases . . . . . . . . . . . . .  11
+   5.  XML Conversion Rules  . . . . . . . . . . . . . . . . . . . .  13
+     5.1.  Empty . . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     5.2.  Pure text content . . . . . . . . . . . . . . . . . . . .  14
+     5.3.  Attributes only . . . . . . . . . . . . . . . . . . . . .  14
+     5.4.  Pure text content and attributes  . . . . . . . . . . . .  15
+     5.5.  Child elements with different names . . . . . . . . . . .  15
+     5.6.  Child elements with identical names . . . . . . . . . . .  16
+     5.7.  Child elements and contiguous text  . . . . . . . . . . .  16
+   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     6.1.  Hello . . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     6.2.  Login . . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     6.3.  Logout  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     6.4.  Check . . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     6.5.  Info  . . . . . . . . . . . . . . . . . . . . . . . . . .  20
+     6.6.  Poll  . . . . . . . . . . . . . . . . . . . . . . . . . .  22
+     6.7.  Poll Ack  . . . . . . . . . . . . . . . . . . . . . . . .  23
+     6.8.  Transfer Query  . . . . . . . . . . . . . . . . . . . . .  24
+     6.9.  Create  . . . . . . . . . . . . . . . . . . . . . . . . .  26
+     6.10. Delete  . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     6.11. Renew . . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     6.12. Transfer Request  . . . . . . . . . . . . . . . . . . . .  32
+     6.13. Transfer Cancel . . . . . . . . . . . . . . . . . . . . .  33
+     6.14. Transfer Reject . . . . . . . . . . . . . . . . . . . . .  34
+     6.15. Transfer Approve  . . . . . . . . . . . . . . . . . . . .  34
+     6.16. Update  . . . . . . . . . . . . . . . . . . . . . . . . .  34
 
 
 
-
-
-
-
-
-
-
-
-Wullink & Davids          Expires 4 August 2024                 [Page 2]
+Wullink, et al.         Expires 2 September 2024                [Page 2]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
+
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  36
+   8.  Internationalization Considerations . . . . . . . . . . . . .  36
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  36
+   10. Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  37
+   11. Normative References  . . . . . . . . . . . . . . . . . . . .  37
+   12. Informative References  . . . . . . . . . . . . . . . . . . .  37
+   Appendix A.  Appendix A.  Media Type Registration: application/
+           epp+json  . . . . . . . . . . . . . . . . . . . . . . . .  37
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  38
 
 1.  Introduction
 
-   This document describes rules for converting valid EPP XML messages
+   EPP [RFC5730] employs XML to define its protocol interactions, with
+   XML Schema Definitions (XSD) [REF-TO-XSD-HERE] serving as the formal
+   schema language to outline the structure and validate the conformance
+   of EPP XML messages.  These XSDs, integral to the EPP RFCs, ensure
+   that EPP messages adhere to the expected syntax and semantic rules.
+   This document describes the rules and methodologies for converting
+   these XSDs, to JSON Schema, which serves a similar purpose for JSON
+   formatted data.  JSON Schema [REF-TO-JSON-SCHEMA-HERE] provides a
+   robust framework for describing and validating the structure of JSON
+   data, offering a parallel method for enforcing syntactical
+   correctness and logical consistency in JSON formatted EPP messages.
+
+   As the domain registration industry evolves towards adopting RESTful
+   APIs and other JSON-based interactions, there's a need for analogous
+   schema definitions to ensure consistency, validation, and
+   interoperability of JSON representations of EPP messages.  This
+   document aims to bridge this gap by providing a standardized approach
+   to translating the rigorously defined XSDs of EPP into JSON Schema,
+   facilitating the use of JSON in EPP, RESTful EPP, and potential
+   future EPP-related protocols and transports.
+
+   This approach eventually allows for converting valid EPP XML messages
    to the JavaScript Object Notation (JSON) Data Interchange Format
-   [RFC8259], for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future
-   EPP related protocols and transports.  The Extensible Provisioning
-   Protocol (EPP) [RFC5730] describes an XML based protocol, which is
-   defined by XML Schema Definition (XSD).  The XSDs are published as
-   part of the EPP RFCs and contain the formal syntax for EPP XML
-   message and provide a method for validation of XML messages.  JSON
-   Schema [REF-TO-JSON-SCHEMA-HERE] is a method of specifying formal
-   syntax for JSON format.
+   [RFC8259], for use with EPP.
 
 1.1.  Motivation
 
@@ -138,6 +162,14 @@ Internet-Draft             XML to JSON for EPP             February 2024
    tools, software libraries, and a skilled workforce, coupled with the
    declining popularity of XML, has led several registries to adopt JSON
    for data exchange within their API ecosystems.  By extending EPP to
+
+
+
+Wullink, et al.         Expires 2 September 2024                [Page 3]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
    support JSON, registries can offer a unified API ecosystem that
    extends beyond domain name and IP address provisioning, maintaining a
    consistent technology stack, data formats, and developer experience.
@@ -162,14 +194,6 @@ Internet-Draft             XML to JSON for EPP             February 2024
    that lack interoperability, increasing the development effort
    required for integration.  Similarly, at the registrar level, the
    absence of standards has resulted in numerous incompatible API
-
-
-
-Wullink & Davids          Expires 4 August 2024                 [Page 3]
-
-Internet-Draft             XML to JSON for EPP             February 2024
-
-
    implementations provided to clients and resellers.  Standardizing a
    JSON format for domain provisioning within the EPP framework could
    mitigate these challenges, reducing fragmentation and simplifying
@@ -194,12 +218,494 @@ Internet-Draft             XML to JSON for EPP             February 2024
    JSON is case sensitive.  Unless stated otherwise, JSON specifications
    and examples provided in this document MUST be interpreted in the
    character case presented.  The examples in this document assume that
+
+
+
+Wullink, et al.         Expires 2 September 2024                [Page 4]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
    request and response messages are properly formatted JSON documents.
    Indentation and white space in examples are provided only to
    illustrate element relationships and for improving readability, and
    are not REQUIRED features of the protocol.
 
-4.  Conversion Rules
+4.  XSD Conversion Rules
+
+   This chapter presents rules for converting EPP XSD into JSON Schema.
+
+4.1.  Elements and Attributes
+
+   Rule 1: Elements in XSD must be converted to properties in the JSON
+   Schema, preserving names.
+
+   XSD:
+
+   <element name="name" type="eppcom:labelType"/>
+
+   JSON Schema:
+
+   {
+     ...
+     "properties": {
+       "name": {
+         "$ref": "#/definitions/labelType"
+       }
+       ...
+     }
+   }
+
+   Rule 2: Attributes in XSD must be represented as JSON properties,
+   prefixed with "@", retaining original names with the prefix addition.
+
+   XSD:
+
+   <simpleContent>
+       <extension base="normalizedString">
+       <attribute name="s" type="domain:statusValueType" use="required"/>
+       <attribute name="lang" type="language"/>
+       </extension>
+   </simpleContent>
+
+   JSON Schema
+
+
+
+
+
+
+
+
+Wullink, et al.         Expires 2 September 2024                [Page 5]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
+   {
+     ...
+     "properties": {
+       "@s": {
+         "$ref": "#/definitions/statusValueType"
+       },
+       "@lang": {
+         "$ref": "#/definitions/language"
+       }
+       ...
+     },
+     "required": ["@s"]
+   }
+
+4.2.  Simple Types and Enumerations
+
+   Rule 3: Simple types, including elements with only text content, must
+   be converted to appropriate JSON types, e.g., xs:string to type:
+   string.
+
+   XSD:
+
+   <simpleType name="labelType">
+     <restriction base="xs:string" />
+   </simpleType>
+
+   JSON Schema:
+
+   {
+     "definitions": {
+       "labelType": {
+         "type": "string"
+       }
+     }
+   }
+
+   Rule 4: Enumerations in XSD must be represented using the enum
+   keyword in JSON Schema.
+
+   XSD:
+
+   <simpleType name="trStatusType">
+     <restriction base="token">
+       <enumeration value="clientApproved"/>
+       <enumeration value="clientCancelled"/>
+       ...
+     </restriction>
+   </simpleType>
+
+
+
+Wullink, et al.         Expires 2 September 2024                [Page 6]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
+   JSON Schema:
+
+   {
+     "definitions": {
+       "trStatusType": {
+         "type": "string",
+         "enum": [
+           "clientApproved",
+           "clientCancelled",
+           ...
+         ]
+       }
+     }
+   }
+
+4.3.  Occurrence Constraints
+
+   Rule 5: Elements with minOccurs: 0 and maxOccurs: 1 should be
+   represented as optional properties in the JSON Schema.
+
+   XSD:
+
+     <complexType name="infoType">
+       <sequence>
+         <element name="authInfo" type="authInfoType" minOccurs="0"/>
+         ...
+       </sequence>
+     </complexType>
+
+   JSON Schema:
+
+   {
+     "type": "object",
+     "properties": {
+       "authInfo": {
+         "$ref": "#/definitions/authInfoType"
+       }
+       ...
+     },
+     "required": []
+   }
+
+   Rule 6: Elements with minOccurs: 1 and maxOccurs: 1 or omitted
+   attributes must be represented as mandatory properties in the JSON
+   Schema.
+
+   XSD:
+
+
+
+
+Wullink, et al.         Expires 2 September 2024                [Page 7]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
+   <xs:complexType name="createType">
+     <xs:sequence>
+       <xs:element name="name" type="xs:string"/>
+       ...
+     </xs:sequence>
+   </xs:complexType>
+
+   JSON Schema:
+
+   {
+     "type": "object",
+     "properties": {
+       "name": {
+         "type": "string"
+       }
+       ...
+     },
+     "required": ["name"]
+   }
+
+   Rule 7: Elements allowing multiple occurrences must be represented as
+   JSON arrays, using minItems and maxItems to enforce minOccurs and
+   maxOccurs.
+
+   XSD:
+
+     <complexType name="mNameType">
+       <sequence>
+         <element name="name" type="eppcom:labelType" maxOccurs="10"/>
+       </sequence>
+     </complexType>
+
+   JSON Schema:
+
+   {
+     "type": "object",
+     "properties": {
+       "name": {
+         "type": "array",
+         "items": {
+           "$ref": "#/definitions/labelType"
+         },
+         "maxItems" : 10
+       }
+     }
+   }
+
+
+
+
+
+Wullink, et al.         Expires 2 September 2024                [Page 8]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
+4.4.  Complex Types
+
+   Rule 8: Complex types in XSD must be converted to JSON objects in the
+   JSON Schema, with properties adhering to subsequent rules for
+   elements and attributes.  Properties rendered through choice or
+   sequence elements included in complex types shall be included in the
+   same object definition as opposed to creating a separate object
+   level.
+
+   XSD:
+
+     <complexType name="createType">
+       <sequence>
+         <element name="name" type="eppcom:labelType"/>
+         <element name="period" type="domain:periodType" minOccurs="0"/>
+         ...
+       </sequence>
+     </complexType>
+
+   JSON Schema:
+
+   {
+       "title": "createType",
+       "type": "object",
+       "properties": {
+           "name": {
+               "$ref": "#/definitions/labelType"
+           },
+           "period": {
+               "$ref": "#/definitions/periodType"
+           },
+           ...
+       },
+       "required": ["name", ...]
+   }
+
+4.5.  Sequences
+
+   Rule 9: Sequences in XSD must be converted to JSON objects in the
+   JSON Schema, with each sequence element becoming a property of the
+   object.  Cardinality dictated by minOccurs and maxOccurs must be
+   applied to determine if an element is represented as optional,
+   mandatory, or an array.
+
+   XSD:
+
+
+
+
+
+
+Wullink, et al.         Expires 2 September 2024                [Page 9]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
+     <complexType name="createType">
+       <sequence>
+         <element name="name" type="eppcom:labelType"/>
+         <element name="period" type="domain:periodType" minOccurs="0"/>
+         ...
+       </sequence>
+     </complexType>
+
+   JSON Schema:
+
+   {
+       "title": "createType",
+       "type": "object",
+       "properties": {
+           "name": {
+               "$ref": "#/definitions/labelType"
+           },
+           "period": {
+               "$ref": "#/definitions/periodType"
+           },
+           ...
+       },
+       "required": ["name", ...]
+   }
+
+4.6.  Choices
+
+   Rule 10: The choice construct in XSD must be represented in JSON
+   Schema using the oneOf keyword, allowing for representation of
+   multiple possible structures with only one being valid at a time.
+   Each choice property MUST be marked as required to make a clear and
+   unambigous distinction between the variants.
+
+   XSD:
+
+   <complexType name="authInfoChgType">
+     <choice>
+       <element name="pw" type="eppcom:pwAuthInfoType"/>
+       <element name="ext" type="eppcom:extAuthInfoType"/>
+       ...
+     </choice>
+   </complexType>
+
+   JSON Schema:
+
+
+
+
+
+
+
+Wullink, et al.         Expires 2 September 2024               [Page 10]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
+   {
+     "type": "object",
+     "oneOf": [
+       {
+         "properties": {
+           "pw": {
+             "$ref": "#/definitions/pwAuthInfoType"
+           }
+         },
+         "required": ["pw"]
+       },
+       {
+         "properties": {
+           "ext": {
+             "$ref": "#/definitions/extAuthInfoType"
+           }
+         },
+         "required": ["ext"]
+       }
+       ...
+     ]
+   }
+
+4.7.  Mixed Content and Special Cases
+
+   Rule 11: Elements with mixed content must be represented as JSON
+   objects with #text for text content and properties for each child
+   element.  If schema allows for multiple instances of text content the
+   #text property should be defined as an array.
+
+   XSD:
+
+     <complexType name="errValueType" mixed="true">
+       <sequence>
+         <any namespace="##any" processContents="skip"/>
+       </sequence>
+       <anyAttribute namespace="##any" processContents="skip"/>
+     </complexType>
+
+   JSON Schema:
+
+
+
+
+
+
+
+
+
+
+
+Wullink, et al.         Expires 2 September 2024               [Page 11]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
+   {
+     "type": "object",
+     "properties": {
+       "#text": {
+         "type": "array",
+         "items": {
+           "type": string
+         }
+       },
+       "additionalProperties": true
+     }
+   }
+
+   Rule 12: Empty elements in XSD or EPP normative text must be
+   represented as properties with a null fixed value in the JSON Schema.
+
+   XSD:
+
+   <complexType name="eppType">
+       <choice>
+         ...
+         <element name="hello"/>
+         ...
+       </choice>
+   </complexType>
+
+   JSON Schema:
+
+   {
+     "type": "object",
+     "oneOf": [
+       ...
+       {
+           "properties": {
+               "hello": {
+                   "type": "null"
+               }
+           },
+           "required": ["hello"]
+       }
+       ...
+     ]
+   }
+
+   Rule 13: Elements with attributes and text content must be
+   represented as JSON objects with #text for text and properties for
+   each attribute, prefixed with "@".
+
+
+
+
+Wullink, et al.         Expires 2 September 2024               [Page 12]
+
+Internet-Draft             XML to JSON for EPP                March 2024
+
+
+   XSD:
+
+     <complexType name="mixedMsgType" mixed="true">
+       <sequence>
+         <any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+       </sequence>
+       <attribute name="lang" type="language" default="en"/>
+     </complexType>
+
+   JSON Schema:
+
+   {
+     "type": "object",
+     "properties": {
+       "#text": {
+         "type": "array",
+         "items": {
+           "type": string
+         }
+       },
+       "@lang": {
+           "$ref": "#/definitions/language"
+       },
+       "additionalProperties": true
+     }
+   }
+
+TODO: Rules for different flavours of token type (min/max characters etc.)
+
+   TODO: merge the content examples with the rules above?
+
+5.  XML Conversion Rules
 
    A XML element may exist in one of 7 distinct forms, the sections
    below describe how these forms MUST be translated to valid JSON.
@@ -212,19 +718,19 @@ Internet-Draft             XML to JSON for EPP             February 2024
    6.  Child elements with identical names
    7.  Child element(s) and contiguous text
 
-4.1.  Empty
+5.1.  Empty
 
    An empty XML element MUST be mapped to to a key matching the name of
    the element and a null value.
 
-   XML:
 
 
-
-Wullink & Davids          Expires 4 August 2024                 [Page 4]
+Wullink, et al.         Expires 2 September 2024               [Page 13]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
+
+   XML:
 
    <hello/>
 
@@ -234,7 +740,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        "hello": null
    }
 
-4.2.  Pure text content
+5.2.  Pure text content
 
    An XML element containing text only MUST be mapped to a key matching
    the name of the element and the text MUST be used for the value
@@ -249,7 +755,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        "lang": "en"
    }
 
-4.3.  Attributes only
+5.3.  Attributes only
 
    An XML element containing one or more atributes only, MUST be mapped
    to a JSON object matching the name of the element.  Each XML
@@ -275,14 +781,12 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-
-
-Wullink & Davids          Expires 4 August 2024                 [Page 5]
+Wullink, et al.         Expires 2 September 2024               [Page 14]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
-4.4.  Pure text content and attributes
+5.4.  Pure text content and attributes
 
    An XML element containing one or more atributes and text content
    only, MUST be mapped to a JSON object matching the name of the
@@ -302,7 +806,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-4.5.  Child elements with different names
+5.5.  Child elements with different names
 
    An XML element containing one or more child elements, where each
    child uses an unique name, MUST be mapped to a JSON object matching
@@ -333,12 +837,12 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                 [Page 6]
+Wullink, et al.         Expires 2 September 2024               [Page 15]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
-4.6.  Child elements with identical names
+5.6.  Child elements with identical names
 
    An XML element containing multiple child elements, where multiple
    child elements use the same name, MUST be mapped to a JSON object
@@ -364,7 +868,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-4.7.  Child elements and contiguous text
+5.7.  Child elements and contiguous text
 
    An XML element containing one or more child elements and contiguous
    text, MUST be mapped to a JSON object containing a key-value entry
@@ -389,9 +893,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                 [Page 7]
+Wullink, et al.         Expires 2 September 2024               [Page 16]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    {
@@ -430,12 +934,14 @@ Internet-Draft             XML to JSON for EPP             February 2024
    The rules above are based on the conversion approach found on
    [XMLCOM-WEB]
 
-5.  Examples
+6.  Examples
 
    This section lists examples for each of the existing EPP commands
    that are support by REPP.
 
-5.1.  Hello
+   TODO: full examples of schema conversion
+
+6.1.  Hello
 
    The Hello request message does not exist in the context of REPP.
 
@@ -443,11 +949,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-
-
-Wullink & Davids          Expires 4 August 2024                 [Page 8]
+Wullink, et al.         Expires 2 September 2024               [Page 17]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -501,9 +1005,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                 [Page 9]
+Wullink, et al.         Expires 2 September 2024               [Page 18]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    {
@@ -541,15 +1045,15 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-5.2.  Login
+6.2.  Login
 
    The Login request and response message are not used for REPP.
 
-5.3.  Logout
+6.3.  Logout
 
    The Logout request and response message are not used for REPP.
 
-5.4.  Check
+6.4.  Check
 
    The Check request and responses messages are not used for REPP.
 
@@ -557,12 +1061,12 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 10]
+Wullink, et al.         Expires 2 September 2024               [Page 19]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
-5.5.  Info
+6.5.  Info
 
    The Info request message is not used for REPP.
 
@@ -613,9 +1117,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 11]
+Wullink, et al.         Expires 2 September 2024               [Page 20]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    {
@@ -669,9 +1173,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 12]
+Wullink, et al.         Expires 2 September 2024               [Page 21]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
                },
@@ -683,7 +1187,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-5.6.  Poll
+6.6.  Poll
 
    The Poll request message is not used for REPP.
 
@@ -725,9 +1229,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 13]
+Wullink, et al.         Expires 2 September 2024               [Page 22]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    {
@@ -757,7 +1261,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-5.7.  Poll Ack
+6.7.  Poll Ack
 
    The Poll Ack request message is not used for REPP.
 
@@ -781,9 +1285,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 14]
+Wullink, et al.         Expires 2 September 2024               [Page 23]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    Example JSON response:
@@ -808,7 +1312,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-5.8.  Transfer Query
+6.8.  Transfer Query
 
    The Domain Transfer Query request message is not used for REPP.
 
@@ -837,9 +1341,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 15]
+Wullink, et al.         Expires 2 September 2024               [Page 24]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -893,9 +1397,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 16]
+Wullink, et al.         Expires 2 September 2024               [Page 25]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    {
@@ -926,7 +1430,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-5.9.  Create
+6.9.  Create
 
    Example XML Domain Create request:
 
@@ -949,9 +1453,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 17]
+Wullink, et al.         Expires 2 September 2024               [Page 26]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1005,9 +1509,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 18]
+Wullink, et al.         Expires 2 September 2024               [Page 27]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    {
@@ -1061,9 +1565,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 19]
+Wullink, et al.         Expires 2 September 2024               [Page 28]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1117,12 +1621,12 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 20]
+Wullink, et al.         Expires 2 September 2024               [Page 29]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
-5.10.  Delete
+6.10.  Delete
 
    The Delete request message is not used for REPP.
 
@@ -1160,7 +1664,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-5.11.  Renew
+6.11.  Renew
 
    The Renew request message is not used for REPP.
 
@@ -1173,9 +1677,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 21]
+Wullink, et al.         Expires 2 September 2024               [Page 30]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1229,12 +1733,12 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 22]
+Wullink, et al.         Expires 2 September 2024               [Page 31]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
-5.12.  Transfer Request
+6.12.  Transfer Request
 
    The Transfer request message is not used for REPP.
 
@@ -1285,9 +1789,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 23]
+Wullink, et al.         Expires 2 September 2024               [Page 32]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    {
@@ -1318,7 +1822,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-5.13.  Transfer Cancel
+6.13.  Transfer Cancel
 
    The Transfer Cancel request message is not used for REPP.
 
@@ -1341,9 +1845,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 24]
+Wullink, et al.         Expires 2 September 2024               [Page 33]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    Example JSON Domain Cancel Transfer response:
@@ -1364,17 +1868,17 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-5.14.  Transfer Reject
+6.14.  Transfer Reject
 
    The Transfer Reject request message is not used for REPP and the
    response message is the same as for the Transfer Cancel command.
 
-5.15.  Transfer Approve
+6.15.  Transfer Approve
 
    The Transfer Approve request message is not used for REPP and the
    response message is the same as for the Transfer Cancel command.
 
-5.16.  Update
+6.16.  Update
 
    Example XML Domain Update request:
 
@@ -1397,9 +1901,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 25]
+Wullink, et al.         Expires 2 September 2024               [Page 34]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1453,9 +1957,9 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 26]
+Wullink, et al.         Expires 2 September 2024               [Page 35]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1490,16 +1994,16 @@ Internet-Draft             XML to JSON for EPP             February 2024
        }
    }
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    The new application/epp+json MIME media type is used in this
    document, the registration template is included in Appendix A.
 
-7.  Internationalization Considerations
+8.  Internationalization Considerations
 
    TODO
 
-8.  Security Considerations
+9.  Security Considerations
 
    TODO
 
@@ -1509,16 +2013,16 @@ Internet-Draft             XML to JSON for EPP             February 2024
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 27]
+Wullink, et al.         Expires 2 September 2024               [Page 36]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
-9.  Acknowledgments
+10.  Acknowledgments
 
    TODO
 
-10.  Normative References
+11.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1547,7 +2051,7 @@ Internet-Draft             XML to JSON for EPP             February 2024
               DOI 10.17487/RFC8259, December 2017,
               <https://www.rfc-editor.org/info/rfc8259>.
 
-11.  Informative References
+12.  Informative References
 
    [XMLCOM-WEB]
               XML.com, "Converting Between XML and JSON", 2006,
@@ -1565,9 +2069,9 @@ Appendix A.  Appendix A.  Media Type Registration: application/epp+json
 
 
 
-Wullink & Davids          Expires 4 August 2024                [Page 28]
+Wullink, et al.         Expires 2 September 2024               [Page 37]
 
-Internet-Draft             XML to JSON for EPP             February 2024
+Internet-Draft             XML to JSON for EPP                March 2024
 
 
    Optional parameters: Same as the charset parameter of application/
@@ -1614,11 +2118,11 @@ Authors' Addresses
    URI:   https://sidn.nl/
 
 
+   Pawel Kowalik
+   DENIC
+   Email: pawel.kowalik@denic.de
+   URI:   https://denic.de/
 
 
 
-
-
-
-
-Wullink & Davids          Expires 4 August 2024                [Page 29]
+Wullink, et al.         Expires 2 September 2024               [Page 38]
