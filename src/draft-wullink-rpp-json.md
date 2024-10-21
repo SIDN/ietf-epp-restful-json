@@ -1,5 +1,5 @@
 %%%
-title = "EPP XML to RPP JSON Conversion rules"
+title = "EPP XML to RPP JSON conversion rules"
 abbrev = "XML to JSON for RPP"
 ipr = "trust200902"
 area = "Internet"
@@ -29,10 +29,11 @@ initials="P."
 surname="Kowalik"
 fullname="Pawel Kowalik"
 abbrev = ""
-organization = "DENIC eG"
+organization = "DENIC"
   [author.address]
   email = "pawel.kowalik@denic.de"
-  uri = "https://www.denic.de/"
+  uri = "https://denic.de/"
+
 %%%
 
 .# Abstract
@@ -43,7 +44,21 @@ This document describes the rules for converting The Extensible Provisioning Pro
 
 # Introduction
 
-This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with RPP. The Extensible Provisioning Protocol (EPP) [@!RFC5730] describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.
+EPP [@!RFC5730] employs XML to define its protocol interactions, with XML Schema Definitions (XSD) serving as the formal schema language to outline the structure and validate the conformance of EPP XML messages. These XSDs, integral to the EPP RFCs, ensure that EPP messages adhere to the expected syntax and semantic rules. This document describes the rules and methodologies for converting these XSDs, to JSON Schema, which serves a similar purpose for JSON formatted data. JSON Schema provides a robust framework for describing and validating the structure of JSON data, offering a parallel method for enforcing syntactical correctness and logical consistency in JSON formatted EPP messages.
+
+As the domain registration industry evolves towards adopting RESTful APIs and other JSON-based interactions, there's a need for analogous schema definitions to ensure consistency, validation, and interoperability of JSON representations of EPP messages. This document aims to bridge this gap by providing a standardized approach to translating the rigorously defined XSDs of EPP into JSON Schema, facilitating the use of JSON in the RESTful Provisioning Protocol and potential future EPP-related protocols and transports.
+
+This approach eventually allows for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with EPP.
+
+## Motivation
+
+The RESTful Provisioning Protocol (RPP) introduces a new provisiong mechanism that aligns more closely with modern cloud infrastructure, enhancing the scalability of server deployments. While RESTful protocols do not mandate a specific media type for resource description, the widespread adoption of JSON in web services has established it as the de facto standard for modern APIs. The increasing availability of tools, software libraries, and a skilled workforce, coupled with the declining popularity of XML, has led several registries to adopt JSON for data exchange within their API ecosystems. Registries supporting JSON, can offer a unified API ecosystem that extends beyond domain name and IP address provisioning, maintaining a consistent technology stack, data formats, and developer experience.
+
+JSON's syntax, known for its straightforwardness and minimal verbosity compared to XML, significantly eases the tasks of writing, reading, and maintaining code. This simplicity is especially advantageous for the rapid comprehension and integration of provisioning APIs.
+
+The lightweight nature of JSON can result in faster processing and data transfers, a critical aspect in high-volume transaction environments such as domain registration. Enhanced API response times can lead to more efficient domain lookups, registrations, and updates. Moreover, JSON parsing is typically faster and more straightforward than XML parsing, contributing to improved system performance amid frequent interactions between RPP clients and servers.
+
+However, the absence of a standardized JSON format for domain provisioning has led to the emergence of TLD-specific implementations that lack interoperability, increasing the development effort required for integration. Similarly, at the registrar level, the absence of standards has resulted in numerous incompatible API implementations provided to clients and resellers. Standardizing a JSON format for domain provisioning within the RPP framework could mitigate these challenges, reducing fragmentation and simplifying integration efforts across the domain registration industry.
 
 # Terminology
 
@@ -65,8 +80,396 @@ JSON is case sensitive. Unless stated otherwise, JSON specifications and example
 character case presented. The examples in this document assume that request and response messages
 are properly formatted JSON documents. Indentation and white space in examples are provided only to illustrate element relationships and for improving readability, and are not REQUIRED features of the protocol.
 
+# XSD Conversion Rules
 
-# Conversion Rules
+This chapter presents rules for converting EPP XSD into JSON Schema.
+
+## Elements and Attributes
+Rule 1: Elements in XSD must be converted to properties in the JSON Schema, preserving names.
+
+XSD:
+```xml
+<element name="name" type="eppcom:labelType"/>
+```
+
+JSON Schema:
+```json
+{
+  ...
+  "properties": {
+    "name": {
+      "$ref": "#/definitions/labelType"
+    }
+    ...
+  }
+}
+```
+
+Rule 2: Attributes in XSD must be represented as JSON properties, prefixed with "@", retaining original names with the prefix addition.
+
+XSD:
+```xml
+<simpleContent>
+    <extension base="normalizedString">
+    <attribute name="s" type="domain:statusValueType" use="required"/>
+    <attribute name="lang" type="language"/>
+    </extension>
+</simpleContent>
+```
+
+JSON Schema
+```json
+{
+  ...
+  "properties": {
+    "@s": {
+      "$ref": "#/definitions/statusValueType"
+    },
+    "@lang": {
+      "$ref": "#/definitions/language"
+    }
+    ...
+  },
+  "required": ["@s"]
+}
+```
+
+## Simple Types and Enumerations
+Rule 3: Simple types, including elements with only text content, must be converted to appropriate JSON types, e.g., xs:string to type: string.
+
+XSD:
+```xml
+<simpleType name="labelType">
+  <restriction base="xs:string" />
+</simpleType>
+```
+
+JSON Schema:
+```
+{
+  "definitions": {
+    "labelType": {
+      "type": "string"
+    }
+  }
+}
+```
+
+Rule 4: Enumerations in XSD must be represented using the enum keyword in JSON Schema.
+
+XSD:
+```xml
+<simpleType name="trStatusType">
+  <restriction base="token">
+    <enumeration value="clientApproved"/>
+    <enumeration value="clientCancelled"/>
+    ...
+  </restriction>
+</simpleType>
+```
+
+JSON Schema:
+```json
+{
+  "definitions": {
+    "trStatusType": {
+      "type": "string",
+      "enum": [
+        "clientApproved",
+        "clientCancelled",
+        ...
+      ]
+    }
+  }
+}
+```
+
+## Occurrence Constraints
+Rule 5: Elements with minOccurs: 0 and maxOccurs: 1 should be represented as optional properties in the JSON Schema.
+
+XSD:
+```xml
+  <complexType name="infoType">
+    <sequence>
+      <element name="authInfo" type="authInfoType" minOccurs="0"/>
+      ...
+    </sequence>
+  </complexType>
+```
+
+JSON Schema:
+```json
+{
+  "type": "object",
+  "properties": {
+    "authInfo": {
+      "$ref": "#/definitions/authInfoType"
+    }
+    ...
+  },
+  "required": []
+}
+```
+
+Rule 6: Elements with minOccurs: 1 and maxOccurs: 1 or omitted attributes must be represented as mandatory properties in the JSON Schema.
+
+XSD:
+```xml
+<xs:complexType name="createType">
+  <xs:sequence>
+    <xs:element name="name" type="xs:string"/>
+    ...
+  </xs:sequence>
+</xs:complexType>
+```
+
+JSON Schema:
+```json
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    }
+    ...
+  },
+  "required": ["name"]
+}
+```
+
+Rule 7: Elements allowing multiple occurrences must be represented as JSON arrays, using minItems and maxItems to enforce minOccurs and maxOccurs.
+
+XSD:
+```xml
+  <complexType name="mNameType">
+    <sequence>
+      <element name="name" type="eppcom:labelType" maxOccurs="10"/>
+    </sequence>
+  </complexType>
+```
+
+JSON Schema:
+```json
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/labelType"
+      },
+      "maxItems" : 10
+    }
+  }
+}
+```
+
+## Complex Types
+Rule 8: Complex types in XSD must be converted to JSON objects in the JSON Schema, with properties adhering to subsequent rules for elements and attributes. Properties rendered through choice or sequence elements included in complex types shall be included in the same object definition as opposed to creating a separate object level.
+
+XSD:
+```xml
+  <complexType name="createType">
+    <sequence>
+      <element name="name" type="eppcom:labelType"/>
+      <element name="period" type="domain:periodType" minOccurs="0"/>
+      ...
+    </sequence>
+  </complexType>
+```
+
+JSON Schema:
+```json
+{
+    "title": "createType",
+    "type": "object",
+    "properties": {
+        "name": {
+            "$ref": "#/definitions/labelType"
+        },
+        "period": {
+            "$ref": "#/definitions/periodType"
+        },
+        ...
+    },
+    "required": ["name", ...]
+}
+```
+
+## Sequences
+Rule 9: Sequences in XSD must be converted to JSON objects in the JSON Schema, with each sequence element becoming a property of the object. Cardinality dictated by minOccurs and maxOccurs must be applied to determine if an element is represented as optional, mandatory, or an array.
+
+XSD:
+```xml
+  <complexType name="createType">
+    <sequence>
+      <element name="name" type="eppcom:labelType"/>
+      <element name="period" type="domain:periodType" minOccurs="0"/>
+      ...
+    </sequence>
+  </complexType>
+```
+
+JSON Schema:
+```json
+{
+    "title": "createType",
+    "type": "object",
+    "properties": {
+        "name": {
+            "$ref": "#/definitions/labelType"
+        },
+        "period": {
+            "$ref": "#/definitions/periodType"
+        },
+        ...
+    },
+    "required": ["name", ...]
+}
+```
+
+## Choices
+Rule 10: The choice construct in XSD must be represented in JSON Schema using the oneOf keyword, allowing for representation of multiple possible structures with only one being valid at a time. Each choice property MUST be marked as required to make a clear and unambigous distinction between the variants.
+
+XSD:
+```xml
+<complexType name="authInfoChgType">
+  <choice>
+    <element name="pw" type="eppcom:pwAuthInfoType"/>
+    <element name="ext" type="eppcom:extAuthInfoType"/>
+    ...
+  </choice>
+</complexType>
+
+```
+
+JSON Schema:
+```json
+{
+  "type": "object",
+  "oneOf": [
+    {
+      "properties": {
+        "pw": {
+          "$ref": "#/definitions/pwAuthInfoType"
+        }
+      },
+      "required": ["pw"]
+    },
+    {
+      "properties": {
+        "ext": {
+          "$ref": "#/definitions/extAuthInfoType"
+        }
+      },
+      "required": ["ext"]
+    }
+    ...
+  ]
+}
+```
+
+## Mixed Content and Special Cases
+Rule 11: Elements with mixed content must be represented as JSON objects with #text for text content and properties for each child element. If schema allows for multiple instances of text content the #text property should be defined as an array.
+
+XSD:
+```xml
+  <complexType name="errValueType" mixed="true">
+    <sequence>
+      <any namespace="##any" processContents="skip"/>
+    </sequence>
+    <anyAttribute namespace="##any" processContents="skip"/>
+  </complexType>
+```
+
+JSON Schema:
+```json
+{
+  "type": "object",
+  "properties": {
+    "#text": {
+      "type": "array",
+      "items": {
+        "type": string
+      }
+    },
+    "additionalProperties": true
+  }
+}
+```
+
+Rule 12: Empty elements in XSD or EPP normative text must be represented as properties with a null fixed value in the JSON Schema.
+
+XSD:
+```xml
+<complexType name="eppType">
+    <choice>
+      ...
+      <element name="hello"/>
+      ...
+    </choice>
+</complexType>
+```
+
+JSON Schema:
+```json
+{
+  "type": "object",
+  "oneOf": [
+    ...
+    {
+        "properties": {
+            "hello": {
+                "type": "null"
+            }
+        },
+        "required": ["hello"]
+    }
+    ...
+  ]
+}
+```
+
+Rule 13: Elements with attributes and text content must be represented as JSON objects with #text for text and properties for each attribute, prefixed with "@".
+
+XSD:
+```xml
+  <complexType name="mixedMsgType" mixed="true">
+    <sequence>
+      <any processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+    <attribute name="lang" type="language" default="en"/>
+  </complexType>
+```
+
+JSON Schema:
+```json
+{
+  "type": "object",
+  "properties": {
+    "#text": {
+      "type": "array",
+      "items": {
+        "type": string
+      }
+    },
+    "@lang": {
+        "$ref": "#/definitions/language"
+    },
+    "additionalProperties": true
+  }
+}
+```
+
+~~~
+TODO: Rules for different flavours of token type (min/max characters etc.)
+~~~
+
+~~~
+TODO: merge the content examples with the rules above?
+~~~
+
+# XML Conversion Rules
 
 A XML element may exist in one of 7 distinct forms, the sections below describe how these forms MUST be translated to valid JSON.
 
@@ -249,6 +652,10 @@ The rules above are based on the conversion approach found on [@?XMLCOM-WEB]
 # Examples
 
 This section lists examples for each of the existing EPP commands that are support by RPP.
+
+~~~
+TODO: full examples of schema conversion
+~~~
 
 ## Hello
 
