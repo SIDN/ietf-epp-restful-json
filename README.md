@@ -2,17 +2,17 @@
 
 This repository contains the IETF draft for adding JSON support to [RESTful EPP](https://github.com/SIDN/ietf-epp-restful-transport)
 
-The [draft](https://github.com/SIDN/ietf-epp-restful-transport/blob/main/src/draft-restful-epp-json.md) is authored using [mmark](https://mmark.miek.nl/) Markdown.
+The [draft](https://github.com/SIDN/ietf-epp-restful-transport/blob/main/src/draft-wullink-rpp-json.md) is authored using [mmark](https://mmark.miek.nl/) Markdown.
 
 For more information about why we are working on the draft, see the short [presentation](https://www.sidnlabs.nl/downloads/6L2dl6xiV5eQY61EB14wzo/a950bcb1d4979c2b56d87d1ef6b83d45/ietf-118-restfull-epp-discussion.pdf) presented at the regext working group at IETF-118.
 
 Contributions in the form of a Pull Request are welcome.
 
 For generated output see:   
-[Plaintext](https://sidn.github.io/ietf-epp-restful-json/draft-restful-epp-json.txt)  
-[HTML](https://sidn.github.io/ietf-epp-restful-json/draft-restful-epp-json.html)  
-[PDF](https://sidn.github.io/ietf-epp-restful-json/draft-restful-epp-json.pdf)  
-[XML](https://sidn.github.io/ietf-epp-restful-json/draft-restful-epp-json.xml)  
+[Plaintext](https://sidn.github.io/ietf-epp-restful-json/draft-wullink-rpp-json.txt)  
+[HTML](https://sidn.github.io/ietf-epp-restful-json/draft-wullink-rpp-json.html)  
+[PDF](https://sidn.github.io/ietf-epp-restful-json/draft-wullink-rpp-json.pdf)  
+[XML](https://sidn.github.io/ietf-epp-restful-json/draft-wullink-rpp-json.xml)  
 
 ## REST
 
