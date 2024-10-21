@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.miek.nl" -->
-<rfc version="3" ipr="trust200902" docName="draft-wullink-restful-epp-json-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" tocDepth="4">
+<rfc version="3" ipr="trust200902" docName="draft-wullink-rpp-json-00" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" tocDepth="4">
 
 <front>
-<title abbrev="XML to JSON for EPP">XML to JSON Conversion rules for EPP</title><seriesInfo value="draft-wullink-restful-epp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
+<title abbrev="XML to JSON for RPP">EPP XML to RPP JSON Conversion rules</title><seriesInfo value="draft-wullink-rpp-json-00" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="M." surname="Wullink" fullname="Maarten Wullink"><organization>SIDN Labs</organization><address><postal><street></street>
 </postal><email>maarten.wullink@sidn.nl</email>
 <uri>https://sidn.nl/</uri>
-</address></author><author initials="M." surname="Davids" fullname="Marco Davids"><organization>SIDN Labs</organization><address><postal><street></street>
-</postal><email>marco.davids@sidn.nl</email>
-<uri>https://sidn.nl/</uri>
+</address></author><author initials="P." surname="Kowalik" fullname="Pawel Kowalik"><organization>DENIC eG</organization><address><postal><street></street>
+</postal><email>pawel.kowalik@denic.de</email>
+<uri>https://www.denic.de/</uri>
 </address></author><date/>
 <area>Internet</area>
 <workgroup>Network Working Group</workgroup>
 
 <abstract>
-<t>This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> XML based messages to a JSON <xref target="RFC8259"></xref> for use with EPP and RESTful EPP[REF-TO-REPP-HERE].</t>
+<t>This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> XML based messages to a JSON <xref target="RFC8259"></xref> for use with the RESTful Provisioning Protocol (RPP).</t>
 </abstract>
 
 </front>
@@ -23,15 +23,14 @@
 <middle>
 
 <section anchor="introduction"><name>Introduction</name>
-<t>This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.</t>
+<t>This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <xref target="RFC8259"></xref>, for use with RPP. The Extensible Provisioning Protocol (EPP) <xref target="RFC5730"></xref> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.</t>
 </section>
 
 <section anchor="terminology"><name>Terminology</name>
 <t>In this document the following terminology is used.</t>
 <t>EPP RFCs - This is a reference to the EPP version 1.0
 specifications <xref target="RFC5730"></xref>, <xref target="RFC5731"></xref>, <xref target="RFC5732"></xref> and <xref target="RFC5733"></xref>.</t>
-<t>RESTful EPP or REPP - The RESTful transport for EPP described in
-this document.</t>
+<t>RESTful Provisioning Protocol - A RESTful protocol for provisiong heterogeneous database objects.</t>
 </section>
 
 <section anchor="conventions-used-in-this-document"><name>Conventions Used in This Document</name>
@@ -223,10 +222,10 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="examples"><name>Examples</name>
-<t>This section lists examples for each of the existing EPP commands that are support by REPP.</t>
+<t>This section lists examples for each of the existing EPP commands that are support by RPP.</t>
 
 <section anchor="hello"><name>Hello</name>
-<t>The Hello request message does not exist in the context of REPP.</t>
+<t>The Hello request message does not exist in the context of RPP.</t>
 <t>Example XML response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -271,10 +270,10 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "greeting": {
-            "svID": "Example REPP server v1.0",
+            "svID": "Example RPP server v1.0",
             "svDate": "2000-06-08T22:00:00.0Z",
             "svcMenu": {
                 "version": "1.0",
@@ -309,19 +308,19 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="login"><name>Login</name>
-<t>The Login request and response message are not used for REPP.</t>
+<t>The Login request and response message are not used for RPP.</t>
 </section>
 
 <section anchor="logout"><name>Logout</name>
-<t>The Logout request and response message are not used for REPP.</t>
+<t>The Logout request and response message are not used for RPP.</t>
 </section>
 
 <section anchor="check"><name>Check</name>
-<t>The Check request and responses messages are not used for REPP.</t>
+<t>The Check request and responses messages are not used for RPP.</t>
 </section>
 
 <section anchor="info"><name>Info</name>
-<t>The Info request message is not used for REPP.</t>
+<t>The Info request message is not used for RPP.</t>
 <t>Example XML Domain Info response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -369,7 +368,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Info response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -429,7 +428,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="poll"><name>Poll</name>
-<t>The Poll request message is not used for REPP.</t>
+<t>The Poll request message is not used for RPP.</t>
 <t>Example XML response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -457,7 +456,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -487,7 +486,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="poll-ack"><name>Poll Ack</name>
-<t>The Poll Ack request message is not used for REPP.</t>
+<t>The Poll Ack request message is not used for RPP.</t>
 <t>Example XML response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -509,7 +508,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -532,7 +531,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="transfer-query"><name>Transfer Query</name>
-<t>The Domain Transfer Query request message is not used for REPP.</t>
+<t>The Domain Transfer Query request message is not used for RPP.</t>
 <t>Example XML  Domain Transfer Query response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -565,7 +564,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Transfer Query response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -627,7 +626,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Create request:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "command": {
             "create": {
@@ -694,7 +693,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Create response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -721,7 +720,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="delete"><name>Delete</name>
-<t>The Delete request message is not used for REPP.</t>
+<t>The Delete request message is not used for RPP.</t>
 <t>Example XML Domain Delete response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -742,7 +741,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Delete response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -761,7 +760,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="renew"><name>Renew</name>
-<t>The Renew request message is not used for REPP.</t>
+<t>The Renew request message is not used for RPP.</t>
 <t>Example XML Domain Renew response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -789,7 +788,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Renew response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -815,7 +814,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="transfer-request"><name>Transfer Request</name>
-<t>The Transfer request message is not used for REPP.</t>
+<t>The Transfer request message is not used for RPP.</t>
 <t>Example XML Domain Transfer response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -848,7 +847,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Transfer response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -879,7 +878,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="transfer-cancel"><name>Transfer Cancel</name>
-<t>The Transfer Cancel request message is not used for REPP.</t>
+<t>The Transfer Cancel request message is not used for RPP.</t>
 <t>Example XML Domain Cancel Transfer response:</t>
 
 <sourcecode type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -900,7 +899,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Cancel Transfer response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -919,11 +918,11 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="transfer-reject"><name>Transfer Reject</name>
-<t>The Transfer Reject request message is not used for REPP and the response message is the same as for the Transfer Cancel command.</t>
+<t>The Transfer Reject request message is not used for RPP and the response message is the same as for the Transfer Cancel command.</t>
 </section>
 
 <section anchor="transfer-approve"><name>Transfer Approve</name>
-<t>The Transfer Approve request message is not used for REPP and the response message is the same as for the Transfer Cancel command.</t>
+<t>The Transfer Approve request message is not used for RPP and the response message is the same as for the Transfer Cancel command.</t>
 </section>
 
 <section anchor="update"><name>Update</name>
@@ -953,7 +952,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Update request:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "command": {
             "update": {
@@ -994,7 +993,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <t>Example JSON Domain Update response:</t>
 
 <sourcecode type="json"><![CDATA[{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -1014,7 +1013,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </section>
 
 <section anchor="iana-considerations"><name>IANA Considerations</name>
-<t>The new <tt>application/epp+json</tt> MIME media type is used in this document, the registration template is included in Appendix A.</t>
+<t>TODO</t>
 </section>
 
 <section anchor="internationalization-considerations"><name>Internationalization Considerations</name>
@@ -1053,29 +1052,6 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </reference>
 </references>
 </references>
-
-<section anchor="appendix-a-media-type-registration-application-epp-json"><name>Appendix A.  Media Type Registration: application/epp+json</name>
-<t>MIME media type name: application</t>
-<t>MIME subtype name: epp+json</t>
-<t>Required parameters: none</t>
-<t>Optional parameters: Same as the charset parameter of application/json
-   as specified in <xref target="RFC8259"></xref>.</t>
-<t>Encoding considerations: Same as the encoding considerations of
-   application/xml as specified in <xref target="RFC8259"></xref>.</t>
-<t>Security considerations: This type has all of the security
-   considerations described in <xref target="RFC8259"></xref> plus the considerations
-   specified in the Security Considerations section of this document.</t>
-<t>Published specification: This document.</t>
-<t>Applications that use this media type: RESTful EPP client and server implementations.</t>
-<t>Additional information: None</t>
-<t>Magic number(s): None.</t>
-<t>File extension(s): .json</t>
-<t>Macintosh file type code(s): &quot;TEXT&quot;</t>
-<t>Person &amp; email address for further information: See the &quot;Author's
-   Address&quot; section of this document.</t>
-<t>Intended usage: COMMON</t>
-<t>Author/Change controller: IETF</t>
-</section>
 
 </back>
 

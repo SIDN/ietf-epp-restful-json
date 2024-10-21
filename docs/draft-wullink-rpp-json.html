@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>XML to JSON Conversion rules for EPP</title>
+<title>EPP XML to RPP JSON Conversion rules</title>
 <meta content="Maarten Wullink" name="author">
-<meta content="Marco Davids" name="author">
+<meta content="Pawel Kowalik" name="author">
 <meta content="
-       This document describes the rules for converting The Extensible Provisioning Protocol (EPP)   XML based messages to a JSON   for use with EPP and RESTful EPP[REF-TO-REPP-HERE]. 
+       This document describes the rules for converting The Extensible Provisioning Protocol (EPP)   XML based messages to a JSON   for use with the RESTful Provisioning Protocol (RPP). 
     " name="description">
 <meta content="xml2rfc 3.18.2" name="generator">
-<meta content="draft-wullink-restful-epp-json-00" name="ietf.draft">
+<meta content="draft-wullink-rpp-json-00" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.18.2
-    Python 3.11.6
+    Python 3.11.9
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
@@ -24,12 +24,12 @@
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
-    setuptools 68.2.2
+    setuptools 69.2.0
     six 1.16.0
     wcwidth 0.2.9
     weasyprint 55.0
 -->
-<link href="../docs/draft-restful-epp-json.xml" rel="alternate" type="application/rfc+xml">
+<link href="../docs/draft-wullink-rpp-json.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -1204,12 +1204,12 @@ li > p:last-of-type:only-child {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">XML to JSON for EPP</td>
-<td class="right">January 2024</td>
+<td class="center">XML to JSON for RPP</td>
+<td class="right">October 2024</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Wullink &amp; Davids</td>
-<td class="center">Expires 20 July 2024</td>
+<td class="left">Wullink &amp; Kowalik</td>
+<td class="center">Expires 24 April 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1219,15 +1219,15 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-wullink-restful-epp-json-00</dd>
+<dd class="internet-draft">draft-wullink-rpp-json-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-01-17" class="published">17 January 2024</time>
+<time datetime="2024-10-21" class="published">21 October 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-07-20">20 July 2024</time></dd>
+<dd class="expires"><time datetime="2025-04-24">24 April 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1235,16 +1235,16 @@ li > p:last-of-type:only-child {
 <div class="org">SIDN Labs</div>
 </div>
 <div class="author">
-      <div class="author-name">M. Davids</div>
-<div class="org">SIDN Labs</div>
+      <div class="author-name">P. Kowalik</div>
+<div class="org">DENIC eG</div>
 </div>
 </dd>
 </dl>
 </div>
-<h1 id="title">XML to JSON Conversion rules for EPP</h1>
+<h1 id="title">EPP XML to RPP JSON Conversion rules</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> XML based messages to a JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> for use with EPP and RESTful EPP[REF-TO-REPP-HERE].<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document describes the rules for converting The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> XML based messages to a JSON <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> for use with the RESTful Provisioning Protocol (RPP).<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1265,7 +1265,7 @@ li > p:last-of-type:only-child {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1406,10 +1406,7 @@ li > p:last-of-type:only-child {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-appendix-a-media-type-regis" class="internal xref">Appendix A.  Media Type Registration: application/epp+json</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1420,7 +1417,7 @@ li > p:last-of-type:only-child {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>, for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>, for use with RPP. The Extensible Provisioning Protocol (EPP) <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span> describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.<a href="#section-1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
@@ -1431,8 +1428,7 @@ li > p:last-of-type:only-child {
 <p id="section-2-1">In this document the following terminology is used.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">EPP RFCs - This is a reference to the EPP version 1.0
 specifications <span>[<a href="#RFC5730" class="cite xref">RFC5730</a>]</span>, <span>[<a href="#RFC5731" class="cite xref">RFC5731</a>]</span>, <span>[<a href="#RFC5732" class="cite xref">RFC5732</a>]</span> and <span>[<a href="#RFC5733" class="cite xref">RFC5733</a>]</span>.<a href="#section-2-2" class="pilcrow">¶</a></p>
-<p id="section-2-3">RESTful EPP or REPP - The RESTful transport for EPP described in
-this document.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<p id="section-2-3">RESTful Provisioning Protocol - A RESTful protocol for provisiong heterogeneous database objects.<a href="#section-2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-used-in-this-document">
@@ -1686,13 +1682,13 @@ are properly formatted JSON documents. Indentation and white space in examples a
       <h2 id="name-examples">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-examples" class="section-name selfRef">Examples</a>
       </h2>
-<p id="section-5-1">This section lists examples for each of the existing EPP commands that are support by REPP.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">This section lists examples for each of the existing EPP commands that are support by RPP.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <div id="hello">
 <section id="section-5.1">
         <h3 id="name-hello">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-hello" class="section-name selfRef">Hello</a>
         </h3>
-<p id="section-5.1-1">The Hello request message does not exist in the context of REPP.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The Hello request message does not exist in the context of RPP.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">Example XML response:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.1-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -1738,10 +1734,10 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.1-4">Example JSON response:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.1-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "greeting": {
-            "svID": "Example REPP server v1.0",
+            "svID": "Example RPP server v1.0",
             "svDate": "2000-06-08T22:00:00.0Z",
             "svcMenu": {
                 "version": "1.0",
@@ -1781,7 +1777,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-login">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-login" class="section-name selfRef">Login</a>
         </h3>
-<p id="section-5.2-1">The Login request and response message are not used for REPP.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">The Login request and response message are not used for RPP.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="logout">
@@ -1789,7 +1785,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-logout">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-logout" class="section-name selfRef">Logout</a>
         </h3>
-<p id="section-5.3-1">The Logout request and response message are not used for REPP.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-1">The Logout request and response message are not used for RPP.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="check">
@@ -1797,7 +1793,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-check">
 <a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-check" class="section-name selfRef">Check</a>
         </h3>
-<p id="section-5.4-1">The Check request and responses messages are not used for REPP.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-1">The Check request and responses messages are not used for RPP.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="info">
@@ -1805,7 +1801,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-info">
 <a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-info" class="section-name selfRef">Info</a>
         </h3>
-<p id="section-5.5-1">The Info request message is not used for REPP.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.5-1">The Info request message is not used for RPP.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
 <p id="section-5.5-2">Example XML Domain Info response:<a href="#section-5.5-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.5-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -1854,7 +1850,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.5-4">Example JSON Domain Info response:<a href="#section-5.5-4" class="pilcrow">¶</a></p>
 <div class="breakable lang-json sourcecode" id="section-5.5-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -1919,7 +1915,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-poll">
 <a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-poll" class="section-name selfRef">Poll</a>
         </h3>
-<p id="section-5.6-1">The Poll request message is not used for REPP.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.6-1">The Poll request message is not used for RPP.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
 <p id="section-5.6-2">Example XML response:<a href="#section-5.6-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.6-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -1948,7 +1944,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.6-4">Example JSON response:<a href="#section-5.6-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.6-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -1983,7 +1979,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-poll-ack">
 <a href="#section-5.7" class="section-number selfRef">5.7. </a><a href="#name-poll-ack" class="section-name selfRef">Poll Ack</a>
         </h3>
-<p id="section-5.7-1">The Poll Ack request message is not used for REPP.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
+<p id="section-5.7-1">The Poll Ack request message is not used for RPP.<a href="#section-5.7-1" class="pilcrow">¶</a></p>
 <p id="section-5.7-2">Example XML response:<a href="#section-5.7-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.7-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -2006,7 +2002,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.7-4">Example JSON response:<a href="#section-5.7-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.7-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -2034,7 +2030,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-transfer-query">
 <a href="#section-5.8" class="section-number selfRef">5.8. </a><a href="#name-transfer-query" class="section-name selfRef">Transfer Query</a>
         </h3>
-<p id="section-5.8-1">The Domain Transfer Query request message is not used for REPP.<a href="#section-5.8-1" class="pilcrow">¶</a></p>
+<p id="section-5.8-1">The Domain Transfer Query request message is not used for RPP.<a href="#section-5.8-1" class="pilcrow">¶</a></p>
 <p id="section-5.8-2">Example XML  Domain Transfer Query response:<a href="#section-5.8-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.8-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -2068,7 +2064,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.8-4">Example JSON Domain Transfer Query response:<a href="#section-5.8-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.8-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -2136,7 +2132,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.9-3">Example JSON Domain Create request:<a href="#section-5.9-3" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.9-4">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "command": {
             "create": {
@@ -2205,7 +2201,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.9-7">Example JSON Domain Create response:<a href="#section-5.9-7" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.9-8">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -2237,7 +2233,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-delete">
 <a href="#section-5.10" class="section-number selfRef">5.10. </a><a href="#name-delete" class="section-name selfRef">Delete</a>
         </h3>
-<p id="section-5.10-1">The Delete request message is not used for REPP.<a href="#section-5.10-1" class="pilcrow">¶</a></p>
+<p id="section-5.10-1">The Delete request message is not used for RPP.<a href="#section-5.10-1" class="pilcrow">¶</a></p>
 <p id="section-5.10-2">Example XML Domain Delete response:<a href="#section-5.10-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.10-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -2259,7 +2255,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.10-4">Example JSON Domain Delete response:<a href="#section-5.10-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.10-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -2283,7 +2279,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-renew">
 <a href="#section-5.11" class="section-number selfRef">5.11. </a><a href="#name-renew" class="section-name selfRef">Renew</a>
         </h3>
-<p id="section-5.11-1">The Renew request message is not used for REPP.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
+<p id="section-5.11-1">The Renew request message is not used for RPP.<a href="#section-5.11-1" class="pilcrow">¶</a></p>
 <p id="section-5.11-2">Example XML Domain Renew response:<a href="#section-5.11-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.11-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -2312,7 +2308,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.11-4">Example JSON Domain Renew response:<a href="#section-5.11-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.11-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -2343,7 +2339,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-transfer-request">
 <a href="#section-5.12" class="section-number selfRef">5.12. </a><a href="#name-transfer-request" class="section-name selfRef">Transfer Request</a>
         </h3>
-<p id="section-5.12-1">The Transfer request message is not used for REPP.<a href="#section-5.12-1" class="pilcrow">¶</a></p>
+<p id="section-5.12-1">The Transfer request message is not used for RPP.<a href="#section-5.12-1" class="pilcrow">¶</a></p>
 <p id="section-5.12-2">Example XML Domain Transfer response:<a href="#section-5.12-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.12-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -2377,7 +2373,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.12-4">Example JSON Domain Transfer response:<a href="#section-5.12-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.12-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -2413,7 +2409,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-transfer-cancel">
 <a href="#section-5.13" class="section-number selfRef">5.13. </a><a href="#name-transfer-cancel" class="section-name selfRef">Transfer Cancel</a>
         </h3>
-<p id="section-5.13-1">The Transfer Cancel request message is not used for REPP.<a href="#section-5.13-1" class="pilcrow">¶</a></p>
+<p id="section-5.13-1">The Transfer Cancel request message is not used for RPP.<a href="#section-5.13-1" class="pilcrow">¶</a></p>
 <p id="section-5.13-2">Example XML Domain Cancel Transfer response:<a href="#section-5.13-2" class="pilcrow">¶</a></p>
 <div class="lang-xml sourcecode" id="section-5.13-3">
 <pre>&lt;?xml version="1.0" encoding="UTF-8" standalone="no"?&gt;
@@ -2435,7 +2431,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.13-4">Example JSON Domain Cancel Transfer response:<a href="#section-5.13-4" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.13-5">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -2459,7 +2455,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-transfer-reject">
 <a href="#section-5.14" class="section-number selfRef">5.14. </a><a href="#name-transfer-reject" class="section-name selfRef">Transfer Reject</a>
         </h3>
-<p id="section-5.14-1">The Transfer Reject request message is not used for REPP and the response message is the same as for the Transfer Cancel command.<a href="#section-5.14-1" class="pilcrow">¶</a></p>
+<p id="section-5.14-1">The Transfer Reject request message is not used for RPP and the response message is the same as for the Transfer Cancel command.<a href="#section-5.14-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="transfer-approve">
@@ -2467,7 +2463,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
         <h3 id="name-transfer-approve">
 <a href="#section-5.15" class="section-number selfRef">5.15. </a><a href="#name-transfer-approve" class="section-name selfRef">Transfer Approve</a>
         </h3>
-<p id="section-5.15-1">The Transfer Approve request message is not used for REPP and the response message is the same as for the Transfer Cancel command.<a href="#section-5.15-1" class="pilcrow">¶</a></p>
+<p id="section-5.15-1">The Transfer Approve request message is not used for RPP and the response message is the same as for the Transfer Cancel command.<a href="#section-5.15-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="update">
@@ -2502,7 +2498,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.16-3">Example JSON Domain Update request:<a href="#section-5.16-3" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.16-4">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "command": {
             "update": {
@@ -2545,7 +2541,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
 <p id="section-5.16-7">Example JSON Domain Update response:<a href="#section-5.16-7" class="pilcrow">¶</a></p>
 <div class="lang-json sourcecode" id="section-5.16-8">
 <pre>{
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -2571,7 +2567,7 @@ are properly formatted JSON documents. Indentation and white space in examples a
       <h2 id="name-iana-considerations">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-6-1">The new <code>application/epp+json</code> MIME media type is used in this document, the registration template is included in Appendix A.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">TODO<a href="#section-6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="internationalization-considerations">
@@ -2645,35 +2641,8 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </dl>
 </section>
 </section>
-<div id="appendix-a-media-type-registration-application-epp-json">
-<section id="appendix-A">
-      <h2 id="name-appendix-a-media-type-regis">
-<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-appendix-a-media-type-regis" class="section-name selfRef">Appendix A.  Media Type Registration: application/epp+json</a>
-      </h2>
-<p id="appendix-A-1">MIME media type name: application<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">MIME subtype name: epp+json<a href="#appendix-A-2" class="pilcrow">¶</a></p>
-<p id="appendix-A-3">Required parameters: none<a href="#appendix-A-3" class="pilcrow">¶</a></p>
-<p id="appendix-A-4">Optional parameters: Same as the charset parameter of application/json
-   as specified in <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>.<a href="#appendix-A-4" class="pilcrow">¶</a></p>
-<p id="appendix-A-5">Encoding considerations: Same as the encoding considerations of
-   application/xml as specified in <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>.<a href="#appendix-A-5" class="pilcrow">¶</a></p>
-<p id="appendix-A-6">Security considerations: This type has all of the security
-   considerations described in <span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span> plus the considerations
-   specified in the Security Considerations section of this document.<a href="#appendix-A-6" class="pilcrow">¶</a></p>
-<p id="appendix-A-7">Published specification: This document.<a href="#appendix-A-7" class="pilcrow">¶</a></p>
-<p id="appendix-A-8">Applications that use this media type: RESTful EPP client and server implementations.<a href="#appendix-A-8" class="pilcrow">¶</a></p>
-<p id="appendix-A-9">Additional information: None<a href="#appendix-A-9" class="pilcrow">¶</a></p>
-<p id="appendix-A-10">Magic number(s): None.<a href="#appendix-A-10" class="pilcrow">¶</a></p>
-<p id="appendix-A-11">File extension(s): .json<a href="#appendix-A-11" class="pilcrow">¶</a></p>
-<p id="appendix-A-12">Macintosh file type code(s): "TEXT"<a href="#appendix-A-12" class="pilcrow">¶</a></p>
-<p id="appendix-A-13">Person &amp; email address for further information: See the "Author's
-   Address" section of this document.<a href="#appendix-A-13" class="pilcrow">¶</a></p>
-<p id="appendix-A-14">Intended usage: COMMON<a href="#appendix-A-14" class="pilcrow">¶</a></p>
-<p id="appendix-A-15">Author/Change controller: IETF<a href="#appendix-A-15" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="authors-addresses">
-<section id="appendix-B">
+<section id="appendix-A">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
@@ -2690,15 +2659,15 @@ are properly formatted JSON documents. Indentation and white space in examples a
 </div>
 </address>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Marco Davids</span></div>
-<div dir="auto" class="left"><span class="org">SIDN Labs</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Pawel Kowalik</span></div>
+<div dir="auto" class="left"><span class="org">DENIC eG</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:marco.davids@sidn.nl" class="email">marco.davids@sidn.nl</a>
+<a href="mailto:pawel.kowalik@denic.de" class="email">pawel.kowalik@denic.de</a>
 </div>
 <div class="url">
 <span>URI:</span>
-<a href="https://sidn.nl/" class="url">https://sidn.nl/</a>
+<a href="https://www.denic.de/" class="url">https://www.denic.de/</a>
 </div>
 </address>
 </section>

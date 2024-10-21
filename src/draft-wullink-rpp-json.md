@@ -1,6 +1,6 @@
 %%%
-title = "XML to JSON Conversion rules for EPP"
-abbrev = "XML to JSON for EPP"
+title = "EPP XML to RPP JSON Conversion rules"
+abbrev = "XML to JSON for RPP"
 ipr = "trust200902"
 area = "Internet"
 workgroup = "Network Working Group"
@@ -10,7 +10,7 @@ TocDepth = 4
 
 [seriesInfo]
 name = "Internet-Draft"
-value = "draft-wullink-restful-epp-json-00"
+value = "draft-wullink-rpp-json-00"
 stream = "IETF"
 status = "standard"
 
@@ -25,25 +25,25 @@ organization = "SIDN Labs"
   uri = "https://sidn.nl/"
 
 [[author]]
-initials="M."
-surname="Davids"
-fullname="Marco Davids"
+initials="P."
+surname="Kowalik"
+fullname="Pawel Kowalik"
 abbrev = ""
-organization = "SIDN Labs"
+organization = "DENIC eG"
   [author.address]
-  email = "marco.davids@sidn.nl"
-  uri = "https://sidn.nl/"
+  email = "pawel.kowalik@denic.de"
+  uri = "https://www.denic.de/"
 %%%
 
 .# Abstract
 
-This document describes the rules for converting The Extensible Provisioning Protocol (EPP) [@!RFC5730] XML based messages to a JSON [@!RFC8259] for use with EPP and RESTful EPP[REF-TO-REPP-HERE].
+This document describes the rules for converting The Extensible Provisioning Protocol (EPP) [@!RFC5730] XML based messages to a JSON [@!RFC8259] for use with the RESTful Provisioning Protocol (RPP).
 
 {mainmatter}
 
 # Introduction
 
-This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with EPP, RESTful EPP[REF-TO-REPP-HERE] and future EPP related protocols and transports. The Extensible Provisioning Protocol (EPP) [@!RFC5730] describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages. 
+This document describes rules for converting valid EPP XML messages to the JavaScript Object Notation (JSON) Data Interchange Format [@!RFC8259], for use with RPP. The Extensible Provisioning Protocol (EPP) [@!RFC5730] describes an XML based protocol, which is defined by XML Schema Definition (XSD). The XSDs are published as part of the EPP RFCs and contain the formal syntax for EPP XML message and provide a method for validation of XML messages.
 
 # Terminology
 
@@ -52,8 +52,7 @@ In this document the following terminology is used.
 EPP RFCs - This is a reference to the EPP version 1.0
 specifications [@!RFC5730], [@!RFC5731], [@!RFC5732] and [@!RFC5733].
 
-RESTful EPP or REPP - The RESTful transport for EPP described in
-this document.
+RESTful Provisioning Protocol - A RESTful protocol for provisiong heterogeneous database objects.
 
 
 # Conventions Used in This Document
@@ -249,11 +248,11 @@ The rules above are based on the conversion approach found on [@?XMLCOM-WEB]
 
 # Examples
 
-This section lists examples for each of the existing EPP commands that are support by REPP.
+This section lists examples for each of the existing EPP commands that are support by RPP.
 
 ## Hello
 
-The Hello request message does not exist in the context of REPP.
+The Hello request message does not exist in the context of RPP.
 
 Example XML response:
 
@@ -300,10 +299,10 @@ Example JSON response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "greeting": {
-            "svID": "Example REPP server v1.0",
+            "svID": "Example RPP server v1.0",
             "svDate": "2000-06-08T22:00:00.0Z",
             "svcMenu": {
                 "version": "1.0",
@@ -337,19 +336,19 @@ Example JSON response:
 
 ##  Login
 
-The Login request and response message are not used for REPP.
+The Login request and response message are not used for RPP.
 
 ##  Logout
 
-The Logout request and response message are not used for REPP.
+The Logout request and response message are not used for RPP.
 
 ## Check
 
-The Check request and responses messages are not used for REPP.
+The Check request and responses messages are not used for RPP.
 
 ## Info
 
-The Info request message is not used for REPP.
+The Info request message is not used for RPP.
 
 Example XML Domain Info response:
 ```xml
@@ -399,7 +398,7 @@ Example JSON Domain Info response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -458,7 +457,7 @@ Example JSON Domain Info response:
 
 ## Poll
 
-The Poll request message is not used for REPP.
+The Poll request message is not used for RPP.
 
 Example XML response:
 ```xml
@@ -488,7 +487,7 @@ Example JSON response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -517,7 +516,7 @@ Example JSON response:
 
 ## Poll Ack
 
-The Poll Ack request message is not used for REPP.
+The Poll Ack request message is not used for RPP.
 
 Example XML response:
 ```xml
@@ -541,7 +540,7 @@ Example JSON response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -564,7 +563,7 @@ Example JSON response:
 
 ## Transfer Query
 
-The Domain Transfer Query request message is not used for REPP.
+The Domain Transfer Query request message is not used for RPP.
 
 Example XML  Domain Transfer Query response:
 
@@ -600,7 +599,7 @@ Example JSON Domain Transfer Query response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -663,7 +662,7 @@ Example JSON Domain Create request:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "command": {
             "create": {
@@ -733,7 +732,7 @@ Example JSON Domain Create response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -759,7 +758,7 @@ Example JSON Domain Create response:
 
 ## Delete
 
-The Delete request message is not used for REPP.
+The Delete request message is not used for RPP.
 
 Example XML Domain Delete response:
 
@@ -783,7 +782,7 @@ Example JSON Domain Delete response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -801,7 +800,7 @@ Example JSON Domain Delete response:
 
 ## Renew
 
-The Renew request message is not used for REPP.
+The Renew request message is not used for RPP.
 
 Example XML Domain Renew response:
 
@@ -832,7 +831,7 @@ Example JSON Domain Renew response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -857,7 +856,7 @@ Example JSON Domain Renew response:
 
 ## Transfer Request
 
-The Transfer request message is not used for REPP.
+The Transfer request message is not used for RPP.
 
 
 Example XML Domain Transfer response:
@@ -894,7 +893,7 @@ Example JSON Domain Transfer response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -926,7 +925,7 @@ Example JSON Domain Transfer response:
 
 ## Transfer Cancel
 
-The Transfer Cancel request message is not used for REPP.
+The Transfer Cancel request message is not used for RPP.
 
 
 Example XML Domain Cancel Transfer response:
@@ -951,7 +950,7 @@ Example JSON Domain Cancel Transfer response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -969,11 +968,11 @@ Example JSON Domain Cancel Transfer response:
 
 ## Transfer Reject
 
-The Transfer Reject request message is not used for REPP and the response message is the same as for the Transfer Cancel command.
+The Transfer Reject request message is not used for RPP and the response message is the same as for the Transfer Cancel command.
 
 ## Transfer Approve
 
-The Transfer Approve request message is not used for REPP and the response message is the same as for the Transfer Cancel command.
+The Transfer Approve request message is not used for RPP and the response message is the same as for the Transfer Cancel command.
 
 ## Update
 
@@ -1006,7 +1005,7 @@ Example JSON Domain Update request:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "command": {
             "update": {
@@ -1049,7 +1048,7 @@ Example JSON Domain Update response:
 
 ```json
 {
-    "epp": {
+    "rpp": {
         "@xmlns": "urn:ietf:params:xml:ns:epp-1.0",
         "response": {
             "result": {
@@ -1067,7 +1066,7 @@ Example JSON Domain Update response:
 
 # IANA Considerations
 
-The new `application/epp+json` MIME media type is used in this document, the registration template is included in Appendix A.
+TODO
 
 # Internationalization Considerations
 
@@ -1082,43 +1081,6 @@ TODO
 TODO
 
 {backmatter}
-
-# Appendix A.  Media Type Registration: application/epp+json
-
-   MIME media type name: application
-
-   MIME subtype name: epp+json
-
-   Required parameters: none
-
-   Optional parameters: Same as the charset parameter of application/json
-   as specified in [@!RFC8259].
-
-   Encoding considerations: Same as the encoding considerations of
-   application/xml as specified in [@!RFC8259].
-
-   Security considerations: This type has all of the security
-   considerations described in [@!RFC8259] plus the considerations
-   specified in the Security Considerations section of this document.
-
-   Published specification: This document.
-
-   Applications that use this media type: RESTful EPP client and server implementations.
-   
-   Additional information: None
-
-   Magic number(s): None.
-
-   File extension(s): .json
-
-   Macintosh file type code(s): "TEXT"
-
-   Person & email address for further information: See the "Author's
-   Address" section of this document.
-
-   Intended usage: COMMON
-
-   Author/Change controller: IETF
 
 <reference anchor="XMLCOM-WEB" target="https://www.xml.com/pub/a/2006/05/31/converting-between-xml-and-json.html">
   <front>
